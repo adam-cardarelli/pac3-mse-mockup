@@ -1,0 +1,2383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAC-3 MSE program page</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700;730&family=Orbitron:wght@600&display=swap">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<style>
+:root {
+  color-scheme: light;
+  /* App shell from high-ground-mvp-fe: dark sidebar, white top bar, slate page, design-system tokens */
+  --sidebar: #282C34; --sidebar-accent: #373D48; --sidebar-fg: #F8FAFC; --sidebar-label: rgba(248, 250, 252, 0.7);
+  --bg: #F9F9F9; --surface: #FFFFFF; --surface-2: #F1F5F9; --muted: #F4F4F4;
+  --border: #E2E8F0; --border-strong: #CBD5E1; --border-legacy: #E0E0E0;
+  --text: #0F172A; --text-2: #475569; --text-3: #64748B; --tab-idle: #94A3B8; --tab-active: #2563EB;
+  --navy: #3B4F72; --navy-hover: #2C3A57; --link: #017EFA;
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.03);
+  --font: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; -webkit-font-smoothing: antialiased; }
+a { color: var(--link); }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.app { display: flex; height: 100%; overflow: hidden; }
+
+/* Sidebar: NewSideBar (300px, collapsible="icon") */
+.sb { flex: 0 0 300px; width: 300px; height: 100%; background: var(--sidebar); color: var(--sidebar-fg); display: flex; flex-direction: column; overflow: hidden; }
+.sb-head { display: flex; align-items: center; padding: 24px 24px 0; }
+.sb-brand { display: flex; align-items: center; }
+.sb-logo { width: 32px; height: 32px; flex: none; }
+.sb-word { margin-left: 8px; font-family: Orbitron, var(--font); font-size: 24px; font-weight: 600; color: var(--sidebar-fg); }
+.sb-trigger { margin-left: auto; width: 28px; height: 28px; display: grid; place-items: center; border: 0; border-radius: 6px; background: transparent; color: var(--sidebar-fg); cursor: pointer; }
+.sb-trigger:hover, .sb-item:hover { background: var(--sidebar-accent); }
+.sb-sep { height: 1px; background: rgba(255, 255, 255, 0.12); margin: 24px 24px 0; }
+.sb-body { flex: 1; overflow-y: auto; padding: 0 24px; }
+.sb-group { padding: 8px 0; }
+.sb-label { height: 32px; display: flex; align-items: center; font-size: 12px; font-weight: 500; color: var(--sidebar-label); }
+.sb-item { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; margin: 0 -8px; border-radius: 6px; color: var(--sidebar-fg); text-decoration: none; font-size: 16px; }
+.sb-item svg { width: 16px; height: 16px; flex: none; }
+.sb-item.active { background: var(--sidebar-accent); font-weight: 500; }
+.sb-foot { padding: 8px 24px 16px; }
+
+/* Main column */
+.main { flex: 1; min-width: 0; height: 100%; overflow: auto; display: flex; flex-direction: column; }
+.main > * { flex-shrink: 0; }
+.topbar { display: flex; align-items: center; gap: 12px; height: 48px; flex: none; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--border); background: var(--surface); }
+@media (min-width: 900px) { .topbar { padding-left: 40px; padding-right: 40px; } }
+.cmd { display: flex; align-items: center; gap: 10px; height: 36px; flex: 1; max-width: 600px; padding: 0 12px; background: var(--muted); border: 1px solid var(--border-legacy); border-radius: 10px; font-size: 13px; color: var(--text-3); cursor: text; }
+.cmd svg { width: 16px; height: 16px; color: var(--navy); flex: none; }
+.cmd span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmd kbd { font-family: ui-monospace, monospace; font-size: 10px; background: var(--surface); border: 1px solid var(--border-legacy); border-radius: 4px; padding: 2px 6px; color: var(--text-3); }
+.tb-right { display: flex; align-items: center; gap: 8px; margin-left: auto; flex: none; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 4px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; text-decoration: none; }
+.btn svg { width: 14px; height: 14px; }
+.btn-secondary { border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-2); }
+.btn-secondary:hover { background: var(--surface-2); color: var(--text); }
+.btn-primary { border: 1px solid var(--navy); background: var(--navy); color: #FFFFFF; }
+.btn-primary:hover { background: var(--navy-hover); }
+.avatar { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; background: #577E9B; color: #FFFFFF; font-size: 11px; font-weight: 600; }
+
+/* PageHeader */
+.ph { padding: 26px max(16px, env(safe-area-inset-right, 0px)) 4px max(16px, env(safe-area-inset-left, 0px)); }
+@media (min-width: 900px) { .ph { padding-left: 34px; padding-right: 34px; } }
+.back { display: inline-flex; align-items: center; gap: 5px; margin-bottom: 14px; font-size: 13px; font-weight: 550; color: var(--text-2); text-decoration: none; }
+.back:hover { color: var(--text); }
+.back svg { width: 16px; height: 16px; }
+.ph-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+.ph-title { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.ph-title-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+h1 { margin: 0; font-size: 27px; line-height: 1.15; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
+.ph-sub { margin: 4px 0 0; font-size: 13.5px; line-height: 1.35; color: var(--text-2); }
+.pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 9px; font-size: 12px; font-weight: 550; line-height: 1.5; white-space: nowrap; }
+.pill-gray { background: #EEF0F3; color: #4D5667; }
+.pill-blue { background: #E8F0FC; color: var(--link); }
+.pill-green { background: #E7F4EC; color: #45B361; }
+.ph-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.fy { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-3); }
+.fy select { height: 32px; padding: 0 28px 0 10px; border: 1px solid var(--border-strong); border-radius: 9px; background: var(--surface); font: inherit; font-size: 13px; color: var(--text); }
+
+/* CompanyTabs: underline tabs, 45px, 16px labels, 5px active rule */
+.tabs-wrap { padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); overflow-x: auto; }
+@media (min-width: 900px) { .tabs-wrap { padding: 0 40px; } }
+.tabs { display: flex; gap: 32px; border-bottom: 1px solid #E2E8F0; min-width: max-content; }
+.tab { position: relative; display: inline-flex; align-items: center; height: 45px; margin-bottom: -1px; font-size: 16px; color: var(--tab-idle); text-decoration: none; white-space: nowrap; border-bottom: 5px solid transparent; }
+.tab:hover { color: #475569; }
+.tab[aria-selected="true"] { color: #000000; font-weight: 500; border-bottom-color: var(--tab-active); background: var(--bg); }
+
+/* Content */
+.content { flex: 1; padding: 24px max(16px, env(safe-area-inset-right, 0px)) 56px max(16px, env(safe-area-inset-left, 0px)); }
+@media (min-width: 900px) { .content { padding-left: 40px; padding-right: 40px; } }
+.view { max-width: 1640px; display: flex; flex-direction: column; gap: 18px; }
+.view h2 { text-wrap: balance; }
+.view table { font-variant-numeric: tabular-nums; }
+.view a { color: var(--link); }
+
+@media (max-width: 899px) {
+  .sb { display: none; }
+  .cmd kbd { display: none; }
+  .tb-right .btn-secondary { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sb" aria-label="Main navigation">
+<div class="sb-head"><span class="sb-brand"><svg class="sb-logo" aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      width="30"
+      height="30"
+      viewBox="0 0 30 30"
+      fill="none"
+    >
+      <g clip-path="url(#clip0_3443_5082)">
+        <path
+          d="M29.1203 15C29.1203 7.20304 22.8182 0.882353 15.044 0.882353C7.26992 0.882353 0.967778 7.20304 0.967778 15C0.967778 22.797 7.26992 29.1176 15.044 29.1176V30C6.78405 30 0.0880127 23.2842 0.0880127 15C0.0880127 6.71573 6.78405 0 15.044 0C23.304 0 30 6.71573 30 15C30 23.2842 23.304 30 15.044 30V29.1176C22.8182 29.1176 29.1203 22.797 29.1203 15Z"
+          fill="white"
+        />
+        <path
+          d="M16.5396 22.5881H11.349L2.55137 18.5293L1.3197 19.0587C2.02469 23.4375 8.45707 28.9492 13.7005 29.4728C16.1319 29.7156 19.6104 28.8946 22.2484 27.1882C25.5572 25.3675 27.7272 22.0089 28.1525 20.4264L27.0089 19.8087L21.4663 22.5881H16.5396Z"
+          fill="white"
+        />
+        <mask
+          id="mask0_3443_5082"
+          style="mask-type:luminance"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="12"
+          width="30"
+          height="11"
+        >
+          <path
+            d="M29.824 12.7949H0V22.6773H29.824V12.7949Z"
+            fill="white"
+          />
+        </mask>
+        <g mask="url(#mask0_3443_5082)">
+          <mask
+            id="mask1_3443_5082"
+            style="mask-type:luminance"
+            maskUnits="userSpaceOnUse"
+            x="0"
+            y="12"
+            width="30"
+            height="11"
+          >
+            <path
+              d="M29.78 12.7949H0.0439453V22.6773H29.78V12.7949Z"
+              fill="white"
+            />
+          </mask>
+          <g mask="url(#mask1_3443_5082)">
+            <mask
+              id="mask2_3443_5082"
+              style="mask-type:alpha"
+              maskUnits="userSpaceOnUse"
+              x="-8"
+              y="12"
+              width="46"
+              height="11"
+            >
+              <path
+                d="M3.73896 18L2.41931 18.5735L11.3049 22.6765H13.7243L3.73896 18Z"
+                fill="white"
+              />
+              <path
+                d="M14.6921 19.2363L13.5044 19.8099L19.1349 22.6334H21.3783L27.0088 19.8099L25.9091 19.2363L20.2786 21.9716L14.6921 19.2363Z"
+                fill="white"
+              />
+              <path
+                d="M3.65101 14.1185L-7.60999 19.4126L-6.45997 19.942L3.65101 15.3096L9.45746 17.8243L10.7771 18.442L12.0528 17.9126L9.72139 16.8537L15.9677 13.9861L20.1466 16.2361L18.0352 17.2508L21.5102 19.0155L24.5894 17.5155L23.3138 16.8979L21.5982 17.692L20.4985 17.1626L25.6891 14.8685L36.0264 19.942L37.0381 19.4567L25.6891 13.7655L21.3783 15.7508L15.9677 12.7949L8.48972 16.2361L3.65101 14.1185Z"
+                fill="white"
+              />
+            </mask>
+            <g mask="url(#mask2_3443_5082)">
+              <path
+                d="M30.044 15.0898C30.044 23.3741 23.3479 30.0898 15.088 30.0898C6.82799 30.0898 0.131958 23.3741 0.131958 15.0898C0.131958 6.80557 6.82799 0.0898438 15.088 0.0898438C23.3479 0.0898438 30.044 6.80557 30.044 15.0898Z"
+                fill="white"
+              />
+            </g>
+          </g>
+        </g>
+      </g>
+      <defs>
+        <clipPath id="clip0_3443_5082">
+          <rect
+            width="30"
+            height="30"
+            fill="white"
+          />
+        </clipPath>
+      </defs>
+    </svg><span class="sb-word">HighGround</span></span>
+<button type="button" class="sb-trigger" aria-label="Collapse"><i data-lucide="panel-left"></i></button></div>
+<div class="sb-sep"></div><div class="sb-body">
+<div class="sb-group"><div class="sb-label">HOME</div>
+<a href="#overview" class="sb-item"><i data-lucide="message-square"></i><span>Chat</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="folder-open"></i><span>Workspace</span></a>
+</div>
+<div class="sb-group"><div class="sb-label">MONITOR</div>
+<a href="#overview" class="sb-item"><i data-lucide="home"></i><span>Watchlist</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="radar"></i><span>Sensing</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="file-text"></i><span>News</span></a>
+</div>
+<div class="sb-group"><div class="sb-label">ENTITIES</div>
+<a href="#overview" class="sb-item"><i data-lucide="bar-chart-3"></i><span>Markets</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="building-2"></i><span>Companies</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="file-text"></i><span>Contracts</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="target"></i><span>Opportunities</span></a>
+<a href="#overview" aria-current="page" class="sb-item active"><i data-lucide="landmark"></i><span>Programs</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="gavel"></i><span>Congressional Marks</span></a>
+</div>
+<div class="sb-group"><div class="sb-label">ACTORS</div>
+<a href="#overview" class="sb-item"><i data-lucide="building"></i><span>Offices</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="users"></i><span>People</span></a>
+</div>
+<div class="sb-group"><div class="sb-label">ANALYSIS</div>
+<a href="#overview" class="sb-item"><i data-lucide="compass"></i><span>Screener</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="activity"></i><span>Scenarios</span></a>
+</div>
+</div><div class="sb-foot"><div class="sb-label">MANAGE</div>
+<a href="#overview" class="sb-item"><i data-lucide="circle-help"></i><span>Help</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="user"></i><span>Profile</span></a>
+<a href="#overview" class="sb-item"><i data-lucide="log-out"></i><span>Sign Out</span></a>
+</div></aside>
+<div class="main">
+<header class="topbar">
+<div class="cmd" role="button" tabindex="0" aria-label="Search"><i data-lucide="sparkles"></i><span>Search or ask anything…</span><kbd>⌘K</kbd></div>
+<div class="tb-right"><button type="button" class="btn btn-secondary">Ask HighGround</button><div class="avatar" aria-label="Account">AC</div></div>
+</header>
+<header class="ph">
+<a class="back" href="#overview"><i data-lucide="arrow-left"></i>Back to Programs</a>
+<div class="ph-row">
+<div class="ph-title">
+<div class="ph-title-line"><h1>PAC-3 MSE</h1><span class="pill pill-blue">Production · multiyear</span><span class="pill pill-gray">DoD Program No. 492</span></div>
+<p class="ph-sub">Patriot Advanced Capability-3 Missile Segment Enhancement · Army · PAE Fires › Lower Tier Interceptors · Prime: Lockheed Martin (LMT)</p>
+</div>
+<div class="ph-actions">
+<label class="fy" for="fy">Fiscal year <select id="fy"><option>FY2027</option><option>FY2026</option><option>FY2025</option></select></label>
+<button type="button" class="btn btn-secondary"><i data-lucide="star"></i>Add to favorites</button>
+<button type="button" class="btn btn-primary">Ask about this program</button>
+</div>
+</div>
+</header>
+<div class="tabs-wrap"><nav class="tabs" role="tablist" aria-label="Program sections">
+<a class="tab" role="tab" data-tab="overview" href="#overview" aria-selected="false">Overview</a>
+<a class="tab" role="tab" data-tab="budget" href="#budget" aria-selected="false">Budget</a>
+<a class="tab" role="tab" data-tab="congress" href="#congress" aria-selected="false">Congress</a>
+<a class="tab" role="tab" data-tab="contracts" href="#contracts" aria-selected="false">Contracts</a>
+<a class="tab" role="tab" data-tab="supply-chain" href="#supply-chain" aria-selected="false">Supply chain</a>
+<a class="tab" role="tab" data-tab="offices" href="#offices" aria-selected="false">Offices and codes</a>
+<a class="tab" role="tab" data-tab="connections" href="#connections" aria-selected="false">Connections</a>
+</nav></div>
+<div class="content"><div class="view" id="view" role="tabpanel"></div></div>
+</div>
+</div>
+<script type="text/x-template" id="tpl-overview">
+<section aria-label="Key figures" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="6">
+<article style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 14px 15px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 550; color: #475569">{{k.label}}</span>
+<span style="font-size: 24px; font-weight: 730; letter-spacing: -0.02em; color: #0F172A; font-variant-numeric: tabular-nums">{{k.value}}</span>
+<span style="font-size: 12px; color: #475569">{{k.sub}}</span>
+<span style="width: fit-content; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: {{k.tagBg}}; color: {{k.tagFg}}">{{k.tag}}</span>
+</article>
+</sc-for>
+</section>
+
+<section aria-label="Signals" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 16px 20px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<h2 style="margin: 0 8px 0 0; font-size: 14px; font-weight: 600">Signals</h2>
+<sc-for list="{{signals}}" as="s" hint-placeholder-count="7">
+<a href="{{s.href}}" style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; text-decoration: none; background: {{s.bg}}; color: {{s.fg}}; border: 1px solid {{s.bd}}">{{s.text}}</a>
+</sc-for>
+</section>
+
+<section aria-label="Flow of money" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Flow of money</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px">
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Budget FY22–26</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Obligations FY22–26</span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #475569">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #3B4F72"></span>Total</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #2E9E6A"></span>Added</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #D1495B"></span>Cut</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #D9822B"></span>FMS, derived</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #2F6690"></span>Spent</span>
+</div>
+</div>
+<div style="overflow-x: auto">
+<div role="img" aria-label="{{wf.alt}}" style="position: relative; width: {{wf.W}}px; height: {{wf.H}}px; margin: 0 auto">
+<sc-for list="{{wf.groups}}" as="g" hint-placeholder-count="4">
+<div style="position: absolute; left: {{g.x}}px; top: 0; width: {{g.w}}px; padding-bottom: 6px; border-bottom: 2px solid #E2E8F0; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: #64748B; text-align: center; white-space: nowrap">{{g.t}}</div>
+</sc-for>
+<div style="position: absolute; left: 0; right: 0; top: {{wf.base}}px; height: 1px; background: #CBD5E1"></div>
+<sc-for list="{{wf.conns}}" as="c" hint-placeholder-count="15">
+<div style="position: absolute; left: {{c.x}}px; top: {{c.y}}px; width: {{c.w}}px; border-top: 1px dashed #94A3B8"></div>
+</sc-for>
+<sc-for list="{{wf.bars}}" as="b" hint-placeholder-count="16">
+<div style="position: absolute; left: {{b.x}}px; top: {{b.top}}px; width: 40px; height: {{b.h}}px; background: {{b.color}}; border-radius: 3px"></div>
+<div style="position: absolute; left: {{b.cx}}px; top: {{b.vTop}}px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; white-space: nowrap; line-height: 1.3">
+<span style="font-size: {{b.size}}; font-weight: {{b.weight}}; color: {{b.ink}}">{{b.val}}</span>
+<sc-if value="{{b.hasNote}}" hint-placeholder-val="{{false}}"><span style="font-size: 10.5px; font-weight: 600; color: #64748B">{{b.note}}</span></sc-if>
+</div>
+<div style="position: absolute; left: {{b.cx}}px; top: {{wf.base}}px; transform: translateX(-50%); width: {{wf.slot}}px; padding-top: 8px; text-align: center; line-height: 1.25">
+<div style="font-size: 11.5px; font-weight: 600; color: #0F172A">{{b.name}}</div>
+<div style="font-size: 10.5px; color: #64748B; margin-top: 2px">{{b.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{wfChips}}" as="c" hint-placeholder-count="4">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}">{{c.text}}</span>
+</sc-for>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<section id="budget" aria-label="Funding and quantities" style="flex: 2 1 600px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Funding and quantities</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #475569">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #3B4F72"></span>Discretionary</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #9FD8DD"></span>Mandatory</span>
+</div>
+</div>
+<div style="font-size: 12px; color: #64748B">MSE Missile · 8260C53101 · Missile Procurement, Army</div>
+<div aria-label="Funding by fiscal year" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; align-items: end; height: 260px; padding-top: 8px; border-bottom: 1px solid #E2E8F0">
+<sc-for list="{{years}}" as="y" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%">
+<span style="font-size: 12px; font-weight: 600; color: #0F172A">{{y.total}}</span>
+<div style="width: 64%; display: flex; flex-direction: column">
+<div style="height: {{y.hMand}}px; background: #9FD8DD; border-radius: 4px 4px 0 0"></div>
+<div style="height: {{y.hDisc}}px; background: #3B4F72; border-radius: {{y.discRadius}}"></div>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: 120px repeat(6, minmax(0, 1fr)); gap: 12px; font-size: 12px; align-items: center">
+<span style="color: #64748B"></span>
+<sc-for list="{{years}}" as="y" hint-placeholder-count="6">
+<span style="text-align: center; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 13px; color: #0F172A">{{y.fy}}</strong><span style="color: #64748B">{{y.stage}}</span></span>
+</sc-for>
+<span style="color: #64748B">Missiles, Army</span>
+<sc-for list="{{years}}" as="y" hint-placeholder-count="6">
+<span style="text-align: center; font-weight: 600; color: #0F172A">{{y.qty}}</span>
+</sc-for>
+<span style="color: #64748B">Missiles, Navy</span>
+<sc-for list="{{years}}" as="y" hint-placeholder-count="6">
+<span style="text-align: center; font-weight: 600; color: #0F172A">{{y.navy}}</span>
+</sc-for>
+<span style="color: #64748B">Cost per missile</span>
+<sc-for list="{{years}}" as="y" hint-placeholder-count="6">
+<span style="text-align: center; color: #334155">{{y.unit}}</span>
+</sc-for>
+<span style="color: #64748B">Obligated to contracts</span>
+<sc-for list="{{years}}" as="y" hint-placeholder-count="6">
+<span style="text-align: center; color: #334155">{{y.obl}}</span>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #E8F0FC; color: #017EFA">FY27 quantity 7.8× FY26</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #FCF0D4; color: #B07C06">FY27 mandatory $10.93B of $12.23B</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">FY23–24 actuals include supplementals</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-top: 4px">
+<h3 style="margin: 0; font-size: 13px; font-weight: 600; color: #334155">Related lines</h3>
+<sc-for list="{{related}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; padding: 8px 0; border-top: 1px solid #EEF2F7; font-size: 13px">
+<span style="flex: 1 1 260px; min-width: 0"><a href="#" style="text-decoration: none; font-weight: 600">{{r.name}}</a> <span style="color: #64748B">· {{r.code}} · {{r.acct}}</span></span>
+<span style="color: #334155">FY26 {{r.fy26}}</span>
+<span style="font-weight: 600; color: #0F172A">FY27 request {{r.fy27}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="identity" aria-label="Offices and codes" style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Offices and codes</h2>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; color: #64748B">Program office</span>
+<div style="display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 13px">
+<a href="#" style="text-decoration: none">Army</a><span style="color: #94A3B8">›</span><a href="#" style="text-decoration: none">PAE Fires</a><span style="color: #94A3B8">›</span><a href="#" style="text-decoration: none; font-weight: 600">Lower Tier Interceptors</a>
+</div>
+<span style="font-size: 12px; color: #64748B">Formerly PEO Missiles and Space</span>
+</div>
+<sc-for list="{{identity}}" as="b" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid #EEF2F7">
+<span style="font-size: 12px; color: #64748B">{{b.label}}</span>
+<sc-for list="{{b.rows}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; gap: 8px; justify-content: space-between; font-size: 13px">
+<span style="min-width: 0"><span style="font-weight: 600; color: #0F172A">{{r.a}}</span> <span style="color: #475569">{{r.b}}</span></span>
+<span style="flex: 0 0 auto; color: #334155">{{r.c}}</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</section>
+</div>
+
+<section id="congress" aria-label="Congressional action" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Congressional action</h2>
+<div role="group" aria-label="Fiscal year" style="display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 9px; background: #F1F5F9">
+<sc-for list="{{fyTabs}}" as="t" hint-placeholder-count="4">
+<button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="font: inherit; font-size: 12.5px; font-weight: 550; padding: 5px 13px; border: 0; border-radius: 7px; background: {{t.bg}}; color: {{t.fg}}; cursor: pointer">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{walk.chips}}" as="c" hint-placeholder-count="2">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}">{{c.text}}</span>
+</sc-for>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
+<table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: #F8FAFC; text-align: right; color: #475569">
+<th scope="col" style="text-align: left; padding: 10px 12px; font-weight: 600">Line</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Request</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">HASC</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">SASC</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">NDAA</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">HAC-D</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">SAC-D</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Final</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{walk.rows}}" as="r" hint-placeholder-count="2">
+<tr style="border-top: 1px solid #EEF2F7; text-align: right">
+<th scope="row" style="text-align: left; padding: 10px 12px; font-weight: 600">{{r.line}}</th>
+<td style="padding: 10px 12px">{{r.req}}</td>
+<td style="padding: 10px 12px; color: {{r.c1}}">{{r.hasc}}</td>
+<td style="padding: 10px 12px; color: {{r.c2}}">{{r.sasc}}</td>
+<td style="padding: 10px 12px; color: {{r.c3}}">{{r.ndaa}}</td>
+<td style="padding: 10px 12px; color: {{r.c4}}">{{r.hacd}}</td>
+<td style="padding: 10px 12px; color: {{r.c5}}">{{r.sacd}}</td>
+<td style="padding: 10px 12px; font-weight: 700; color: {{r.c6}}">{{r.final}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display: flex; flex-direction: column">
+<sc-for list="{{walk.marks}}" as="m" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; padding: 12px 0; border-top: 1px solid #EEF2F7">
+<span style="flex: 0 0 64px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: #F1F5F9; color: #334155; text-align: center">{{m.who}}</span>
+<span style="flex: 0 0 104px; font-size: 14px; font-weight: 700; color: {{m.fg}}">{{m.amt}}</span>
+<span style="flex: 1 1 320px; min-width: 0; font-size: 13px; color: #0F172A">{{m.text}}</span>
+<a href="#" style="flex: 0 0 auto; font-size: 12px; text-decoration: none">{{m.cite}}</a>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="contracts" aria-label="Contracts" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Contracts</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px">
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">2,971 linked awards since FY12</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">ACC-Redstone: 96.7% of dollars</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #FCF0D4; color: #B07C06; font-weight: 600">5 of top 8 end by Jun 2028</span>
+</div>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
+<table style="width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: #F8FAFC; color: #64748B; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em">
+<th scope="col" style="padding: 10px 12px; font-weight: 600">PIID</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Scope</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Type</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">Obligated FY24–26</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">Obligated to date</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">First action</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Ends</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{contracts}}" as="c" hint-placeholder-count="8">
+<tr style="border-top: 1px solid #EEF2F7">
+<td style="padding: 10px 12px; white-space: nowrap"><a href="#" style="text-decoration: none; font-weight: 600">{{c.piid}}</a></td>
+<td style="padding: 10px 12px; color: #0F172A">{{c.scope}} <sc-if value="{{c.hasTag}}" hint-placeholder-val="{{false}}"><span style="font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 4px; background: #E8F0FC; color: #017EFA">{{c.tag}}</span></sc-if></td>
+<td style="padding: 10px 12px; color: #475569">{{c.type}}</td>
+<td style="padding: 10px 12px; text-align: right; font-weight: 600">{{c.recent}}</td>
+<td style="padding: 10px 12px; text-align: right; color: #334155">{{c.total}}</td>
+<td style="padding: 10px 12px; color: #475569; white-space: nowrap">{{c.first}}</td>
+<td style="padding: 10px 12px; white-space: nowrap; color: {{c.endFg}}; font-weight: {{c.endW}}">{{c.end}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="suppliers" aria-label="Supply chain" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Supply chain</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px">
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">241 suppliers reporting in FY24</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">$2.31B subawards FY22–25</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Reports through Mar 2025</span>
+</div>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
+<table style="width: 100%; min-width: 820px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: #F8FAFC; color: #64748B; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em">
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Supplier</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Ticker</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Component</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">FY22–25</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Share of FY22–25</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">Since FY12</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{suppliers}}" as="s" hint-placeholder-count="12">
+<tr style="border-top: 1px solid #EEF2F7">
+<td style="padding: 10px 12px"><a href="#" style="text-decoration: none; font-weight: 600">{{s.name}}</a> <sc-if value="{{s.hasFlag}}" hint-placeholder-val="{{false}}"><span style="font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 4px; background: #FCF0D4; color: #B07C06">{{s.flag}}</span></sc-if></td>
+<td style="padding: 10px 12px; font-weight: 600; color: {{s.tickFg}}">{{s.ticker}}</td>
+<td style="padding: 10px 12px; color: #334155">{{s.part}}</td>
+<td style="padding: 10px 12px; text-align: right; font-weight: 600">{{s.recent}}</td>
+<td style="padding: 10px 12px; min-width: 140px"><span style="display: block; height: 6px; border-radius: 999px; background: #EEF2F7"><span style="display: block; width: {{s.pct}}%; height: 6px; border-radius: 999px; background: #577E9B"></span></span></td>
+<td style="padding: 10px 12px; text-align: right; color: #334155">{{s.life}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 13px; font-weight: 600; color: #334155">Listed companies on this program</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{listed}}" as="l" hint-placeholder-count="10">
+<a href="#" style="display: inline-flex; gap: 6px; align-items: baseline; padding: 6px 10px; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; background: {{l.bg}}"><strong style="font-size: 13px; color: #0F172A">{{l.t}}</strong><span style="font-size: 12px; color: #475569">{{l.role}}</span></a>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 13px; font-weight: 600; color: #334155">Foreign buyers named on awards</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{fms}}" as="f" hint-placeholder-count="10">
+<span style="display: inline-flex; gap: 6px; align-items: baseline; padding: 5px 10px; border-radius: 999px; background: #F1F5F9; font-size: 12px"><strong style="color: #0F172A">{{f.c}}</strong><span style="color: #475569">{{f.n}}</span></span>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+</script>
+<script type="text/x-template" id="tpl-budget">
+<section aria-label="Key figures" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="6">
+<article style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 14px 15px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 550; color: #475569">{{k.label}}</span>
+<span style="font-size: 24px; font-weight: 730; letter-spacing: -0.02em; color: #0F172A; font-variant-numeric: tabular-nums">{{k.value}}</span>
+<span style="font-size: 12px; color: #475569">{{k.sub}}</span>
+</article>
+</sc-for>
+</section>
+
+<section aria-label="Funding by line" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Funding by line</h2>
+<div role="group" aria-label="Chart scale" style="display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 9px; background: #F1F5F9">
+<sc-for list="{{scaleTabs}}" as="t" hint-placeholder-count="2">
+<button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="font: inherit; font-size: 12.5px; font-weight: 550; padding: 5px 13px; border: 0; border-radius: 7px; background: {{t.bg}}; color: {{t.fg}}; cursor: pointer">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #475569">
+<sc-for list="{{legend}}" as="g" hint-placeholder-count="5">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: {{g.c}}"></span>{{g.n}}</span>
+</sc-for>
+</div>
+<div aria-label="Funding by fiscal year and line" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; align-items: end; height: 300px; border-bottom: 1px solid #E2E8F0">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%">
+<span style="font-size: 13px; font-weight: 700; color: #0F172A">{{b.total}}</span>
+<sc-if value="{{b.clipped}}" hint-placeholder-val="{{false}}">
+<span style="font-size: 11px; font-weight: 600; color: #B07C06; background: #FCF0D4; padding: 1px 6px; border-radius: 4px">Off scale</span>
+</sc-if>
+<div style="width: 58%; display: flex; flex-direction: column; border-radius: 4px 4px 0 0; overflow: hidden">
+<sc-for list="{{b.segs}}" as="s" hint-placeholder-count="5">
+<div style="height: {{s.h}}px; background: {{s.c}}"></div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; text-align: center; font-size: 12px">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="6">
+<span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 13px">{{b.fy}}</strong><span style="color: #64748B">{{b.stage}}</span></span>
+</sc-for>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
+<table style="width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: #F8FAFC; color: #475569">
+<th scope="col" style="text-align: left; padding: 10px 12px; font-weight: 600">Line</th>
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="6">
+<th scope="col" style="text-align: right; padding: 10px 12px; font-weight: 600">{{b.fy}} <span style="font-weight: 400; color: #64748B">{{b.stage}}</span></th>
+</sc-for>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+<tr style="border-top: 1px solid #EEF2F7; background: {{r.bg}}">
+<th scope="row" style="text-align: left; padding: 10px 12px; font-weight: {{r.w}}"><span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 8px; background: {{r.c}}"></span>{{r.name}} <span style="font-weight: 400; color: #64748B">{{r.code}}</span></th>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="6">
+<td style="text-align: right; padding: 10px 12px; font-weight: {{r.w}}; color: {{c.fg}}">{{c.v}}</td>
+</sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #FCF0D4; color: #B07C06">FY27 mandatory: 84% of all program lines</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #E8F0FC; color: #017EFA">Patriot Mods 4.4× from FY25 to FY26</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Navy FY26 enacted not yet in a J-Book</span>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<section aria-label="Request, enacted and actual" style="flex: 3 1 620px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Request, enacted and actual</h2>
+<span style="font-size: 12px; color: #64748B">MSE Missile · 8260C53101</span>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
+<table style="width: 100%; min-width: 620px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: #F8FAFC; color: #475569; text-align: right">
+<th scope="col" style="text-align: left; padding: 10px 12px; font-weight: 600">FY</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Request</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Enacted</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Change</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Actual</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Missiles</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{rea}}" as="r" hint-placeholder-count="6">
+<tr style="border-top: 1px solid #EEF2F7; text-align: right">
+<th scope="row" style="text-align: left; padding: 10px 12px; font-weight: 600">{{r.fy}}</th>
+<td style="padding: 10px 12px">{{r.req}}</td>
+<td style="padding: 10px 12px">{{r.enac}}</td>
+<td style="padding: 10px 12px; font-weight: 600; color: {{r.dfg}}">{{r.delta}}</td>
+<td style="padding: 10px 12px">{{r.act}}</td>
+<td style="padding: 10px 12px; font-weight: 600">{{r.qty}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #E8F0FC; color: #017EFA">Actuals $3.85B above enacted, FY22–24</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Below request: FY22, FY24</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #E7F4EC; color: #2E8B4A">Above request: FY26</span>
+</div>
+</section>
+
+<section aria-label="Missiles and cost per missile" style="flex: 2 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Missiles per year</h2>
+<sc-for list="{{qty}}" as="q" hint-placeholder-count="6">
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 84px; gap: 10px; align-items: center; font-size: 13px">
+<span style="display: flex; flex-direction: column"><strong>{{q.fy}}</strong><span style="font-size: 11px; color: #64748B">{{q.stage}}</span></span>
+<span style="display: flex; flex-direction: column; gap: 3px">
+<span style="display: block; height: 12px; border-radius: 3px; background: #3B4F72; width: {{q.wa}}%"></span>
+<sc-if value="{{q.hasNavy}}" hint-placeholder-val="{{false}}"><span style="display: block; height: 12px; border-radius: 3px; background: #6C8EBF; width: {{q.wn}}%"></span></sc-if>
+</span>
+<span style="text-align: right; display: flex; flex-direction: column"><strong>{{q.n}}</strong><span style="font-size: 11px; color: #64748B">{{q.unit}}</span></span>
+</div>
+</sc-for>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #475569">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #3B4F72"></span>Army</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #6C8EBF"></span>Navy</span>
+<span>Cost per missile = line total ÷ quantity</span>
+</div>
+</section>
+</div>
+
+<section aria-label="Sources" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; padding: 16px 24px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<h2 style="margin: 0 8px 0 0; font-size: 14px; font-weight: 600">Sources</h2>
+<sc-for list="{{sources}}" as="s" hint-placeholder-count="4">
+<a href="#" style="font-size: 12px; padding: 5px 10px; border: 1px solid #E2E8F0; border-radius: 999px; text-decoration: none">{{s}}</a>
+</sc-for>
+</section>
+</script>
+<script type="text/x-template" id="tpl-congress">
+<section aria-label="Key figures" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<article style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 14px 15px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 550; color: #475569">{{k.label}}</span>
+<span style="font-size: 24px; font-weight: 700; color: {{k.fg}}">{{k.value}}</span>
+<span style="font-size: 12px; color: #475569">{{k.sub}}</span>
+</article>
+</sc-for>
+</section>
+
+<section aria-label="Committee positions" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Committee positions</h2>
+<span style="font-size: 12px; color: #64748B">MSE Missile, Army · position against request</span>
+</div>
+<div style="overflow-x: auto">
+<div style="min-width: 760px; display: grid; grid-template-columns: 110px repeat(6, minmax(0, 1fr)); gap: 6px; font-size: 12px">
+<span></span>
+<sc-for list="{{gridYears}}" as="y" hint-placeholder-count="6">
+<span style="text-align: center; font-weight: 600; color: #334155; padding: 4px 0">{{y}}</span>
+</sc-for>
+<sc-for list="{{grid}}" as="r" hint-placeholder-count="6">
+<span style="font-weight: 600; color: #334155; display: flex; align-items: center">{{r.who}}</span>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="6">
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 48px; border-radius: 8px; background: {{c.bg}}; color: {{c.fg}}; border: 1px {{c.bs}} {{c.bd}}">
+<strong style="font-size: 12px">{{c.label}}</strong>
+<span style="font-size: 11px">{{c.amt}}</span>
+</span>
+</sc-for>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #FBE9E8; color: #DC2625">HAC-D below request: 3 of 4 traced years</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #E7F4EC; color: #2E8B4A">SAC-D above request: FY26, FY27</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">HASC at request: every year</span>
+</div>
+</section>
+
+<section aria-label="Committee walk" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Committee walk</h2>
+<div role="group" aria-label="Fiscal year" style="display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 9px; background: #F1F5F9">
+<sc-for list="{{fyTabs}}" as="t" hint-placeholder-count="6">
+<button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="font: inherit; font-size: 12.5px; font-weight: 550; padding: 5px 11px; border: 0; border-radius: 7px; background: {{t.bg}}; color: {{t.fg}}; cursor: pointer">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{walk.chips}}" as="c" hint-placeholder-count="2">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}">{{c.text}}</span>
+</sc-for>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
+<table style="width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: #F8FAFC; text-align: right; color: #475569">
+<th scope="col" style="text-align: left; padding: 10px 12px; font-weight: 600">Line</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Request</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">HASC</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">SASC</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">NDAA</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">HAC-D</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">SAC-D</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Final</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{walk.rows}}" as="r" hint-placeholder-count="4">
+<tr style="border-top: 1px solid #EEF2F7; text-align: right">
+<th scope="row" style="text-align: left; padding: 10px 12px; font-weight: 600">{{r.line}} <span style="font-weight: 400; color: #64748B">{{r.code}}</span></th>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="7">
+<td style="padding: 10px 12px; color: {{c.fg}}; font-weight: {{c.w}}">{{c.s}}</td>
+</sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<h3 style="margin: 4px 0 0; font-size: 13px; font-weight: 600; color: #334155">Marks</h3>
+<div style="display: flex; flex-direction: column">
+<sc-for list="{{walk.marks}}" as="m" hint-placeholder-count="5">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; padding: 12px 0; border-top: 1px solid #EEF2F7">
+<span style="flex: 0 0 64px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: #F1F5F9; color: #334155; text-align: center">{{m.who}}</span>
+<span style="flex: 0 0 104px; font-size: 14px; font-weight: 700; color: {{m.fg}}">{{m.amt}}</span>
+<span style="flex: 0 0 150px; font-size: 12px; color: #64748B">{{m.line}}</span>
+<span style="flex: 1 1 300px; min-width: 0; font-size: 13px; color: #0F172A">{{m.text}}</span>
+<a href="#" style="flex: 0 0 auto; font-size: 12px; text-decoration: none">{{m.cite}}</a>
+</div>
+</sc-for>
+</div>
+</section>
+</script>
+<script type="text/x-template" id="tpl-contracts">
+<section aria-label="Key figures" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="6">
+<article style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 14px 15px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 550; color: #475569">{{k.label}}</span>
+<span style="font-size: 24px; font-weight: 730; letter-spacing: -0.02em; color: #0F172A; font-variant-numeric: tabular-nums">{{k.value}}</span>
+<span style="font-size: 12px; color: #475569">{{k.sub}}</span>
+</article>
+</sc-for>
+</section>
+
+<section aria-label="Contract timeline" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Contract timeline</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #475569">
+<sc-for list="{{priceLegend}}" as="g" hint-placeholder-count="3">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: {{g.c}}"></span>{{g.n}}</span>
+</sc-for>
+</div>
+</div>
+<div style="overflow-x: auto">
+<div style="min-width: 900px; display: flex; flex-direction: column; gap: 0">
+<div style="display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 16px; padding-bottom: 6px">
+<span></span>
+<div style="position: relative; height: 18px">
+<sc-for list="{{ticks}}" as="t" hint-placeholder-count="6">
+<span style="position: absolute; left: {{t.x}}%; transform: translateX(-50%); font-size: 11px; color: #64748B">{{t.y}}</span>
+</sc-for>
+</div>
+</div>
+<sc-for list="{{gantt}}" as="r" hint-placeholder-count="7">
+<div style="display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 16px; align-items: center; padding: 8px 0; border-top: 1px solid #EEF2F7">
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<a href="#" style="font-size: 13px; font-weight: 600; text-decoration: none">{{r.piid}}</a>
+<span style="font-size: 12px; color: #475569">{{r.scope}}</span>
+</span>
+<div style="position: relative; height: 30px; background: #F8FAFC; border-radius: 6px">
+<sc-for list="{{ticks}}" as="t" hint-placeholder-count="6">
+<span aria-hidden="true" style="position: absolute; left: {{t.x}}%; top: 0; bottom: 0; width: 1px; background: #EEF2F7"></span>
+</sc-for>
+<span aria-hidden="true" style="position: absolute; left: {{todayX}}%; top: -4px; bottom: -4px; width: 2px; background: #E08A3C"></span>
+<span style="position: absolute; left: {{r.x}}%; width: {{r.w}}%; top: 5px; height: 20px; border-radius: 4px; background: {{r.c}}; display: flex; align-items: center; padding: 0 8px; box-sizing: border-box; overflow: hidden">
+<span style="font-size: 11px; font-weight: 600; color: #FFFFFF; white-space: nowrap">{{r.amt}} · {{r.span}}</span>
+</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #FCF0D4; color: #B07C06">Today: Nov 2026</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #E8F0FC; color: #017EFA">Two latest production awards: firm fixed price</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Overlapping lots: 4 production awards active</span>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<section aria-label="Obligations by pricing type" style="flex: 3 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Obligations by pricing type</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #475569">
+<sc-for list="{{mixLegend}}" as="g" hint-placeholder-count="5">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: {{g.c}}"></span>{{g.n}}</span>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; align-items: end; height: 240px; border-bottom: 1px solid #E2E8F0">
+<sc-for list="{{mix}}" as="b" hint-placeholder-count="7">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%">
+<span style="font-size: 12px; font-weight: 700">{{b.total}}</span>
+<div style="width: 64%; display: flex; flex-direction: column; border-radius: 4px 4px 0 0; overflow: hidden">
+<sc-for list="{{b.segs}}" as="s" hint-placeholder-count="4">
+<div style="height: {{s.h}}px; background: {{s.c}}"></div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; text-align: center; font-size: 12px">
+<sc-for list="{{mix}}" as="b" hint-placeholder-count="7">
+<span style="display: flex; flex-direction: column"><strong>{{b.fy}}</strong><span style="color: #64748B">{{b.ffp}} FFP</span></span>
+</sc-for>
+</div>
+</section>
+
+<section aria-label="What drove obligations" style="flex: 2 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">What drove obligations</h2>
+<span style="font-size: 12px; color: #64748B">FY22–26 · by action type</span>
+</div>
+<sc-for list="{{mods}}" as="m" hint-placeholder-count="7">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; gap: 8px; justify-content: space-between; font-size: 13px">
+<span style="color: #0F172A">{{m.n}}</span>
+<span style="flex: 0 0 auto"><strong>{{m.v}}</strong> <span style="color: #64748B">· {{m.c}} actions</span></span>
+</div>
+<span style="display: block; height: 8px; border-radius: 999px; background: #EEF2F7"><span style="display: block; height: 8px; border-radius: 999px; background: {{m.col}}; width: {{m.pct}}%"></span></span>
+</div>
+</sc-for>
+<div style="padding: 12px; border-radius: 8px; background: #F8FAFC; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; color: #64748B">Competition, FY22–26</span>
+<div style="display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: #EEF2F7">
+<span style="display: block; width: 98.8%; background: #3B4F72"></span>
+<span style="display: block; width: 1.1%; background: #94A3B8"></span>
+<span style="display: block; width: 0.1%; background: #2A9DA6"></span>
+</div>
+<span style="font-size: 12px; color: #334155"><strong>98.8%</strong> not competed · 1.1% not reported · 0.1% competed</span>
+</div>
+</section>
+</div>
+
+<section aria-label="Active awards" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Active awards</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px">
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">2,971 linked awards since FY12</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #FCF0D4; color: #B07C06; font-weight: 600">7 end by Dec 2028</span>
+</div>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
+<table style="width: 100%; min-width: 940px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: #F8FAFC; color: #64748B; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em">
+<th scope="col" style="padding: 10px 12px; font-weight: 600">PIID</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Scope</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Pricing</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">FY24–26</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">To date</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">Actions</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Ends</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{awards}}" as="c" hint-placeholder-count="10">
+<tr style="border-top: 1px solid #EEF2F7">
+<td style="padding: 10px 12px; white-space: nowrap"><a href="#" style="text-decoration: none; font-weight: 600">{{c.piid}}</a></td>
+<td style="padding: 10px 12px">{{c.scope}} <sc-if value="{{c.hasTag}}" hint-placeholder-val="{{false}}"><span style="font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 4px; background: #E8F0FC; color: #017EFA">{{c.tag}}</span></sc-if></td>
+<td style="padding: 10px 12px; color: #475569">{{c.price}}</td>
+<td style="padding: 10px 12px; text-align: right; font-weight: 600">{{c.recent}}</td>
+<td style="padding: 10px 12px; text-align: right; color: #334155">{{c.total}}</td>
+<td style="padding: 10px 12px; text-align: right; color: #475569">{{c.acts}}</td>
+<td style="padding: 10px 12px; white-space: nowrap; color: {{c.endFg}}; font-weight: {{c.endW}}">{{c.end}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+</script>
+<script type="text/x-template" id="tpl-supply-chain">
+<section aria-label="Key figures" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="6">
+<article style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 14px 15px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 550; color: #475569">{{k.label}}</span>
+<span style="font-size: 24px; font-weight: 730; letter-spacing: -0.02em; color: #0F172A; font-variant-numeric: tabular-nums">{{k.value}}</span>
+<span style="font-size: 12px; color: #475569">{{k.sub}}</span>
+</article>
+</sc-for>
+</section>
+
+<section aria-label="Supplier concentration" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Where Lockheed's subawards go</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px">
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Subawards FY22–25 · $2.31B</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Reports through Mar 2025</span>
+</div>
+</div>
+<div role="img" aria-label="{{concAlt}}" style="display: flex; height: 44px; border-radius: 8px; overflow: hidden; gap: 2px">
+<sc-for list="{{conc}}" as="c" hint-placeholder-count="8">
+<div style="width: {{c.pct}}%; background: {{c.color}}; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden">{{c.inbar}}</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px 20px">
+<sc-for list="{{conc}}" as="c" hint-placeholder-count="8">
+<div style="display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 13px">
+<span style="width: 12px; height: 12px; border-radius: 3px; background: {{c.color}}"></span>
+<span style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 600; color: #0F172A">{{c.name}}</span><span style="font-size: 12px; color: #64748B">{{c.sub}}</span></span>
+<span style="text-align: right; display: flex; flex-direction: column"><span style="font-weight: 700; color: #0F172A">{{c.v}}</span><span style="font-size: 12px; color: #64748B">{{c.share}}</span></span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #FCF0D4; color: #B07C06">Rocket motors: one supplier, L3Harris</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #E8F0FC; color: #017EFA">Second sources: seeker (SAC-D FY26), actuator stator (Moog)</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Top 5: 60% of subawards</span>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<section aria-label="Supplier geography" style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Where suppliers are</h2>
+<span style="font-size: 12px; color: #64748B">FY22–25</span>
+</div>
+<sc-for list="{{geo}}" as="g" hint-placeholder-count="10">
+<div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 120px; gap: 10px; align-items: center; font-size: 13px">
+<span style="font-weight: 600">{{g.n}}</span>
+<span style="display: block; height: 10px; border-radius: 999px; background: #EEF2F7"><span style="display: block; height: 10px; border-radius: 999px; background: {{g.c}}; width: {{g.pct}}%"></span></span>
+<span style="text-align: right"><strong>{{g.v}}</strong> <span style="color: #64748B">· {{g.k}}</span></span>
+</div>
+</sc-for>
+</section>
+
+<section aria-label="Foreign suppliers" style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Foreign suppliers</h2>
+<span style="font-size: 12px; color: #64748B">FY18–25 · $374.4M, 5.4%</span>
+</div>
+<sc-for list="{{foreign}}" as="f" hint-placeholder-count="7">
+<div style="display: flex; flex-direction: column; gap: 2px; padding-top: 8px; border-top: 1px solid #EEF2F7">
+<div style="display: flex; justify-content: space-between; font-size: 13px"><strong>{{f.c}}</strong><strong>{{f.v}}</strong></div>
+<span style="font-size: 12px; color: #475569">{{f.who}}</span>
+</div>
+</sc-for>
+</section>
+
+<section aria-label="New suppliers by year" style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">New suppliers by year</h2>
+<div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; align-items: end; height: 180px; border-bottom: 1px solid #E2E8F0">
+<sc-for list="{{entry}}" as="e" hint-placeholder-count="8">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%">
+<span style="font-size: 11px; font-weight: 600">{{e.n}}</span>
+<div style="width: 70%; height: {{e.h}}px; background: {{e.c}}; border-radius: 3px 3px 0 0"></div>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; text-align: center; font-size: 11px; color: #64748B">
+<sc-for list="{{entry}}" as="e" hint-placeholder-count="8">
+<span>{{e.fy}}</span>
+</sc-for>
+</div>
+<span style="font-size: 12px; color: #475569">First year a supplier reports a subaward on this program. FY25 partial.</span>
+</section>
+</div>
+
+<section aria-label="Listed companies" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Listed companies on this program</h2>
+<span style="font-size: 12px; color: #64748B">Subawards FY22–25</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px">
+<sc-for list="{{listed}}" as="l" hint-placeholder-count="15">
+<a href="#" style="display: flex; flex-direction: column; gap: 2px; padding: 12px; border: 1px solid #E2E8F0; border-radius: 6px; text-decoration: none; background: {{l.bg}}">
+<strong style="font-size: 15px; color: #0F172A">{{l.t}}</strong>
+<span style="font-size: 12px; color: #475569">{{l.role}}</span>
+<span style="font-size: 13px; font-weight: 600; color: #3B4F72">{{l.v}}</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section aria-label="Suppliers" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Suppliers</h2>
+<span style="font-size: 12px; color: #64748B">Top 20 of 361 · FY22–25 · reports through Mar 2025</span>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
+<table style="width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: #F8FAFC; color: #64748B; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em">
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Supplier</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Ticker</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">State</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Component</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">FY22–25</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600">Share</th>
+<th scope="col" style="padding: 10px 12px; font-weight: 600; text-align: right">Reports</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{table}}" as="s" hint-placeholder-count="20">
+<tr style="border-top: 1px solid #EEF2F7">
+<td style="padding: 9px 12px"><a href="#" style="text-decoration: none; font-weight: 600">{{s.name}}</a></td>
+<td style="padding: 9px 12px; font-weight: 600; color: {{s.tfg}}">{{s.t}}</td>
+<td style="padding: 9px 12px; color: #475569">{{s.st}}</td>
+<td style="padding: 9px 12px; color: #334155">{{s.part}}</td>
+<td style="padding: 9px 12px; text-align: right; font-weight: 600">{{s.v}}</td>
+<td style="padding: 9px 12px; min-width: 120px"><span style="display: block; height: 6px; border-radius: 999px; background: #EEF2F7"><span style="display: block; height: 6px; border-radius: 999px; background: #2A9DA6; width: {{s.pct}}%"></span></span></td>
+<td style="padding: 9px 12px; text-align: right; color: #475569">{{s.n}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+</script>
+<script type="text/x-template" id="tpl-offices">
+<section aria-label="Program office" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Program office</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 14px">
+<a href="#" style="padding: 6px 12px; border-radius: 999px; background: #F1F5F9; text-decoration: none">Army</a>
+<span aria-hidden="true" style="color: #94A3B8">›</span>
+<a href="#" style="padding: 6px 12px; border-radius: 999px; background: #F1F5F9; text-decoration: none">PAE Fires</a>
+<span aria-hidden="true" style="color: #94A3B8">›</span>
+<a href="#" style="padding: 6px 12px; border-radius: 999px; background: #3B4F72; color: #FFFFFF; text-decoration: none; font-weight: 600">Lower Tier Interceptors</a>
+<span style="font-size: 12px; color: #64748B">Formerly PEO Missiles and Space</span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h3 style="margin: 0; font-size: 13px; font-weight: 600; color: #334155">PAE Fires portfolio by linked obligations</h3>
+<span style="font-size: 12px; color: #64748B">All years · 19 programs with linked awards</span>
+</div>
+<div style="overflow-x: auto">
+<div aria-label="Treemap of PAE Fires programs" style="min-width: 900px; height: 380px; display: flex; gap: 4px">
+<sc-for list="{{tree}}" as="o" hint-placeholder-count="5">
+<div style="flex: {{o.flex}} 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: #475569; padding: 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{o.name}} · {{o.v}}</div>
+<sc-for list="{{o.progs}}" as="p" hint-placeholder-count="3">
+<a href="#" title="{{p.name}}" style="flex: {{p.flex}} 1 0; min-height: 0; border-radius: 6px; background: {{p.bg}}; padding: 8px 10px; box-sizing: border-box; text-decoration: none; overflow: hidden; display: flex; flex-direction: column; gap: 2px; outline: {{p.ring}}">
+<span style="font-size: {{p.fs}}px; font-weight: 600; color: {{p.fg}}; line-height: 1.25">{{p.name}}</span>
+<span style="font-size: 12px; color: {{p.fg2}}">{{p.v}}</span>
+</a>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #E8F0FC; color: #017EFA">PAC-3 MSE: 43% of PAE Fires linked dollars</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Next largest: GMLRS $15.14B</span>
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">8 programs with no linked awards yet</span>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<section aria-label="Funding offices" style="flex: 1 1 440px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Funding offices</h2>
+<span style="font-size: 12px; color: #64748B">Obligations FY22–26</span>
+</div>
+<sc-for list="{{funding}}" as="f" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 4px; padding-top: 8px; border-top: 1px solid #EEF2F7">
+<div style="display: flex; gap: 8px; justify-content: space-between; font-size: 13px">
+<span style="min-width: 0"><a href="#" style="text-decoration: none; font-weight: 600">{{f.n}}</a> <span style="color: #64748B">{{f.code}}</span></span>
+<strong style="flex: 0 0 auto">{{f.v}}</strong>
+</div>
+<span style="display: block; height: 8px; border-radius: 999px; background: #EEF2F7"><span style="display: block; height: 8px; border-radius: 999px; background: #3B4F72; width: {{f.pct}}%"></span></span>
+</div>
+</sc-for>
+</section>
+
+<section aria-label="Contracting offices" style="flex: 1 1 440px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Contracting offices</h2>
+<span style="font-size: 12px; color: #64748B">All linked obligations</span>
+</div>
+<sc-for list="{{contracting}}" as="f" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 4px; padding-top: 8px; border-top: 1px solid #EEF2F7">
+<div style="display: flex; gap: 8px; justify-content: space-between; font-size: 13px">
+<span style="min-width: 0"><a href="#" style="text-decoration: none; font-weight: 600">{{f.n}}</a> <span style="color: #64748B">{{f.code}} · {{f.awards}} awards</span></span>
+<strong style="flex: 0 0 auto">{{f.v}} <span style="font-weight: 400; color: #64748B">{{f.sh}}</span></strong>
+</div>
+<span style="display: block; height: 8px; border-radius: 999px; background: #EEF2F7"><span style="display: block; height: 8px; border-radius: 999px; background: #577E9B; width: {{f.pct}}%"></span></span>
+</div>
+</sc-for>
+</section>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<section aria-label="Product codes" style="flex: 1 1 440px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Product and service codes</h2>
+<span style="font-size: 12px; color: #64748B">Share of linked obligations</span>
+</div>
+<sc-for list="{{psc}}" as="c" hint-placeholder-count="5">
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 132px; gap: 10px; align-items: center; font-size: 13px; padding-top: 8px; border-top: 1px solid #EEF2F7">
+<strong>{{c.code}}</strong>
+<span style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><span>{{c.n}}</span><span style="display: block; height: 6px; border-radius: 999px; background: #EEF2F7"><span style="display: block; height: 6px; border-radius: 999px; background: #2A9DA6; width: {{c.pct}}%"></span></span></span>
+<span style="text-align: right"><strong>{{c.v}}</strong> <span style="color: #64748B">· {{c.sh}}</span></span>
+</div>
+</sc-for>
+</section>
+
+<section aria-label="Industry codes" style="flex: 1 1 440px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">NAICS codes</h2>
+<span style="font-size: 12px; color: #64748B">Share of linked obligations</span>
+</div>
+<sc-for list="{{naics}}" as="c" hint-placeholder-count="5">
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 132px; gap: 10px; align-items: center; font-size: 13px; padding-top: 8px; border-top: 1px solid #EEF2F7">
+<strong>{{c.code}}</strong>
+<span style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><span>{{c.n}}</span><span style="display: block; height: 6px; border-radius: 999px; background: #EEF2F7"><span style="display: block; height: 6px; border-radius: 999px; background: #6C8EBF; width: {{c.pct}}%"></span></span></span>
+<span style="text-align: right"><strong>{{c.v}}</strong> <span style="color: #64748B">· {{c.sh}}</span></span>
+</div>
+</sc-for>
+</section>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<section aria-label="DoD program numbers" style="flex: 1 1 440px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">DoD program numbers</h2>
+<span style="font-size: 12px; color: #64748B">Program list, Oct 2024 edition</span>
+</div>
+<sc-for list="{{dpn}}" as="d" hint-placeholder-count="3">
+<div style="display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding-top: 10px; border-top: 1px solid #EEF2F7; font-size: 13px">
+<strong style="font-size: 18px; color: #3B4F72">{{d.n}}</strong>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong>{{d.short}}</strong><span style="font-size: 12px; color: #475569">{{d.full}}</span></span>
+<span style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+<span style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: {{d.sbg}}; color: {{d.sfg}}">{{d.status}}</span>
+<span style="font-size: 11px; color: #64748B">{{d.match}}</span>
+</span>
+</div>
+</sc-for>
+</section>
+
+<section aria-label="Budget lines" style="flex: 1 1 440px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Budget lines</h2>
+<a href="#budget" style="font-size: 12px; text-decoration: none">See Budget</a>
+</div>
+<sc-for list="{{lines}}" as="l" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding-top: 10px; border-top: 1px solid #EEF2F7; font-size: 13px">
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><a href="#" style="text-decoration: none; font-weight: 600">{{l.n}}</a><span style="font-size: 12px; color: #475569">{{l.code}} · {{l.acct}}</span></span>
+<span style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: {{l.bg}}; color: {{l.fg}}">{{l.role}}</span>
+</div>
+</sc-for>
+</section>
+</div>
+</script>
+<script type="text/x-template" id="tpl-connections">
+<section aria-label="Connection map" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Who touches the money</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px">
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Obligations FY22–26</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Subawards FY22–25</span>
+<span style="padding: 3px 9px; border-radius: 999px; background: #F1F5F9; color: #334155">Hover a box to trace it</span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #475569">
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 18px; height: 0; border-top: 3px solid #5E82BF"></span>Money, width = dollars</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 18px; height: 0; border-top: 3px solid #2E9E6A"></span>Congress add</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 18px; height: 0; border-top: 3px solid #D1495B"></span>Congress cut</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 18px; height: 0; border-top: 3px dashed #94A3B8"></span>Organization</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 18px; height: 0; border-top: 3px dashed #7C3AED"></span>Same country</span>
+</div>
+</div>
+<div style="overflow-x: auto">
+<div role="img" aria-label="{{cm.alt}}" style="zoom: 0.92; position: relative; width: {{cm.W}}px; height: {{cm.H}}px; margin: 0 auto">
+<sc-for list="{{cm.edges}}" as="e" hint-placeholder-count="40">
+<svg width="{{cm.W}}" height="{{cm.H}}" viewBox="0 0 {{cm.W}} {{cm.H}}" aria-hidden="true" style="position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none"><path d="{{e.d}}" style="fill: none; stroke: {{e.color}}; stroke-width: {{e.w}}; stroke-opacity: {{e.op}}; stroke-dasharray: {{e.dash}}; stroke-linecap: round; transition: stroke-opacity 160ms"></path></svg>
+</sc-for>
+<span style="position: absolute; left: {{cm.note.x}}px; top: {{cm.note.y}}px; font-size: 11px; font-weight: 600; color: #6D28D9; background: #FFFFFF; padding: 0 6px; white-space: nowrap; opacity: {{cm.note.dim}}">{{cm.note.t}}</span>
+<sc-for list="{{cm.heads}}" as="h" hint-placeholder-count="8">
+<span style="position: absolute; left: {{h.x}}px; top: {{h.y}}px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; color: {{h.c}}; white-space: nowrap">{{h.t}}</span>
+</sc-for>
+<sc-for list="{{cm.nodes}}" as="n" hint-placeholder-count="38">
+<button type="button" onMouseEnter="{{n.enter}}" onMouseLeave="{{leave}}" onFocus="{{n.enter}}" onBlur="{{leave}}" style="position: absolute; left: {{n.left}}px; top: {{n.top}}px; width: {{n.w}}px; height: 44px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 1px; padding: 0 10px 0 12px; background: #FFFFFF; border: 1px solid {{n.ring}}; border-left: 4px solid {{n.accent}}; border-radius: 8px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06); font: inherit; text-align: left; white-space: nowrap; overflow: hidden; cursor: default; opacity: {{n.dim}}; transition: opacity 160ms">
+<span style="font-size: 12.5px; font-weight: 600; color: #0F172A; line-height: 1.2">{{n.name}}</span>
+<span style="font-size: 11px; color: #64748B; line-height: 1.2">{{n.sub}}</span>
+</button>
+</sc-for>
+<button type="button" onMouseEnter="{{cm.hub.enter}}" onMouseLeave="{{leave}}" onFocus="{{cm.hub.enter}}" onBlur="{{leave}}" style="position: absolute; left: {{cm.hub.left}}px; top: {{cm.hub.top}}px; width: {{cm.hub.size}}px; height: {{cm.hub.size}}px; border-radius: 50%; border: 6px solid #E2E8F0; box-sizing: border-box; background: #1E293B; color: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font: inherit; cursor: default; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18); opacity: {{cm.hub.dim}}">
+<span style="font-size: 16px; font-weight: 700">{{cm.hub.name}}</span>
+<span style="font-size: 11.5px; color: #CBD5E1">{{cm.hub.sub}}</span>
+</button>
+</div>
+</div>
+
+</section>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<sc-for list="{{insights}}" as="i" hint-placeholder-count="4">
+<section aria-label="{{i.t}}" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-left: 4px solid {{i.c}}; border-radius: 6px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: {{i.c}}">{{i.k}}</span>
+<span style="font-size: 15px; font-weight: 700; color: #0F172A">{{i.t}}</span>
+<span style="font-size: 13px; color: #475569; line-height: 1.45">{{i.d}}</span>
+</section>
+</sc-for>
+</div>
+</script>
+<script>
+
+const TAB_CLASSES = {};
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(patch) {
+    if (Object.keys(patch).every((k) => this.state[k] === patch[k])) return;
+    this.state = Object.assign({}, this.state, patch);
+    renderView();
+  }
+}
+
+const TABS = [["overview", "Overview"], ["budget", "Budget"], ["congress", "Congress"], ["contracts", "Contracts"], ["supply-chain", "Supply chain"], ["offices", "Offices and codes"], ["connections", "Connections"]];
+
+TAB_CLASSES['overview'] = class extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { fy: 2027, view: 'actual', hover: null };
+  }
+  renderVals() {
+    const navDef = [
+      { label: 'HOME', items: ['Chat', 'Workspace'] },
+      { label: 'MONITOR', items: ['Watchlist', 'Sensing', 'News'] },
+      { label: 'ENTITIES', items: ['Markets', 'Companies', 'Contracts', 'Opportunities', 'Programs', 'Congressional Marks'] },
+      { label: 'ACTORS', items: ['Offices', 'People'] },
+      { label: 'ANALYSIS', items: ['Screener', 'Scenarios'] }
+    ];
+    const nav = navDef.map((g) => ({
+      label: g.label,
+      items: g.items.map((l) => ({
+        label: l,
+        fg: l === 'Programs' ? '#3B4F72' : '#334155',
+        bg: l === 'Programs' ? '#EEF2F8' : 'transparent',
+        weight: l === 'Programs' ? 600 : 400
+      }))
+    }));
+
+    const tone = {
+      blue: ['#E8F0FC', '#017EFA', '#D4E2F6'],
+      warn: ['#FCF0D4', '#B07C06', '#F3DFA8'],
+      good: ['#E7F4EC', '#2E8B4A', '#C6E6CF'],
+      gray: ['#F1F5F9', '#334155', '#E2E8F0']
+    };
+
+    const kpis = [
+      { label: 'Request, MSE lines', value: '$13.96B', sub: 'Army $12.23B · Navy $1.73B', tag: 'FY2027', t: 'gray' },
+      { label: 'Missiles requested', value: '3,203', sub: 'Army 2,798 · Navy 405', tag: '7.8× FY26 (Army)', t: 'blue' },
+      { label: 'Mandatory share', value: '90%', sub: '$12.56B of $13.96B', tag: 'Reconciliation funds', t: 'warn' },
+      { label: 'Cost per missile', value: '$4.37M', sub: 'Army line ÷ quantity · FY26 $4.61M', tag: 'Derived', t: 'gray' },
+      { label: 'Obligated to contracts', value: '$2.58B', sub: 'FY2026 · FY2025 $2.43B', tag: 'Partial year', t: 'gray' },
+      { label: 'Lockheed share', value: '99.9%', sub: 'Obligations FY22–26, $11.42B', tag: 'Single prime', t: 'warn' }
+    ].map((k) => ({ ...k, tagBg: tone[k.t][0], tagFg: tone[k.t][1] }));
+
+    const signals = [
+      { text: 'FY27 request 90% mandatory', t: 'warn', href: '#budget' },
+      { text: 'Army missiles 357 → 2,798', t: 'blue', href: '#budget' },
+      { text: 'Seeker second source +$1.2B, SAC-D FY26', t: 'blue', href: '#congress' },
+      { text: 'Delivery backlog cut −$116.3M, HAC-D FY25', t: 'warn', href: '#congress' },
+      { text: 'Multiyear award runs to Mar 2036', t: 'good', href: '#contracts' },
+      { text: 'Navy line 12 → 405 missiles', t: 'blue', href: '#budget' },
+      { text: 'FMS on 234 awards since FY18', t: 'gray', href: '#supply-chain' }
+    ].map((s) => ({ ...s, bg: tone[s.t][0], fg: tone[s.t][1], bd: tone[s.t][2] }));
+
+    const fmtW = (m) => { const a = Math.abs(m); return '$' + (a >= 1000 ? (a / 1000).toFixed(2) + 'B' : a.toFixed(1) + 'M'); };
+    const WC = { total: '#3B4F72', hero: '#1E293B', up: '#2E9E6A', cut: '#D1495B', fms: '#D9822B', myp: '#2F6690', p21: '#5B8DB8', sup: '#2A9D8F', lch: '#4DB6A9', rec: '#86CBC1' };
+    const WINK = { total: '#3B4F72', hero: '#0F172A', up: '#1F7A4D', cut: '#B4233A', fms: '#A85E14', myp: '#2F6690', p21: '#3E6F9A', sup: '#1E7A6F', lch: '#1E7A6F', rec: '#1E7A6F' };
+    const wfGroups = ['CONGRESS', 'ARMY LINE', 'ALL SOURCES', 'WHERE IT WENT'];
+    const wfDef = [
+      { g: 0, name: 'Request', sub: 'Base', v: 4935.6, k: 'total', c: 'total' },
+      { g: 0, name: 'Cuts', sub: 'FY22, FY24', v: -257.0, k: 'delta', c: 'cut' },
+      { g: 0, name: 'CR', sub: 'FY25', v: -58.0, k: 'delta', c: 'cut' },
+      { g: 0, name: 'Adds', sub: 'FY26', v: 500.0, k: 'delta', c: 'up' },
+      { g: 0, name: 'Enacted', sub: 'Base', v: 5120.6, k: 'total', c: 'total' },
+      { g: 1, name: 'Mandatory', sub: 'FY26', v: 200.0, k: 'delta', c: 'up' },
+      { g: 1, name: 'Added', sub: 'After enact.', v: 3849.8, k: 'delta', c: 'up', note: '42% of line' },
+      { g: 1, name: 'Army line', sub: 'Funded', v: 9170.4, k: 'total', c: 'total' },
+      { g: 2, name: 'Navy line', sub: 'FY26', v: 47.0, k: 'delta', c: 'up' },
+      { g: 2, name: 'FMS', sub: 'Derived', v: 2212.3, k: 'delta', c: 'fms' },
+      { g: 2, name: 'Obligated', sub: 'All contracts', v: 11429.7, k: 'total', c: 'hero' },
+      { g: 3, name: 'Multiyear', sub: '24C0022', v: -5856.3, k: 'spend', c: 'myp' },
+      { g: 3, name: 'Prior lots', sub: '20C0023, older', v: -3972.8, k: 'spend', c: 'p21' },
+      { g: 3, name: 'Support', sub: 'Orders', v: -1097.8, k: 'spend', c: 'sup' },
+      { g: 3, name: 'Launchers', sub: '2 orders', v: -300.0, k: 'spend', c: 'lch' },
+      { g: 3, name: 'Recert', sub: '22C0060', v: -202.8, k: 'spend', c: 'rec' }
+    ];
+    const wf = (() => {
+      const W = 1000, PAD = 4, TOP = 74, CH = 300, n = wfDef.length;
+      const slot = (W - PAD * 2) / n, BW = 40, base = TOP + CH, sc = CH / 11429.7;
+      let run = 0;
+      const bars = wfDef.map((b, i) => {
+        let lo, hi;
+        if (b.k === 'total') { lo = 0; hi = b.v; run = b.v; } else { lo = Math.min(run, run + b.v); hi = Math.max(run, run + b.v); run += b.v; }
+        const cx = PAD + slot * i + slot / 2;
+        const top = Math.round(base - hi * sc), h = Math.max(2, Math.round((hi - lo) * sc));
+        const val = b.k === 'delta' ? (b.v > 0 ? '+' : '−') + fmtW(b.v) : fmtW(b.v);
+        return { ...b, x: Math.round(cx - BW / 2), cx: Math.round(cx), top, h, end: run, color: WC[b.c], ink: WINK[b.c], val, hasNote: !!b.note, note: b.note || '', vTop: top - (b.note ? 36 : 22), weight: b.k === 'total' ? 700 : 600, size: b.c === 'hero' ? '15px' : b.k === 'delta' ? '12px' : '13px' };
+      });
+      const conns = bars.slice(0, -1).map((b, i) => ({ x: b.x + BW, w: Math.round(bars[i + 1].x - b.x - BW), y: Math.round(base - b.end * sc) }));
+      const groups = wfGroups.map((t, gi) => {
+        const gs = bars.filter((b) => b.g === gi);
+        const x0 = gs[0].cx - slot / 2 + 4, x1 = gs[gs.length - 1].cx + slot / 2 - 4;
+        return { t, x: Math.round(x0), w: Math.round(x1 - x0) };
+      });
+      return { W, H: base + 48, base, slot: Math.floor(slot) - 4, bars, conns, groups,
+        alt: 'Waterfall of PAC-3 MSE money, FY22 to FY26. The Army line request of $4.94B lost $257.0M to congressional cuts and $58.0M to the FY25 continuing resolution, gained $500.0M from Congress in FY26, for $5.12B enacted. $200.0M of FY26 reconciliation and $3.85B added after enactment bring the Army line to $9.17B. The Navy line ($47.0M) and FMS and other funds ($2.21B) bring obligations to $11.43B, which went to the multiyear award ($5.86B), the FY21–23 and earlier lots ($3.97B), support ($1.10B), launchers ($300.0M) and recertification ($202.8M).' };
+    })();
+    const wfChips = [
+      { text: '42% of Army line money came after enactment', t: 'blue' },
+      { text: 'Congress net +$185.0M on the base line', t: 'good' },
+      { text: 'FMS and other: 19% of obligations', t: 'warn' },
+      { text: 'Two production awards: 86% of obligations', t: 'gray' }
+    ].map((c) => ({ ...c, bg: tone[c.t][0], fg: tone[c.t][1] }));
+    const leave = () => this.setState({ hover: null });
+
+    const ys = [
+      { fy: 'FY22', stage: 'Actual', disc: 1333.1, mand: 0, qty: '328', navy: '–', unit: '–', obl: '$1.68B' },
+      { fy: 'FY23', stage: 'Actual', disc: 2471.4, mand: 0, qty: '252', navy: '–', unit: '–', obl: '$2.58B' },
+      { fy: 'FY24', stage: 'Actual', disc: 2814.9, mand: 0, qty: '230', navy: '–', unit: '–', obl: '$2.17B' },
+      { fy: 'FY25', stage: 'Actual', disc: 905.1, mand: 0, qty: '194', navy: '–', unit: '$4.67M', obl: '$2.43B' },
+      { fy: 'FY26', stage: 'Enacted', disc: 1445.9, mand: 200.0, qty: '357', navy: '12', unit: '$4.61M', obl: '$2.58B*' },
+      { fy: 'FY27', stage: 'Request', disc: 1297.5, mand: 10931.9, qty: '2,798', navy: '405', unit: '$4.37M', obl: '–' }
+    ];
+    const max = 12229.4;
+    const fmt = (m) => m >= 1000 ? '$' + (m / 1000).toFixed(2) + 'B' : '$' + m.toFixed(1) + 'M';
+    const years = ys.map((y) => {
+      const hDisc = Math.max(3, Math.round(210 * y.disc / max));
+      const hMand = y.mand > 0 ? Math.max(3, Math.round(210 * y.mand / max)) : 0;
+      return { ...y, hDisc, hMand, total: fmt(y.disc + y.mand), discRadius: hMand > 0 ? '0' : '4px 4px 0 0' };
+    });
+
+    const related = [
+      { name: 'Patriot Mods', code: '0962C50700', acct: 'Missile Procurement, Army', fy26: '$757.8M', fy27: '$796.8M' },
+      { name: 'Patriot Product Improvement', code: 'PE 0607865A', acct: 'RDT&E, Army', fy26: '$180.0M', fy27: '$219.0M' }
+    ];
+
+    const identity = [
+      { label: 'DoD program numbers', rows: [
+        { a: '492', b: 'PAC-3 MSE', c: 'Active' },
+        { a: '148', b: 'PAC-3', c: 'FOC/FD' },
+        { a: '531', b: 'Patriot/MEADS CAP', c: 'Restructured' }
+      ] },
+      { label: 'Contracting offices', rows: [
+        { a: 'W31P4Q', b: 'ACC-Redstone', c: '96.7%' },
+        { a: 'AH01', b: 'Aviation and Missile Command', c: '1.5%' },
+        { a: 'SPRRA2', b: 'DLA Aviation, Huntsville', c: '0.7%' }
+      ] },
+      { label: 'Funding offices', rows: [
+        { a: 'W31G3H', b: 'Aviation and Missile Command', c: '30.1%' },
+        { a: 'W51539', b: 'PEO M&S Huntsville', c: '29.7%' },
+        { a: 'W80FH0', b: 'PEO M&S Huntsville', c: '26.9%' }
+      ] },
+      { label: 'Codes', rows: [
+        { a: 'PSC 1410', b: 'Guided missiles', c: '' },
+        { a: 'NAICS 336414', b: 'Guided missile and space vehicle mfg', c: '' }
+      ] }
+    ];
+
+    const walks = {
+      2027: {
+        chips: [
+          { text: 'In progress: SASC and SAC-D reported', t: 'gray' },
+          { text: 'SAC-D +$12.56B: reconciliation quantities moved into base', t: 'blue' }
+        ],
+        rows: [
+          { line: 'MSE Missile, Army', v: [1297.5, null, 1297.5, null, null, 12229.4, null], fin: 'Pending' },
+          { line: 'MSE Missile, Navy', v: [97.8, null, 97.8, null, null, 1730.8, null], fin: 'Pending' }
+        ],
+        marks: [
+          { who: 'SAC-D', amt: 10931.9, text: 'Reconciliation funding incongruence: PAC-3 additional quantities (Army)', cite: 'SAC-D report FY2027, p. 98' },
+          { who: 'SAC-D', amt: 1633.0, text: 'Reconciliation funding incongruence: PAC-3 additional quantities (Navy)', cite: 'SAC-D report FY2027, p. 118' }
+        ]
+      },
+      2026: {
+        chips: [
+          { text: 'Enacted +$500.0M over request (+52.9%)', t: 'good' },
+          { text: 'Seeker second source: +$1.2B in SAC-D', t: 'blue' }
+        ],
+        rows: [
+          { line: 'MSE Missile, Army', v: [945.9, 945.9, 1485.5, 2685.5, null, 3036.2, 1445.9], fin: null }
+        ],
+        marks: [
+          { who: 'Final', amt: 500.0, text: 'Additional quantities to accelerate multi-year procurement ramp', cite: 'Joint explanatory statement FY2026, p. 111' },
+          { who: 'SAC-D', amt: 1200.0, text: 'Second source for PAC-3 seeker', cite: 'SAC-D report FY2026' },
+          { who: 'SAC-D', amt: 890.3, text: 'Additional quantities', cite: 'SAC-D report FY2026' },
+          { who: 'NDAA', amt: 1200.0, text: 'Program increase', cite: 'NDAA conference FY2026' },
+          { who: 'NDAA', amt: 366.0, text: 'PAC-3 MSE missile recertifications: misaligned budget request', cite: 'NDAA conference FY2026' }
+        ]
+      },
+      2025: {
+        chips: [
+          { text: 'Full-year continuing resolution: $905.1M enacted', t: 'gray' },
+          { text: 'HAC-D cut for delivery backlog', t: 'warn' }
+        ],
+        rows: [
+          { line: 'MSE Missile, Army', v: [963.1, 963.1, 963.1, 963.1, 846.8, 963.1, 905.1], fin: null }
+        ],
+        marks: [
+          { who: 'HAC-D', amt: -116.3, text: 'Delivery backlog', cite: 'HAC-D report FY2025, p. 101' },
+          { who: 'NDAA', amt: 100.0, text: 'Munitions supplier base (MCEIP): bearings, printed circuit boards', cite: 'NDAA conference FY2025' },
+          { who: 'NDAA', amt: 50.0, text: 'JPAC supplier base investments', cite: 'NDAA conference FY2025' }
+        ]
+      },
+      2024: {
+        chips: [
+          { text: 'Enacted −$252.0M below request (−20.8%)', t: 'warn' },
+          { text: 'Moved to advance procurement (EOQ)', t: 'gray' }
+        ],
+        rows: [
+          { line: 'MSE Missile, Army', v: [1212.8, 1212.8, 1212.8, 1212.8, 960.8, 960.8, 960.8], fin: null }
+        ],
+        marks: [
+          { who: 'Final', amt: -252.0, text: 'Transfer to line 4a: advance procurement', cite: 'Joint explanatory statement FY2024, p. 116' },
+          { who: 'HAC-D', amt: -252.0, text: 'Program decrease of economic order quantity', cite: 'HAC-D report FY2024, p. 128' },
+          { who: 'NDAA', amt: 140.0, text: 'Program increase', cite: 'NDAA conference FY2024' }
+        ]
+      }
+    };
+    const fy = this.state.fy;
+    const w = walks[fy];
+    const cell = (v, req) => {
+      if (v === null || v === undefined) return { s: '–', c: '#94A3B8' };
+      const c = v > req + 0.05 ? '#2E8B4A' : v < req - 0.05 ? '#DC2625' : '#0F172A';
+      return { s: fmt(v), c };
+    };
+    const walk = {
+      chips: w.chips.map((c) => ({ ...c, bg: tone[c.t][0], fg: tone[c.t][1] })),
+      rows: w.rows.map((r) => {
+        const req = r.v[0];
+        const cs = r.v.map((v) => cell(v, req));
+        return {
+          line: r.line, req: cs[0].s,
+          hasc: cs[1].s, c1: cs[1].c, sasc: cs[2].s, c2: cs[2].c, ndaa: cs[3].s, c3: cs[3].c,
+          hacd: cs[4].s, c4: cs[4].c, sacd: cs[5].s, c5: cs[5].c,
+          final: r.fin || cs[6].s, c6: r.fin ? '#64748B' : cs[6].c
+        };
+      }),
+      marks: w.marks.map((m) => ({
+        ...m,
+        amt: (m.amt > 0 ? '+' : '−') + fmt(Math.abs(m.amt)),
+        fg: m.amt > 0 ? '#2E8B4A' : '#DC2625'
+      }))
+    };
+    const fyTabs = [2027, 2026, 2025, 2024].map((y) => ({
+      label: 'FY' + y,
+      on: y === fy,
+      bg: y === fy ? '#FFFFFF' : 'transparent',
+      fg: y === fy ? '#0F172A' : '#475569',
+      pick: () => this.setState({ fy: y })
+    }));
+
+    const contracts = [
+      { piid: 'W31P4Q24C0022', scope: 'PAC-3 MSE production, multiyear', type: 'Firm fixed price', recent: '$5.86B', total: '$5.86B', first: 'Jun 2024', end: 'Mar 2036', soon: false },
+      { piid: 'W31P4Q20C0023', scope: 'PAC-3 MSE production, FY21–23 base and options', type: 'Firm fixed price', recent: '$309.1M', total: '$4.67B', first: 'Apr 2020', end: 'Sep 2033', soon: false },
+      { piid: 'W31P4Q26F0114', scope: 'Containerized launcher and remote interceptor guidance', type: 'Cost plus incentive fee', recent: '$240.8M', total: '$240.8M', first: 'Jul 2026', end: 'Dec 2028', soon: false, tag: 'New FY26' },
+      { piid: 'W31P4Q24F0084', scope: 'Missile Support Center logistics, US launcher', type: 'Cost plus fixed fee', recent: '$59.6M', total: '$59.6M', first: 'Mar 2024', end: 'Apr 2027', soon: true },
+      { piid: 'W31P4Q26F0071', scope: 'Containerized launcher and remote interceptor guidance', type: 'Cost plus incentive fee', recent: '$59.2M', total: '$59.2M', first: 'May 2026', end: 'Dec 2027', soon: true, tag: 'New FY26' },
+      { piid: 'W31P4Q25F0170', scope: 'PAC-3 Missile Support Center', type: 'Cost plus fixed fee', recent: '$54.5M', total: '$54.5M', first: 'Jul 2025', end: 'Jul 2027', soon: true },
+      { piid: 'W31P4Q22C0060', scope: 'Recertification and repair', type: 'Firm fixed price', recent: '$52.4M', total: '$202.8M', first: 'Jun 2022', end: 'Jun 2028', soon: true },
+      { piid: 'W31P4Q25F0071', scope: 'Poland WISLA integration and suitability, follow-on', type: 'Cost plus incentive fee', recent: '$45.3M', total: '$45.3M', first: 'Apr 2025', end: 'Apr 2028', soon: true, tag: 'FMS' }
+    ].map((c) => ({ ...c, hasTag: !!c.tag, endFg: c.soon ? '#B07C06' : '#334155', endW: c.soon ? 600 : 400 }));
+
+    const sup = [
+      { name: 'Aerojet Rocketdyne', ticker: 'LHX', part: 'Solid rocket motor, attitude control motor', recent: 710.2, life: 1616.2 },
+      { name: 'Boeing', ticker: 'BA', part: 'Seeker', recent: 218.2, life: 2097.4, flag: 'Second source funded' },
+      { name: 'Rockwell Collins', ticker: 'RTX', part: 'Housing assembly, telemetry', recent: 215.7, life: 344.6 },
+      { name: 'Moog', ticker: 'MOG.A', part: 'Actuators', recent: 128.1, life: 134.6, flag: 'Second-source stator' },
+      { name: 'Leading Technology Composites', ticker: 'Private', part: 'Armor panel assembly', recent: 110.2, life: 217.4 },
+      { name: 'Fusheng Precision', ticker: 'Private', part: 'Tooling and engineering', recent: 72.1, life: 77.5, flag: 'Taiwan' },
+      { name: 'EnerSys', ticker: 'ENS', part: 'Thermal batteries, test sets', recent: 51.4, life: 98.7 },
+      { name: 'Advanced Thermal Batteries', ticker: 'Private', part: 'Thermal batteries', recent: 40.7, life: 87.1 },
+      { name: '3M Technical Ceramics', ticker: 'MMM', part: 'Radome', recent: 34.8, life: 112.6 },
+      { name: 'Honeywell', ticker: 'HON', part: 'Parts and materials', recent: 29.5, life: 93.9 },
+      { name: 'General Dynamics OTS', ticker: 'GD', part: 'Seeker housing, composite midsection', recent: 18.8, life: 33.0 }
+    ];
+    const subTotal = 2307.7;
+    const suppliers = sup.map((s) => ({
+      ...s,
+      recent: fmt(s.recent),
+      life: fmt(s.life),
+      pct: Math.max(1, Math.round(100 * s.recent / 710.2)),
+      hasFlag: !!s.flag,
+      tickFg: (s.ticker === 'Private' || s.ticker === '–') ? '#64748B' : '#3B4F72'
+    }));
+
+    const listed = [
+      { t: 'LMT', role: 'Prime', prime: true },
+      { t: 'LHX', role: 'Rocket motors' },
+      { t: 'BA', role: 'Seeker' },
+      { t: 'RTX', role: 'Telemetry' },
+      { t: 'MOG.A', role: 'Actuators' },
+      { t: 'ENS', role: 'Batteries' },
+      { t: 'MMM', role: 'Radome' },
+      { t: 'HON', role: 'Parts' },
+      { t: 'GD', role: 'Seeker housing' },
+      { t: 'GE', role: 'Power supplies' },
+      { t: 'AVT', role: 'Components' },
+      { t: 'DCO', role: 'Cable assemblies' },
+      { t: 'HWM', role: 'Castings' }
+    ].map((l) => ({ ...l, bg: l.prime ? '#EEF2F8' : '#FFFFFF' }));
+
+    const fms = [
+      ['FMS', 234], ['Taiwan', 13], ['Qatar', 9], ['UAE', 8], ['Kuwait', 8], ['Germany', 7], ['Netherlands', 6],
+      ['Romania', 3], ['Poland', 3], ['South Korea', 3], ['Saudi Arabia', 3], ['Japan', 3], ['Sweden', 2], ['Bahrain', 1], ['Ukraine', 1]
+    ].map(([c, n]) => ({ c, n: n + (n === 1 ? ' award' : ' awards') }));
+
+    return { nav, kpis, signals, wf, wfChips, leave, years, related, identity, walk, fyTabs, contracts, suppliers, listed, fms, subTotal };
+  }
+}
+
+
+TAB_CLASSES['budget'] = class extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { scale: 'all' };
+  }
+  renderVals() {
+    const navDef = [
+      { label: 'HOME', items: ['Chat', 'Workspace'] },
+      { label: 'MONITOR', items: ['Watchlist', 'Sensing', 'News'] },
+      { label: 'ENTITIES', items: ['Markets', 'Companies', 'Contracts', 'Opportunities', 'Programs', 'Congressional Marks'] },
+      { label: 'ACTORS', items: ['Offices', 'People'] },
+      { label: 'ANALYSIS', items: ['Screener', 'Scenarios'] }
+    ];
+    const nav = navDef.map((g) => ({ label: g.label, items: g.items.map((l) => ({ label: l, fg: l === 'Programs' ? '#3B4F72' : '#334155', bg: l === 'Programs' ? '#EEF2F8' : 'transparent', weight: l === 'Programs' ? 600 : 400 })) }));
+    const fmt = (m) => m === null ? '–' : (Math.abs(m) >= 1000 ? '$' + (m / 1000).toFixed(2) + 'B' : '$' + m.toFixed(1) + 'M');
+
+    const kpis = [
+      { label: 'Request, all program lines', value: '$14.98B', sub: 'FY2027 · 4 lines' },
+      { label: 'MSE lines', value: '$13.96B', sub: '93% of the FY27 request' },
+      { label: 'Mandatory funding', value: '$12.56B', sub: '84% of all lines, FY27' },
+      { label: 'Enacted, FY2026', value: '$2.58B', sub: '3 Army lines' },
+      { label: 'Missiles requested', value: '3,203', sub: 'FY27 · Army 2,798 · Navy 405' },
+      { label: 'Cost per missile', value: '$4.37M', sub: 'Army line, FY27 · derived' }
+    ];
+
+    const L = [
+      { id: 'disc', n: 'MSE Missile, Army: discretionary', c: '#3B4F72' },
+      { id: 'mand', n: 'MSE Missile, Army: mandatory', c: '#E08A3C' },
+      { id: 'navy', n: 'MSE Missile, Navy', c: '#6C8EBF' },
+      { id: 'mods', n: 'Patriot Mods', c: '#2A9DA6' },
+      { id: 'ppi', n: 'Patriot Product Improvement', c: '#9FD8DD' }
+    ];
+    const Y = [
+      { fy: 'FY22', stage: 'Actual', disc: 1333.1, mand: 0, navy: 0, mods: 287.5, ppi: 125.9 },
+      { fy: 'FY23', stage: 'Actual', disc: 2471.4, mand: 0, navy: 0, mods: 463.0, ppi: 146.8 },
+      { fy: 'FY24', stage: 'Actual', disc: 2814.9, mand: 0, navy: 0, mods: 262.4, ppi: 170.7 },
+      { fy: 'FY25', stage: 'Actual', disc: 905.1, mand: 0, navy: 0, mods: 172.0, ppi: 162.3 },
+      { fy: 'FY26', stage: 'Enacted', disc: 1445.9, mand: 200.0, navy: 47.0, mods: 757.8, ppi: 180.0 },
+      { fy: 'FY27', stage: 'Request', disc: 1297.5, mand: 10931.9, navy: 1730.8, mods: 796.8, ppi: 219.0 }
+    ];
+    const tot = (y) => y.disc + y.mand + y.navy + y.mods + y.ppi;
+    const scale = this.state.scale;
+    const max = scale === 'all' ? Math.max.apply(null, Y.map(tot)) : Math.max.apply(null, Y.slice(0, 5).map(tot));
+    const H = 240;
+    const bars = Y.map((y) => {
+      const t = tot(y);
+      const clipped = t > max * 1.001;
+      const f = clipped ? max / t : 1;
+      const segs = ['ppi', 'mods', 'navy', 'mand', 'disc'].map((id) => {
+        const def = L.find((l) => l.id === id);
+        return { c: def.c, h: y[id] > 0 ? Math.max(2, Math.round(H * y[id] * f / max)) : 0 };
+      }).filter((s) => s.h > 0);
+      return { fy: y.fy, stage: y.stage, total: fmt(t), segs, clipped };
+    });
+    const scaleTabs = [
+      { id: 'all', label: 'FY22–27' },
+      { id: 'hist', label: 'Zoom FY22–26' }
+    ].map((t) => ({ label: t.label, on: t.id === scale, bg: t.id === scale ? '#FFFFFF' : 'transparent', fg: t.id === scale ? '#0F172A' : '#475569', pick: () => this.setState({ scale: t.id }) }));
+    const legend = L.map((l) => ({ n: l.n, c: l.c }));
+
+    const cell = (v) => ({ v: v ? fmt(v) : '–', fg: v ? '#0F172A' : '#94A3B8' });
+    const rows = [
+      { name: 'MSE Missile, Army', code: '8260C53101', c: '#3B4F72', vals: Y.map((y) => y.disc + y.mand) },
+      { name: '  of which mandatory', code: '', c: '#E08A3C', vals: Y.map((y) => y.mand) },
+      { name: 'MSE Missile, Navy', code: '2247', c: '#6C8EBF', vals: Y.map((y) => y.navy) },
+      { name: 'Patriot Mods', code: '0962C50700', c: '#2A9DA6', vals: Y.map((y) => y.mods) },
+      { name: 'Patriot Product Improvement', code: 'PE 0607865A', c: '#9FD8DD', vals: Y.map((y) => y.ppi) },
+      { name: 'Total', code: '', c: 'transparent', vals: Y.map((y) => y.disc + y.mand + y.navy + y.mods + y.ppi), total: true }
+    ].map((r) => ({ name: r.name, code: r.code, c: r.c, w: r.total ? 700 : 500, bg: r.total ? '#F8FAFC' : '#FFFFFF', cells: r.vals.map(cell) }));
+
+    const rea = [
+      { fy: 'FY22', req: 776.7, enac: 771.7, act: 1333.1, qty: '328' },
+      { fy: 'FY23', req: 1037.1, enac: 1037.1, act: 2471.4, qty: '252' },
+      { fy: 'FY24', req: 1212.8, enac: 960.8, act: 2814.9, qty: '230' },
+      { fy: 'FY25', req: 963.1, enac: 905.1, act: 905.1, qty: '194', note: 'CR' },
+      { fy: 'FY26', req: 1311.9, enac: 1645.9, act: null, qty: '357' },
+      { fy: 'FY27', req: 12229.4, enac: null, act: null, qty: '2,798' }
+    ].map((r) => {
+      const d = r.enac === null ? null : r.enac - r.req;
+      return {
+        fy: r.fy,
+        req: fmt(r.req),
+        enac: r.enac === null ? 'Pending' : fmt(r.enac) + (r.note ? ' (CR)' : ''),
+        delta: d === null ? '–' : (Math.abs(d) < 0.05 ? '0' : (d > 0 ? '+' : '−') + fmt(Math.abs(d))),
+        dfg: d === null || Math.abs(d) < 0.05 ? '#64748B' : d > 0 ? '#2E8B4A' : '#DC2625',
+        act: fmt(r.act),
+        qty: r.qty
+      };
+    });
+
+    const Q = [
+      { fy: 'FY22', stage: 'Actual', a: 328, n: 0, unit: '–' },
+      { fy: 'FY23', stage: 'Actual', a: 252, n: 0, unit: '–' },
+      { fy: 'FY24', stage: 'Actual', a: 230, n: 0, unit: '–' },
+      { fy: 'FY25', stage: 'Actual', a: 194, n: 0, unit: '$4.67M' },
+      { fy: 'FY26', stage: 'Enacted', a: 357, n: 12, unit: '$4.61M' },
+      { fy: 'FY27', stage: 'Request', a: 2798, n: 405, unit: '$4.37M' }
+    ];
+    const qmax = 2798;
+    const qty = Q.map((q) => ({
+      fy: q.fy, stage: q.stage, unit: q.unit,
+      n: (q.a + q.n).toLocaleString('en-US'),
+      wa: Math.max(1, 100 * q.a / qmax),
+      wn: Math.max(1, 100 * q.n / qmax),
+      hasNavy: q.n > 0
+    }));
+
+    const sources = ['Missile Procurement, Army J-Book FY2027', 'Weapons Procurement, Navy J-Book FY2027', 'RDT&E Army Vol 4, BA 7, FY2027', 'J-Books FY2024 to FY2026'];
+
+    return { nav, kpis, bars, scaleTabs, legend, rows, rea, qty, sources };
+  }
+}
+
+
+TAB_CLASSES['congress'] = class extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { fy: 2027 };
+  }
+  renderVals() {
+    const navDef = [
+      { label: 'HOME', items: ['Chat', 'Workspace'] },
+      { label: 'MONITOR', items: ['Watchlist', 'Sensing', 'News'] },
+      { label: 'ENTITIES', items: ['Markets', 'Companies', 'Contracts', 'Opportunities', 'Programs', 'Congressional Marks'] },
+      { label: 'ACTORS', items: ['Offices', 'People'] },
+      { label: 'ANALYSIS', items: ['Screener', 'Scenarios'] }
+    ];
+    const nav = navDef.map((g) => ({ label: g.label, items: g.items.map((l) => ({ label: l, fg: l === 'Programs' ? '#3B4F72' : '#334155', bg: l === 'Programs' ? '#EEF2F8' : 'transparent', weight: l === 'Programs' ? 600 : 400 })) }));
+    const fmt = (m) => Math.abs(m) >= 1000 ? '$' + (m / 1000).toFixed(2) + 'B' : '$' + m.toFixed(1) + 'M';
+    const tone = { blue: ['#E8F0FC', '#017EFA'], warn: ['#FCF0D4', '#B07C06'], good: ['#E7F4EC', '#2E8B4A'], gray: ['#F1F5F9', '#334155'], bad: ['#FBE9E8', '#DC2625'] };
+
+    const kpis = [
+      { label: 'SAC-D, FY2027', value: '+$12.56B', sub: 'Reconciliation quantities moved into base', fg: '#2E8B4A' },
+      { label: 'Final vs request, FY2026', value: '+$500.0M', sub: 'Army MSE line, +52.9%', fg: '#2E8B4A' },
+      { label: 'Net final vs request, FY22–26', value: '+$185.0M', sub: 'Army MSE line, discretionary', fg: '#0F172A' },
+      { label: 'Largest cut', value: '−$252.0M', sub: 'FY24, moved to advance procurement', fg: '#DC2625' }
+    ];
+
+    const gridYears = ['FY22', 'FY23', 'FY24', 'FY25', 'FY26', 'FY27'];
+    const P = {
+      at: { label: 'At request', bg: '#F8FAFC', fg: '#475569', bd: '#E2E8F0', bs: 'solid' },
+      above: { label: 'Above', bg: '#E7F4EC', fg: '#2E8B4A', bd: '#C6E6CF', bs: 'solid' },
+      below: { label: 'Below', bg: '#FBE9E8', fg: '#DC2625', bd: '#F5C6B8', bs: 'solid' },
+      cr: { label: 'CR', bg: '#FCF0D4', fg: '#B07C06', bd: '#F3DFA8', bs: 'solid' },
+      pending: { label: 'Pending', bg: '#FFFFFF', fg: '#64748B', bd: '#CBD5E1', bs: 'dashed' },
+      none: { label: 'Not traced', bg: '#FFFFFF', fg: '#94A3B8', bd: '#E2E8F0', bs: 'dashed' }
+    };
+    const g = (st, amt) => ({ ...P[st], amt: amt || '' });
+    const grid = [
+      { who: 'HASC', cells: [g('at'), g('at'), g('at'), g('at'), g('at'), g('pending')] },
+      { who: 'SASC', cells: [g('at'), g('at'), g('at'), g('at'), g('above', '+$539.6M'), g('at')] },
+      { who: 'NDAA', cells: [g('at'), g('at'), g('at'), g('at'), g('above', '+$1.74B'), g('pending')] },
+      { who: 'HAC-D', cells: [g('below', '−$5.0M'), g('at'), g('below', '−$252.0M'), g('below', '−$116.3M'), g('none'), g('pending')] },
+      { who: 'SAC-D', cells: [g('at'), g('below', '−$145.9M'), g('below', '−$252.0M'), g('at'), g('above', '+$2.09B'), g('above', '+$10.93B')] },
+      { who: 'Final', cells: [g('below', '−$5.0M'), g('at'), g('below', '−$252.0M'), g('cr', '−$58.0M'), g('above', '+$500.0M'), g('pending')] }
+    ];
+
+    const N = null;
+    const walks = {
+      2027: {
+        chips: [{ text: 'In progress: HASC, SASC, HAC-D and SAC-D reported on some lines', t: 'gray' }, { text: 'SAC-D +$12.56B across the two MSE lines', t: 'good' }],
+        rows: [
+          { line: 'MSE Missile, Army', code: '8260C53101', v: [1297.5, N, 1297.5, N, N, 12229.4, N], fin: 'Pending' },
+          { line: 'MSE Missile, Navy', code: '2247', v: [97.8, N, 97.8, N, N, 1730.8, N], fin: 'Pending' },
+          { line: 'Patriot Mods', code: '0962C50700', v: [796.8, N, 796.8, N, N, 796.8, N], fin: 'Pending' },
+          { line: 'Patriot Product Improvement', code: 'PE 0607865A', v: [219.0, 219.0, 219.0, N, 219.0, 219.0, N], fin: 'Pending' }
+        ],
+        marks: [
+          { who: 'SAC-D', amt: 10931.9, line: 'MSE Missile, Army', text: 'Reconciliation funding incongruence: PAC-3 additional quantities', cite: 'SAC-D report FY2027, p. 98' },
+          { who: 'SAC-D', amt: 1633.0, line: 'MSE Missile, Navy', text: 'Reconciliation funding incongruence: PAC-3 additional quantities', cite: 'SAC-D report FY2027, p. 118' }
+        ]
+      },
+      2026: {
+        chips: [{ text: 'Enacted +$500.0M over request on the Army MSE line', t: 'good' }, { text: 'HAC-D figures not traced to marks', t: 'gray' }],
+        rows: [
+          { line: 'MSE Missile, Army', code: '8260C53101', v: [945.9, 945.9, 1485.5, 2685.5, N, 3036.2, 1445.9] },
+          { line: 'Patriot Mods', code: '0962C50700', v: [757.8, 757.8, 757.8, 757.8, N, 757.8, 757.8] },
+          { line: 'Patriot Product Improvement', code: 'PE 0607865A', v: [183.8, 183.8, 183.8, 183.8, 168.6, 183.8, 183.8] }
+        ],
+        marks: [
+          { who: 'Final', amt: 500.0, line: 'MSE Missile, Army', text: 'Additional quantities to accelerate multi-year procurement ramp', cite: 'Joint explanatory statement FY2026, p. 111' },
+          { who: 'SAC-D', amt: 1200.0, line: 'MSE Missile, Army', text: 'Second source for PAC-3 seeker', cite: 'SAC-D report FY2026' },
+          { who: 'SAC-D', amt: 890.3, line: 'MSE Missile, Army', text: 'Additional quantities', cite: 'SAC-D report FY2026' },
+          { who: 'NDAA', amt: 1200.0, line: 'MSE Missile, Army', text: 'Program increase', cite: 'NDAA conference FY2026' },
+          { who: 'NDAA', amt: 366.0, line: 'MSE Missile, Army', text: 'PAC-3 MSE missile recertifications: misaligned budget request', cite: 'NDAA conference FY2026' },
+          { who: 'SASC', amt: 173.6, line: 'MSE Missile, Army', text: 'Patriot Mods: AMMPS/DEX', cite: 'SASC report FY2026' }
+        ]
+      },
+      2025: {
+        chips: [{ text: 'Full-year continuing resolution', t: 'warn' }, { text: 'HAC-D cut for delivery backlog', t: 'bad' }],
+        rows: [
+          { line: 'MSE Missile, Army', code: '8260C53101', v: [963.1, 963.1, 963.1, 963.1, 846.8, 963.1, 905.1] },
+          { line: 'Patriot Mods', code: '0962C50700', v: [172.0, 172.0, 339.0, 339.0, 172.0, 339.0, 172.0] },
+          { line: 'Patriot Product Improvement', code: 'PE 0607865A', v: [168.5, 168.5, 168.5, 168.5, 168.5, 138.4, 168.5] }
+        ],
+        marks: [
+          { who: 'HAC-D', amt: -116.3, line: 'MSE Missile, Army', text: 'Delivery backlog', cite: 'HAC-D report FY2025, p. 101' },
+          { who: 'SASC', amt: 167.0, line: 'Patriot Mods', text: 'Additional Patriot launcher', cite: 'SASC report FY2025' },
+          { who: 'SAC-D', amt: 167.0, line: 'Patriot Mods', text: 'Accelerate PATRIOT air defense battalion (emergency)', cite: 'SAC-D report FY2025' },
+          { who: 'NDAA', amt: 100.0, line: 'MSE Missile, Army', text: 'Munitions supplier base (MCEIP): bearings, printed circuit boards', cite: 'NDAA conference FY2025' },
+          { who: 'NDAA', amt: 50.0, line: 'MSE Missile, Army', text: 'JPAC supplier base investments', cite: 'NDAA conference FY2025' }
+        ]
+      },
+      2024: {
+        chips: [{ text: 'Enacted −$252.0M below request on the Army MSE line', t: 'bad' }, { text: 'Moved to advance procurement (EOQ)', t: 'gray' }],
+        rows: [
+          { line: 'MSE Missile, Army', code: '8260C53101', v: [1212.8, 1212.8, 1212.8, 1212.8, 960.8, 960.8, 960.8] },
+          { line: 'Patriot Mods', code: '0962C50700', v: [212.2, 212.2, 212.2, 212.2, 212.2, 212.2, 212.2] },
+          { line: 'Patriot Product Improvement', code: 'PE 0607865A', v: [177.2, 177.2, 177.2, 177.2, 177.2, 177.2, 177.2] }
+        ],
+        marks: [
+          { who: 'Final', amt: -252.0, line: 'MSE Missile, Army', text: 'Transfer to line 4a: advance procurement', cite: 'Joint explanatory statement FY2024, p. 116' },
+          { who: 'HAC-D', amt: -252.0, line: 'MSE Missile, Army', text: 'Program decrease of economic order quantity', cite: 'HAC-D report FY2024, p. 128' },
+          { who: 'SAC-D', amt: -252.0, line: 'MSE Missile, Army', text: 'Transfer to line 4a: advance procurement', cite: 'SAC-D report FY2024' }
+        ]
+      },
+      2023: {
+        chips: [{ text: 'Patriot fire units added by HASC and NDAA', t: 'good' }, { text: 'DIB expansion for PAC-3 MSE: +$240.0M', t: 'blue' }],
+        rows: [
+          { line: 'MSE Missile, Army', code: '8260C53101', v: [1037.1, 1037.1, 1037.1, 1037.1, 1037.1, 891.2, 1037.1] },
+          { line: 'Patriot Mods', code: '0962C50700', v: [253.7, 1253.7, 253.7, 1193.7, 253.7, 253.7, 253.7] },
+          { line: 'Patriot Product Improvement', code: 'PE 0607865A', v: [152.3, 162.3, 152.3, 152.3, 152.3, 152.3, 152.3] }
+        ],
+        marks: [
+          { who: 'HASC', amt: 1000.0, line: 'Patriot Mods', text: '4 additional fire units to equip 16th Patriot battalion', cite: 'HASC report FY2023' },
+          { who: 'NDAA', amt: 700.0, line: 'Patriot Mods', text: '2 additional fire units and a dismounted Patriot information coordination central', cite: 'NDAA conference FY2023' },
+          { who: 'NDAA', amt: 240.0, line: 'Patriot Mods', text: 'Defense industrial base expansion for PAC-3 MSE', cite: 'NDAA conference FY2023' },
+          { who: 'HASC', amt: 10.0, line: 'Patriot Product Improvement', text: 'Patriot obsolescence and program protection', cite: 'HASC report FY2023' }
+        ]
+      },
+      2022: {
+        chips: [{ text: 'Final −$5.0M on the Army MSE line', t: 'bad' }, { text: 'SAC-D Patriot Mods figure not traced', t: 'gray' }],
+        rows: [
+          { line: 'MSE Missile, Army', code: '8260C53101', v: [776.7, 776.7, 776.7, 776.7, 771.7, 776.7, 771.7] },
+          { line: 'Patriot Mods', code: '0962C50700', v: [205.5, 205.5, 205.5, 205.5, 205.5, N, 205.5] },
+          { line: 'Patriot Product Improvement', code: 'PE 0607865A', v: [125.9, 125.9, 125.9, 125.9, 125.9, 125.9, 125.9] }
+        ],
+        marks: [
+          { who: 'HAC-D', amt: -5.0, line: 'MSE Missile, Army', text: 'Obsolescence', cite: 'HAC-D report FY2022, p. 156' },
+          { who: 'Final', amt: -5.0, line: 'MSE Missile, Army', text: 'Obsolescence', cite: 'Joint explanatory statement FY2022, p. 156' }
+        ]
+      }
+    };
+    const fy = this.state.fy;
+    const w = walks[fy];
+    const cell = (v, req, isFinal) => {
+      if (v === null || v === undefined) return { s: '–', fg: '#94A3B8', w: isFinal ? 700 : 400 };
+      const fg = v > req + 0.05 ? '#2E8B4A' : v < req - 0.05 ? '#DC2625' : '#0F172A';
+      return { s: fmt(v), fg, w: isFinal ? 700 : 400 };
+    };
+    const walk = {
+      chips: w.chips.map((c) => ({ ...c, bg: tone[c.t][0], fg: tone[c.t][1] })),
+      rows: w.rows.map((r) => {
+        const cells = r.v.map((v, i) => cell(v, r.v[0], i === 6));
+        if (r.fin) cells[6] = { s: r.fin, fg: '#64748B', w: 600 };
+        return { line: r.line, code: r.code, cells };
+      }),
+      marks: w.marks.map((m) => ({ ...m, amt: (m.amt > 0 ? '+' : '−') + fmt(Math.abs(m.amt)), fg: m.amt > 0 ? '#2E8B4A' : '#DC2625' }))
+    };
+    const fyTabs = [2027, 2026, 2025, 2024, 2023, 2022].map((y) => ({
+      label: 'FY' + y, on: y === fy,
+      bg: y === fy ? '#FFFFFF' : 'transparent', fg: y === fy ? '#0F172A' : '#475569',
+      pick: () => this.setState({ fy: y })
+    }));
+    return { nav, kpis, gridYears, grid, walk, fyTabs };
+  }
+}
+
+
+TAB_CLASSES['contracts'] = class extends DCLogic {
+  renderVals() {
+    const navDef = [
+      { label: 'HOME', items: ['Chat', 'Workspace'] },
+      { label: 'MONITOR', items: ['Watchlist', 'Sensing', 'News'] },
+      { label: 'ENTITIES', items: ['Markets', 'Companies', 'Contracts', 'Opportunities', 'Programs', 'Congressional Marks'] },
+      { label: 'ACTORS', items: ['Offices', 'People'] },
+      { label: 'ANALYSIS', items: ['Screener', 'Scenarios'] }
+    ];
+    const nav = navDef.map((g) => ({ label: g.label, items: g.items.map((l) => ({ label: l, fg: l === 'Programs' ? '#3B4F72' : '#334155', bg: l === 'Programs' ? '#EEF2F8' : 'transparent', weight: l === 'Programs' ? 600 : 400 })) }));
+    const fmt = (m) => Math.abs(m) >= 1000 ? '$' + (m / 1000).toFixed(2) + 'B' : '$' + m.toFixed(1) + 'M';
+
+    const kpis = [
+      { label: 'Obligated, FY22–26', value: '$11.43B', sub: 'FY26 partial year' },
+      { label: 'Not competed', value: '98.8%', sub: 'Sole source to Lockheed' },
+      { label: 'Firm fixed price', value: '87.9%', sub: 'Of FY22–26 obligations' },
+      { label: 'Option exercises', value: '$4.32B', sub: '60 actions, FY22–26' },
+      { label: 'Letter contracts definitized', value: '$1.02B', sub: '27 actions, FY22–26' },
+      { label: 'Multiyear award ends', value: 'Mar 2036', sub: 'W31P4Q24C0022' }
+    ];
+
+    const PC = { FFP: '#3B4F72', FPI: '#6C8EBF', CPIF: '#2A9DA6', CPFF: '#8FD0DB', OTH: '#A9B4C2' };
+    const priceLegend = [
+      { n: 'Firm fixed price', c: PC.FFP },
+      { n: 'Fixed price incentive', c: PC.FPI },
+      { n: 'Cost plus incentive fee', c: PC.CPIF }
+    ];
+    const t0 = 2013;
+    const t1 = 2037;
+    const pos = (y, m) => 100 * ((y + (m - 1) / 12) - t0) / (t1 - t0);
+    const ticks = [2014, 2018, 2022, 2026, 2030, 2034].map((y) => ({ y: String(y), x: pos(y, 1) }));
+    const todayX = pos(2026, 11);
+    const G = [
+      { piid: 'W31P4Q24C0022', scope: 'Multiyear production', p: 'FFP', a: [2024, 6], b: [2036, 3], v: 5856.3, span: 'Jun 2024 to Mar 2036' },
+      { piid: 'W31P4Q20C0023', scope: 'FY21–23 production', p: 'FFP', a: [2020, 4], b: [2033, 9], v: 4673.2, span: 'Apr 2020 to Sep 2033' },
+      { piid: 'W31P4Q19C0011', scope: 'Production', p: 'FPI', a: [2018, 12], b: [2027, 3], v: 3280.7, span: 'Dec 2018 to Mar 2027' },
+      { piid: 'W31P4Q17C0006', scope: 'Production', p: 'FPI', a: [2016, 12], b: [2031, 10], v: 2462.8, span: 'Dec 2016 to Oct 2031' },
+      { piid: 'W31P4Q14C0034', scope: 'Production', p: 'FFP', a: [2013, 12], b: [2023, 3], v: 1852.3, span: 'Dec 2013 to Mar 2023' },
+      { piid: 'W31P4Q26F0114', scope: 'Launcher and interceptor guidance', p: 'CPIF', a: [2026, 7], b: [2028, 12], v: 240.8, span: 'to Dec 2028' },
+      { piid: 'W31P4Q22C0060', scope: 'Recertification and repair', p: 'FFP', a: [2022, 6], b: [2028, 6], v: 202.8, span: 'Jun 2022 to Jun 2028' }
+    ];
+    const gantt = G.map((r) => {
+      const x = pos(r.a[0], r.a[1]);
+      return { piid: r.piid, scope: r.scope, c: PC[r.p], x, w: Math.max(4, pos(r.b[0], r.b[1]) - x), amt: fmt(r.v), span: r.span };
+    });
+
+    const M = [
+      { fy: 'FY20', FFP: 72.2, FPI: 793.3, CPIF: 151.0, CPFF: 63.0, OTH: 24.5 },
+      { fy: 'FY21', FFP: 711.6, FPI: 0, CPIF: 80.9, CPFF: 54.2, OTH: 8.8 },
+      { fy: 'FY22', FFP: 1440.3, FPI: 77.7, CPIF: 95.0, CPFF: 61.1, OTH: 1.5 },
+      { fy: 'FY23', FFP: 2376.8, FPI: 0, CPIF: 87.8, CPFF: 118.3, OTH: 2.2 },
+      { fy: 'FY24', FFP: 1940.5, FPI: 0, CPIF: 49.9, CPFF: 196.1, OTH: 3.3 },
+      { fy: 'FY25', FFP: 2167.1, FPI: 0, CPIF: 64.3, CPFF: 219.0, OTH: 0 },
+      { fy: 'FY26', FFP: 2125.2, FPI: 0, CPIF: 385.5, CPFF: 66.2, OTH: 0 }
+    ];
+    const keys = ['OTH', 'CPFF', 'CPIF', 'FPI', 'FFP'];
+    const mmax = Math.max.apply(null, M.map((r) => keys.reduce((a, k) => a + r[k], 0)));
+    const mix = M.map((r) => {
+      const t = keys.reduce((a, k) => a + r[k], 0);
+      return {
+        fy: r.fy,
+        total: fmt(t),
+        ffp: Math.round(100 * r.FFP / t) + '%',
+        segs: keys.filter((k) => r[k] > 0).map((k) => ({ c: PC[k], h: Math.max(2, Math.round(190 * r[k] / mmax)) }))
+      };
+    });
+    const mixLegend = [
+      { n: 'Firm fixed price', c: PC.FFP }, { n: 'Fixed price incentive', c: PC.FPI }, { n: 'Cost plus incentive fee', c: PC.CPIF }, { n: 'Cost plus fixed fee', c: PC.CPFF }, { n: 'Other', c: PC.OTH }
+    ];
+
+    const MO = [
+      { n: 'Option exercises', v: 4315.4, c: 60, col: '#3B4F72' },
+      { n: 'In-scope supplemental agreements', v: 3149.5, c: 889, col: '#3B4F72' },
+      { n: 'New awards and unreported reason', v: 2574.0, c: 671, col: '#94A3B8' },
+      { n: 'Letter contracts definitized', v: 1019.0, c: 27, col: '#E08A3C' },
+      { n: 'Administrative actions', v: 161.3, c: 317, col: '#94A3B8' },
+      { n: 'Funding-only actions', v: 109.2, c: 138, col: '#94A3B8' },
+      { n: 'Change orders', v: 23.3, c: 31, col: '#94A3B8' }
+    ];
+    const mods = MO.map((m) => ({ n: m.n, v: fmt(m.v), c: m.c, col: m.col, pct: Math.max(1, 100 * m.v / 4315.4) }));
+
+    const awards = [
+      { piid: 'W31P4Q24C0022', scope: 'PAC-3 MSE production, multiyear', price: 'Firm fixed price', recent: '$5.86B', total: '$5.86B', acts: 83, end: 'Mar 2036', soon: false },
+      { piid: 'W31P4Q20C0023', scope: 'Production, FY21–23 base and options', price: 'Firm fixed price', recent: '$309.1M', total: '$4.67B', acts: 347, end: 'Sep 2033', soon: false },
+      { piid: 'W31P4Q19C0011', scope: 'Production', price: 'Fixed price incentive', recent: '$0.0M', total: '$3.28B', acts: 253, end: 'Mar 2027', soon: true },
+      { piid: 'W31P4Q17C0006', scope: 'Production', price: 'Fixed price incentive', recent: '−$34.8M', total: '$2.46B', acts: 186, end: 'Oct 2031', soon: false },
+      { piid: 'W31P4Q26F0114', scope: 'Containerized launcher and remote interceptor guidance', price: 'Cost plus incentive fee', recent: '$240.8M', total: '$240.8M', acts: 2, end: 'Dec 2028', soon: true, tag: 'New FY26' },
+      { piid: 'W31P4Q22C0060', scope: 'Recertification and repair', price: 'Firm fixed price', recent: '$52.4M', total: '$202.8M', acts: 12, end: 'Jun 2028', soon: true },
+      { piid: 'W31P4Q24F0084', scope: 'Missile Support Center logistics, US launcher', price: 'Cost plus fixed fee', recent: '$59.6M', total: '$59.6M', acts: '–', end: 'Apr 2027', soon: true },
+      { piid: 'W31P4Q26F0071', scope: 'Containerized launcher and remote interceptor guidance', price: 'Cost plus incentive fee', recent: '$59.2M', total: '$59.2M', acts: '–', end: 'Dec 2027', soon: true, tag: 'New FY26' },
+      { piid: 'W31P4Q25F0170', scope: 'PAC-3 Missile Support Center', price: 'Cost plus fixed fee', recent: '$54.5M', total: '$54.5M', acts: '–', end: 'Jul 2027', soon: true },
+      { piid: 'W31P4Q25F0071', scope: 'Poland WISLA integration and suitability, follow-on', price: 'Cost plus incentive fee', recent: '$45.3M', total: '$45.3M', acts: '–', end: 'Apr 2028', soon: true, tag: 'FMS' }
+    ].map((c) => ({ ...c, hasTag: !!c.tag, endFg: c.soon ? '#B07C06' : '#334155', endW: c.soon ? 600 : 400 }));
+
+    return { nav, kpis, priceLegend, ticks, todayX, gantt, mix, mixLegend, mods, awards };
+  }
+}
+
+
+TAB_CLASSES['supply-chain'] = class extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { hover: null };
+  }
+  renderVals() {
+    const navDef = [
+      { label: 'HOME', items: ['Chat', 'Workspace'] },
+      { label: 'MONITOR', items: ['Watchlist', 'Sensing', 'News'] },
+      { label: 'ENTITIES', items: ['Markets', 'Companies', 'Contracts', 'Opportunities', 'Programs', 'Congressional Marks'] },
+      { label: 'ACTORS', items: ['Offices', 'People'] },
+      { label: 'ANALYSIS', items: ['Screener', 'Scenarios'] }
+    ];
+    const nav = navDef.map((g) => ({ label: g.label, items: g.items.map((l) => ({ label: l, fg: l === 'Programs' ? '#3B4F72' : '#334155', bg: l === 'Programs' ? '#EEF2F8' : 'transparent', weight: l === 'Programs' ? 600 : 400 })) }));
+    const fmt = (m) => Math.abs(m) >= 1000 ? '$' + (m / 1000).toFixed(2) + 'B' : '$' + m.toFixed(1) + 'M';
+
+    const kpis = [
+      { label: 'Subawards, FY22–25', value: '$2.31B', sub: '20% of Lockheed obligations' },
+      { label: 'Suppliers reporting', value: '361', sub: 'FY22–25' },
+      { label: 'Top 5 share', value: '60%', sub: 'Of FY22–25 subawards' },
+      { label: 'Largest supplier', value: '31%', sub: 'L3Harris, rocket motors' },
+      { label: 'Foreign suppliers', value: '$374.4M', sub: 'FY18–25 · Taiwan $248.9M' },
+      { label: 'New suppliers, FY24', value: '47', sub: 'Up from 13 in FY23' }
+    ];
+
+    const CC = [
+      ['L3Harris', 'Aerojet Rocketdyne · rocket motors', 710.2, '#D9822B'],
+      ['Boeing', 'Seeker', 218.2, '#3B4F72'],
+      ['RTX', 'Rockwell Collins · telemetry', 215.7, '#6C8EBF'],
+      ['Moog', 'Actuators', 128.1, '#2A9D8F'],
+      ['Leading Tech Composites', 'Armor panels · private', 110.2, '#4DB6A9'],
+      ['Fusheng Precision', 'Tooling · Taiwan', 72.1, '#8E7CC3'],
+      ['EnerSys', 'Thermal batteries', 51.4, '#86CBC1'],
+      ['354 other suppliers', 'Incl. $45.1M not matched to a company', 801.8, '#CBD5E1']
+    ];
+    const conc = CC.map(([name, sub, v, color]) => ({ name, sub, v: fmt(v), color, pct: (100 * v / 2307.7).toFixed(2), share: Math.round(100 * v / 2307.7) + '%', inbar: v / 2307.7 > 0.08 ? Math.round(100 * v / 2307.7) + '%' : '' }));
+    const concAlt = 'Lockheed Martin subawards on PAC-3 MSE, FY22 to FY25, $2.31B: L3Harris 31%, Boeing 9%, RTX 9%, Moog 6%, Leading Tech Composites 5%, Fusheng Precision 3%, EnerSys 2%, 354 other suppliers 35%.';
+    const leave = () => this.setState({ hover: null });
+
+    const G = [
+      ['Arkansas', 716.7, 6], ['Vermont', 215.7, 1], ['Alabama', 190.4, 7], ['California', 178.5, 72], ['Utah', 128.0, 2],
+      ['Kansas', 115.8, 6], ['Florida', 114.6, 25], ['Taiwan', 98.4, 4], ['New York', 67.2, 38], ['Texas', 66.8, 43]
+    ];
+    const geo = G.map(([n, v, c]) => ({ n, v: fmt(v), k: c + (c === 1 ? ' supplier' : ' suppliers'), pct: 100 * v / 716.7, c: n === 'Taiwan' ? '#E08A3C' : '#3B4F72' }));
+
+    const foreign = [
+      { c: 'Taiwan', v: '$248.9M', who: 'Fusheng Precision, Chenfull Precision, Chroma ATE' },
+      { c: 'Netherlands', v: '$61.1M', who: 'Fokker Aerostructures' },
+      { c: 'Germany', v: '$30.1M', who: 'Vincorion Power Systems' },
+      { c: 'France', v: '$12.5M', who: 'ASB Aerospatiale Batteries' },
+      { c: 'Poland', v: '$11.5M', who: 'PZL, WZL-1, WZU' },
+      { c: 'Switzerland', v: '$7.2M', who: 'Acutronic Schweiz' },
+      { c: 'South Korea', v: '$2.6M', who: 'LG Chem' }
+    ];
+
+    const E = [['FY18', 123], ['FY19', 94], ['FY20', 84], ['FY21', 29], ['FY22', 33], ['FY23', 13], ['FY24', 47], ['FY25', 18]];
+    const entry = E.map(([fy, n]) => ({ fy, n, h: Math.max(3, Math.round(140 * n / 123)), c: fy === 'FY25' ? '#A9B4C2' : '#3B4F72' }));
+
+    const listed = [
+      { t: 'LMT', role: 'Prime', v: '$11.42B obligations', prime: true },
+      { t: 'LHX', role: 'Rocket motors', v: '$710.2M' },
+      { t: 'BA', role: 'Seeker', v: '$218.2M' },
+      { t: 'RTX', role: 'Telemetry, housings', v: '$215.7M' },
+      { t: 'MOG.A', role: 'Actuators', v: '$128.1M' },
+      { t: 'ENS', role: 'Thermal batteries', v: '$51.4M' },
+      { t: 'MMM', role: 'Radome', v: '$34.8M' },
+      { t: 'HON', role: 'Parts', v: '$29.5M' },
+      { t: 'AVT', role: 'Components', v: '$28.0M' },
+      { t: 'GD', role: 'Seeker housing', v: '$18.8M' },
+      { t: 'ARW', role: 'Components', v: '$15.2M' },
+      { t: 'GE', role: 'Power supplies', v: '$13.9M' },
+      { t: 'DCO', role: 'Cable assemblies', v: '$11.2M' },
+      { t: 'HEI', role: 'Power converters (VPT)', v: '$11.0M' },
+      { t: 'BRK.B', role: 'Components (TTI)', v: '$10.8M' }
+    ].map((l) => ({ ...l, bg: l.prime ? '#EEF2F8' : '#FFFFFF' }));
+
+    const T = [
+      ['Aerojet Rocketdyne', 'LHX', 'AR', 'Solid rocket motor, attitude control motor', 710.2, 25],
+      ['Boeing', 'BA', 'AL', 'Seeker', 218.2, 75],
+      ['Rockwell Collins', 'RTX', 'VT', 'Housing assembly, telemetry', 215.7, 14],
+      ['Moog', 'MOG.A', 'NY', 'Actuators', 128.1, 5],
+      ['Leading Technology Composites', 'Private', 'KS', 'Armor panel assembly', 110.2, 12],
+      ['Fusheng Precision', 'Private', 'Taiwan', 'Tooling and engineering', 72.1, 3],
+      ['EnerSys', 'ENS', 'FL', 'Thermal batteries, test sets', 51.4, 5],
+      ['Advanced Thermal Batteries', 'Private', 'MD', 'Thermal batteries', 40.7, 4],
+      ['3M Technical Ceramics', 'MMM', 'GA', 'Radome', 34.8, 3],
+      ['Honeywell', 'HON', 'MN', 'Parts and materials', 29.5, 31],
+      ['Avnet', 'AVT', 'FL', 'Electronic components', 28.0, 111],
+      ['Peraton', 'Private', 'CO', 'Aerodynamic fairing', 23.8, 15],
+      ['Pioneer Circuits', 'Private', 'CA', 'Printed wiring boards', 19.4, 51],
+      ['General Dynamics OTS', 'GD', 'NE', 'Seeker housing, composite midsection', 18.8, 6],
+      ['Glenair', 'Private', 'CA', 'Connectors', 18.7, 178],
+      ['Pacific Scientific EMC', 'Private', 'CA', 'Ignition safety device', 17.4, 28],
+      ['Haigh-Farr', 'Private', 'NH', 'Antenna arrays', 15.9, 8],
+      ['Arrow Electronics', 'ARW', 'NY', 'Electronic components', 15.2, 136],
+      ['AEMI Holdings', 'Private', 'CA', '–', 14.1, 112],
+      ['GE', 'GE', 'NY', 'Power supplies', 13.9, 5]
+    ];
+    const table = T.map(([name, t, st, part, v, n]) => ({ name, t, st, part, v: fmt(v), n, pct: Math.max(1, 100 * v / 710.2), tfg: t === 'Private' ? '#64748B' : '#3B4F72' }));
+
+    return { nav, kpis, conc, concAlt, leave, geo, foreign, entry, listed, table };
+  }
+}
+
+
+TAB_CLASSES['offices'] = class extends DCLogic {
+  renderVals() {
+    const navDef = [
+      { label: 'HOME', items: ['Chat', 'Workspace'] },
+      { label: 'MONITOR', items: ['Watchlist', 'Sensing', 'News'] },
+      { label: 'ENTITIES', items: ['Markets', 'Companies', 'Contracts', 'Opportunities', 'Programs', 'Congressional Marks'] },
+      { label: 'ACTORS', items: ['Offices', 'People'] },
+      { label: 'ANALYSIS', items: ['Screener', 'Scenarios'] }
+    ];
+    const nav = navDef.map((g) => ({ label: g.label, items: g.items.map((l) => ({ label: l, fg: l === 'Programs' ? '#3B4F72' : '#334155', bg: l === 'Programs' ? '#EEF2F8' : 'transparent', weight: l === 'Programs' ? 600 : 400 })) }));
+    const fmtB = (b) => b >= 1 ? '$' + b.toFixed(2) + 'B' : '$' + (b * 1000).toFixed(0) + 'M';
+    const fmt = (m) => Math.abs(m) >= 1000 ? '$' + (m / 1000).toFixed(2) + 'B' : '$' + m.toFixed(1) + 'M';
+
+    const offices = [
+      { name: 'LOWER TIER INTERCEPTORS', progs: [['PAC-3 MSE', 37.58, true]] },
+      { name: 'STORM', progs: [['GMLRS', 15.14], ['M270 MLRS', 4.11], ['HIMARS M142', 3.54], ['ATACMS', 3.13], ['PrSM', 3.06]] },
+      { name: 'TAGM', progs: [['JAGM', 5.29], ['Javelin', 3.87], ['Hellfire', 2.35]] },
+      { name: 'SPHS', progs: [['Paladin M109A7', 4.17]] },
+      { name: 'OTHER OFFICES', progs: [['IBCS', 2.71], ['LTAMDS', 1.90], ['Other', 1.41]] }
+    ];
+    const ramp = ['#3B4F72', '#4F6A92', '#6C8EBF', '#8FA9C8', '#B4C6DC'];
+    const tree = offices.map((o) => {
+      const tot = o.progs.reduce((a, p) => a + p[1], 0);
+      return {
+        name: o.name,
+        v: fmtB(tot),
+        flex: tot.toFixed(2),
+        progs: o.progs.map((p, i) => {
+          const me = !!p[2];
+          const share = p[1] / tot;
+          const small = share * 340 < 44;
+          return {
+            name: p[0],
+            v: small ? '' : fmtB(p[1]),
+            flex: p[1].toFixed(2),
+            bg: me ? '#E08A3C' : ramp[Math.min(i + 1, ramp.length - 1)],
+            fg: me ? '#FFFFFF' : (i >= 2 ? '#0F172A' : '#FFFFFF'),
+            fg2: me ? '#FCF0D4' : (i >= 2 ? '#334155' : '#E2E8F0'),
+            fs: me ? 18 : (small ? 11 : 13),
+            ring: me ? '2px solid #DC2625' : 'none'
+          };
+        })
+      };
+    });
+
+    const F = [
+      ['PEO Missiles and Space, Huntsville', 'W51539', 7766.5],
+      ['PM PEO Equipment, Chambersburg', 'W90WYC', 1831.1],
+      ['PEO Missiles and Space, Huntsville', 'W80FH0', 1323.7],
+      ['Aviation and Missile Command', 'W31G3H', 339.5],
+      ['PEO Missiles and Space, Redstone', 'W81TXD', 157.6],
+      ['Other offices', '', 11.3]
+    ];
+    const funding = F.map(([n, code, v]) => ({ n, code, v: fmt(v), pct: Math.max(1, 100 * v / 7766.5) }));
+
+    const CO = [
+      ['ACC-Redstone', 'W31P4Q', 36348.0, '96.7%', 1426],
+      ['Aviation and Missile Command', 'AH01', 566.0, '1.5%', 32],
+      ['DLA Aviation, Huntsville', 'SPRRA2', 279.8, '0.7%', 1089],
+      ['Letterkenny contracting office', 'W911N2', 174.8, '0.5%', 2162]
+    ];
+    const contracting = CO.map(([n, code, v, sh, awards]) => ({ n, code, v: fmt(v), sh, awards: awards.toLocaleString('en-US'), pct: Math.max(1, 100 * v / 36348.0) }));
+
+    const P = [
+      ['1410', 'Guided missiles', 21526.7, '57.3%'],
+      ['1420', 'Guided missile components', 3871.8, '10.3%'],
+      ['J014', 'Repair and rebuild of guided missiles', 2250.3, '6.0%'],
+      ['1440', 'Guided missile launchers', 2171.7, '5.8%'],
+      ['1336', 'Guided missile warheads and explosive components', 1565.6, '4.2%']
+    ];
+    const psc = P.map(([code, n, v, sh]) => ({ code, n, v: fmt(v), sh, pct: 100 * v / 21526.7 }));
+    const NA = [
+      ['336414', 'Guided missile and space vehicle manufacturing', 21707.1, '58.4%'],
+      ['336419', 'Other guided missile and space vehicle parts', 11529.1, '31.0%'],
+      ['561499', 'All other business support services', 533.2, '1.4%'],
+      ['541990', 'All other professional and technical services', 511.2, '1.4%'],
+      ['336415', 'Guided missile propulsion units and parts', 466.4, '1.3%']
+    ];
+    const naics = NA.map(([code, n, v, sh]) => ({ code, n, v: fmt(v), sh, pct: 100 * v / 21707.1 }));
+
+    const st = { Active: ['#E7F4EC', '#2E8B4A'], 'FOC/FD': ['#F1F5F9', '#334155'], Restructured: ['#FCF0D4', '#B07C06'] };
+    const dpn = [
+      { n: '492', short: 'PAC-3 MSE', full: 'Patriot Advanced Capability-3 Missile Segment Enhancement', status: 'Active', match: 'Same program' },
+      { n: '148', short: 'PAC-3', full: 'Patriot Advanced Capability-3', status: 'FOC/FD', match: 'Related' },
+      { n: '531', short: 'Patriot/MEADS CAP', full: 'Patriot/Medium Extended Air Defense System Combined Aggregate Program', status: 'Restructured', match: 'Related' }
+    ].map((d) => ({ ...d, sbg: st[d.status][0], sfg: st[d.status][1] }));
+
+    const R = { Core: ['#E7ECF4', '#3B4F72'], Related: ['#F1F5F9', '#475569'] };
+    const lines = [
+      { n: 'MSE Missile', code: '8260C53101', acct: 'Missile Procurement, Army', role: 'Core' },
+      { n: 'MSE Missile', code: '2247', acct: 'Weapons Procurement, Navy', role: 'Core' },
+      { n: 'Patriot Mods', code: '0962C50700', acct: 'Missile Procurement, Army', role: 'Related' },
+      { n: 'Patriot Product Improvement', code: 'PE 0607865A', acct: 'RDT&E, Army', role: 'Related' }
+    ].map((l) => ({ ...l, bg: R[l.role][0], fg: R[l.role][1] }));
+
+    return { nav, tree, funding, contracting, psc, naics, dpn, lines };
+  }
+}
+
+
+TAB_CLASSES['connections'] = class extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { hover: null };
+  }
+  renderVals() {
+    const navDef = [
+      { label: 'HOME', items: ['Chat', 'Workspace'] },
+      { label: 'MONITOR', items: ['Watchlist', 'Sensing', 'News'] },
+      { label: 'ENTITIES', items: ['Markets', 'Companies', 'Contracts', 'Opportunities', 'Programs', 'Congressional Marks'] },
+      { label: 'ACTORS', items: ['Offices', 'People'] },
+      { label: 'ANALYSIS', items: ['Screener', 'Scenarios'] }
+    ];
+    const nav = navDef.map((g) => ({ label: g.label, items: g.items.map((l) => ({ label: l, fg: l === 'Programs' ? '#3B4F72' : '#334155', bg: l === 'Programs' ? '#EEF2F8' : 'transparent', weight: l === 'Programs' ? 600 : 400 })) }));
+    const CL = {
+      off: { c: '#64748B', t: 'FUNDING OFFICES' }, org: { c: '#3B4F72', t: 'MANAGEMENT' }, cong: { c: '#7C3AED', t: 'CONGRESS' },
+      bud: { c: '#3B4F72', t: 'BUDGET LINES' }, ctr: { c: '#2F6690', t: 'CONTRACTS' }, prime: { c: '#0F172A', t: 'PRIME' },
+      sup: { c: '#2A9D8F', t: 'SUPPLIERS, FY22–25' }, fms: { c: '#D9822B', t: 'FOREIGN DEMAND' }
+    };
+    // x, y are centers
+    const cmNodes = [
+      { id: 'w515', cl: 'off', x: 70, y: 56, w: 130, name: 'W51539', sub: 'PEO M&S · $7.77B' },
+      { id: 'w90w', cl: 'off', x: 212, y: 56, w: 130, name: 'W90WYC', sub: 'PM PEO Eq. · $1.83B' },
+      { id: 'w80f', cl: 'off', x: 354, y: 56, w: 130, name: 'W80FH0', sub: 'PEO M&S · $1.32B' },
+      { id: 'lti', cl: 'org', x: 548, y: 56, w: 176, name: 'Lower Tier Interceptors', sub: 'Program office' },
+      { id: 'pae', cl: 'org', x: 730, y: 56, w: 140, name: 'PAE Fires', sub: 'Army portfolio' },
+      { id: 'acc', cl: 'org', x: 960, y: 56, w: 200, name: 'ACC-Redstone', sub: 'W31P4Q · 96.7% of awards' },
+      { id: 'sasc', cl: 'cong', x: 62, y: 260, w: 120, name: 'SASC', sub: '+$539.6M FY26' },
+      { id: 'ndaa', cl: 'cong', x: 62, y: 318, w: 120, name: 'NDAA', sub: '+$1.74B FY26' },
+      { id: 'hacd', cl: 'cong', x: 62, y: 376, w: 120, name: 'HAC-D', sub: '−$252.0M FY24' },
+      { id: 'sacd', cl: 'cong', x: 62, y: 434, w: 120, name: 'SAC-D', sub: '+$12.56B FY27' },
+      { id: 'hasc', cl: 'cong', x: 62, y: 492, w: 120, name: 'HASC', sub: '+$1.00B FY23' },
+      { id: 'army', cl: 'bud', x: 228, y: 290, w: 150, name: 'Army MSE line', sub: '$9.17B FY22–26' },
+      { id: 'navy', cl: 'bud', x: 228, y: 370, w: 150, name: 'Navy MSE line', sub: 'New FY26 · $47.0M' },
+      { id: 'mods', cl: 'bud', x: 228, y: 470, w: 150, name: 'Patriot Mods', sub: 'Related · Patriot' },
+      { id: 'ppi', cl: 'bud', x: 228, y: 530, w: 150, name: 'Patriot Prod. Impr.', sub: 'Related · RDT&E' },
+      { id: 'hub', cl: 'hub', x: 400, y: 400, r: 64, name: 'PAC-3 MSE', sub: '$11.43B obligated' },
+      { id: 'myp', cl: 'ctr', x: 612, y: 250, w: 164, name: 'Multiyear production', sub: '24C0022 · $5.86B' },
+      { id: 'p21', cl: 'ctr', x: 612, y: 325, w: 164, name: 'FY21–23 production', sub: '20C0023 · $3.93B' },
+      { id: 'spt', cl: 'ctr', x: 612, y: 400, w: 164, name: 'Support orders', sub: 'Missile support · $1.09B' },
+      { id: 'lch', cl: 'ctr', x: 612, y: 475, w: 164, name: 'Launcher, guidance', sub: '2 orders · $300.0M' },
+      { id: 'rec', cl: 'ctr', x: 612, y: 550, w: 164, name: 'Recertification', sub: '22C0060 · $202.8M' },
+      { id: 'lmt', cl: 'prime', x: 800, y: 400, w: 132, name: 'Lockheed Martin', sub: 'LMT · 99.9% of $' },
+      { id: 'lhx', cl: 'sup', x: 1004, y: 190, w: 176, name: 'L3Harris', sub: 'Rocket motors · $710.2M' },
+      { id: 'ba', cl: 'sup', x: 1004, y: 250, w: 176, name: 'Boeing', sub: 'Seeker · $218.2M' },
+      { id: 'rtx', cl: 'sup', x: 1004, y: 310, w: 176, name: 'RTX', sub: 'Telemetry · $215.7M' },
+      { id: 'mog', cl: 'sup', x: 1004, y: 370, w: 176, name: 'Moog', sub: 'Actuators · $128.1M' },
+      { id: 'ltc', cl: 'sup', x: 1004, y: 430, w: 176, name: 'Leading Tech', sub: 'Armor panels · $110.2M' },
+      { id: 'ens', cl: 'sup', x: 1004, y: 490, w: 176, name: 'EnerSys', sub: 'Batteries · $51.4M' },
+      { id: 'more', cl: 'sup', x: 1004, y: 550, w: 176, name: '354 more suppliers', sub: '$801.8M' },
+      { id: 'fus', cl: 'sup', x: 1004, y: 700, w: 176, name: 'Fusheng Precision', sub: 'Taiwan · $72.1M' },
+      { id: 'fmsn', cl: 'fms', x: 380, y: 612, w: 190, name: 'FMS and other', sub: '$2.21B derived · 234 awards' },
+      { id: 'tw', cl: 'fms', x: 58, y: 700, w: 100, name: 'Taiwan', sub: '13 awards' },
+      { id: 'qa', cl: 'fms', x: 166, y: 700, w: 100, name: 'Qatar', sub: '9 awards' },
+      { id: 'ae', cl: 'fms', x: 274, y: 700, w: 100, name: 'UAE', sub: '8 awards' },
+      { id: 'kw', cl: 'fms', x: 382, y: 700, w: 100, name: 'Kuwait', sub: '8 awards' },
+      { id: 'de', cl: 'fms', x: 490, y: 700, w: 100, name: 'Germany', sub: '7 awards' },
+      { id: 'nl', cl: 'fms', x: 598, y: 700, w: 100, name: 'Netherlands', sub: '6 awards' },
+      { id: 'om', cl: 'fms', x: 706, y: 700, w: 100, name: '8 more', sub: 'Incl. Poland' }
+    ];
+    // t: money | fms | sub | up | down | org | rel | demand | country
+    const cmEdges = [
+      ['w515', 'hub', 'money', 7770], ['w90w', 'hub', 'money', 1830], ['w80f', 'hub', 'money', 1320],
+      ['pae', 'lti', 'org'], ['lti', 'hub', 'org'], ['acc', 'myp', 'org'],
+      ['sasc', 'army', 'up'], ['ndaa', 'army', 'up'], ['hacd', 'army', 'down'], ['sacd', 'army', 'up'], ['sacd', 'navy', 'up'], ['hasc', 'mods', 'up'],
+      ['army', 'hub', 'money', 9170.4], ['navy', 'hub', 'money', 47.0], ['mods', 'hub', 'rel'], ['ppi', 'hub', 'rel'],
+      ['fmsn', 'hub', 'fms', 2212.3],
+      ['hub', 'myp', 'money', 5856.3], ['hub', 'p21', 'money', 3934.7], ['hub', 'spt', 'money', 1088.7], ['hub', 'lch', 'money', 300.0], ['hub', 'rec', 'money', 202.8],
+      ['myp', 'lmt', 'money', 5856.3], ['p21', 'lmt', 'money', 3934.7], ['spt', 'lmt', 'money', 1088.7], ['lch', 'lmt', 'money', 300.0], ['rec', 'lmt', 'money', 202.8],
+      ['lmt', 'lhx', 'sub', 710.2], ['lmt', 'ba', 'sub', 218.2], ['lmt', 'rtx', 'sub', 215.7], ['lmt', 'mog', 'sub', 128.1], ['lmt', 'ltc', 'sub', 110.2],
+      ['lmt', 'ens', 'sub', 51.4], ['lmt', 'more', 'sub', 801.8], ['lmt', 'fus', 'sub', 72.1],
+      ['tw', 'fmsn', 'demand'], ['qa', 'fmsn', 'demand'], ['ae', 'fmsn', 'demand'], ['kw', 'fmsn', 'demand'],
+      ['de', 'fmsn', 'demand'], ['nl', 'fmsn', 'demand'], ['om', 'fmsn', 'demand'],
+      ['tw', 'fus', 'country']
+    ];
+    const cm = (() => {
+      const W = 1094, H = 800, NH = 44, LINKY = 776;
+      const VERT = { off: 1, org: 1, fms: 1 };
+      const ES = {
+        money: ['#5E82BF', ''], fms: ['#EE9F4F', ''], sub: ['#33B5A5', ''], up: ['#2E9E6A', ''], down: ['#D1495B', ''], at: ['#94A3B8', ''],
+        org: ['#94A3B8', '5 4'], rel: ['#94A3B8', '5 4'], demand: ['#EE9F4F', ''], country: ['#7C3AED', '3 4']
+      };
+      const by = {};
+      cmNodes.forEach((n) => { by[n.id] = n; });
+      const half = (n) => n.r ? [n.r, n.r] : [n.w / 2, NH / 2];
+      const hv = this.state.hover && by[this.state.hover] ? this.state.hover : null;
+      const nb = {};
+      if (hv) { nb[hv] = 1; cmEdges.forEach(([s, t]) => { if (s === hv) nb[t] = 1; if (t === hv) nb[s] = 1; }); }
+      const r1 = (v) => Math.round(v * 10) / 10;
+      const edges = cmEdges.map(([s, t, type, v]) => {
+        const a = by[s], b = by[t];
+        const [aw, ah] = half(a), [bw, bh] = half(b);
+        const dx = b.x - a.x, dy = b.y - a.y;
+        let x0, y0, x1, y1, c0x, c0y, c1x, c1y;
+        if (type === 'country') {
+          x0 = a.x; y0 = a.y + ah; x1 = b.x - bw; y1 = b.y;
+          const d0 = `M${x0},${y0} C${x0},${LINKY} ${x0},${LINKY} ${x0 + 40},${LINKY} L${x1 - 70},${LINKY} C${x1 - 20},${LINKY} ${x1 - 30},${y1} ${x1},${y1}`;
+          const on0 = !hv || s === hv || t === hv;
+          return { d: d0, w: 2, color: ES[type][0], dash: ES[type][1], op: hv ? (on0 ? 0.9 : 0.06) : 0.7 };
+        } else if (a.y === b.y || !(VERT[a.cl] || VERT[b.cl])) {
+          const sx = Math.sign(dx);
+          x0 = a.x + sx * aw; y0 = a.y; x1 = b.x - sx * bw; y1 = b.y;
+          if (a.r) { const ang = Math.atan2(dy, dx); x0 = a.x + a.r * Math.cos(ang) * 0.98; y0 = a.y + a.r * Math.sin(ang) * 0.98; }
+          if (b.r) { const ang = Math.atan2(-dy, -dx); x1 = b.x + b.r * Math.cos(ang) * 0.98; y1 = b.y + b.r * Math.sin(ang) * 0.98; }
+          const m = (x1 - x0) / 2; c0x = x0 + m; c0y = y0; c1x = x1 - m; c1y = y1;
+        } else {
+          const sy = Math.sign(dy);
+          x0 = a.x; y0 = a.y + sy * ah; x1 = b.x; y1 = b.y - sy * bh;
+          if (a.r) { const ang = Math.atan2(dy, dx); x0 = a.x + a.r * Math.cos(ang) * 0.98; y0 = a.y + a.r * Math.sin(ang) * 0.98; }
+          if (b.r) { const ang = Math.atan2(-dy, -dx); x1 = b.x + b.r * Math.cos(ang) * 0.98; y1 = b.y + b.r * Math.sin(ang) * 0.98; }
+          const m = (y1 - y0) / 2; c0x = x0; c0y = y0 + m; c1x = x1; c1y = y1 - m;
+        }
+        const d = `M${r1(x0)},${r1(y0)} C${r1(c0x)},${r1(c0y)} ${r1(c1x)},${r1(c1y)} ${r1(x1)},${r1(y1)}`;
+        const w = v ? r1(1.5 + 16 * Math.sqrt(v / 9170.4)) : (type === 'up' || type === 'down' || type === 'at' ? 2 : type === 'demand' ? 1.25 : 1.5);
+        const on = !hv || s === hv || t === hv;
+        return { d, w, color: ES[type][0], dash: ES[type][1] || 'none', op: hv ? (on ? 0.8 : 0.06) : (v ? 0.38 : 0.6) };
+      });
+      const nodes = cmNodes.filter((n) => !n.r).map((n) => ({
+        ...n, left: Math.round(n.x - n.w / 2), top: Math.round(n.y - NH / 2), accent: CL[n.cl].c,
+        dim: hv && !nb[n.id] ? 0.25 : 1, ring: hv === n.id ? CL[n.cl].c : '#E2E8F0',
+        enter: () => this.setState({ hover: n.id })
+      }));
+      const h = by.hub;
+      const hub = { left: h.x - h.r, top: h.y - h.r, size: h.r * 2, name: h.name, sub: h.sub, dim: hv && !nb.hub ? 0.35 : 1, enter: () => this.setState({ hover: 'hub' }) };
+      const heads = Object.keys(CL).map((k) => {
+        const ns = cmNodes.filter((n) => n.cl === k);
+        const x = Math.min.apply(null, ns.map((n) => n.x - n.w / 2));
+        const y = Math.min.apply(null, ns.map((n) => n.y - NH / 2));
+        return { t: CL[k].t, x: Math.round(x), y: Math.round(y - 20), c: CL[k].c };
+      });
+      const note = { x: 300, y: LINKY + 4, t: 'Taiwan: FMS customer on 13 awards and a supplier country, $248.9M of subawards FY18–25', dim: hv && !(hv === 'tw' || hv === 'fus') ? 0.25 : 1 };
+      return { W, H, edges, nodes, hub, heads, note,
+        alt: 'Connection map of PAC-3 MSE. Congress committees mark the Army and Navy MSE lines and Patriot Mods; the budget lines and FMS funds feed $11.43B of obligations, managed by Lower Tier Interceptors under PAE Fires and awarded by ACC-Redstone. Five contracts flow to Lockheed Martin, which subcontracts to L3Harris, Boeing, RTX, Moog, Leading Tech, EnerSys, Fusheng Precision and 354 more. Eight FMS customers include Taiwan, which also supplies through Fusheng Precision.' };
+    })();
+    const leave = () => this.setState({ hover: null });
+    const insights = [
+      { k: 'SINGLE POINTS', t: 'One prime, one motor', d: 'Lockheed Martin holds 99.9% of obligations. L3Harris (Aerojet Rocketdyne) is the only rocket-motor supplier, 31% of subawards.', c: '#0F172A' },
+      { k: 'CONGRESS', t: 'SAC-D drives the swings', d: '+$12.56B across both MSE lines in FY27 and +$2.09B in FY26. HAC-D cut below request in three of four years.', c: '#7C3AED' },
+      { k: 'FOREIGN', t: 'Taiwan on both sides', d: 'FMS customer on 13 awards and a supplier country, $248.9M of subawards since FY18, led by Fusheng Precision.', c: '#D9822B' },
+      { k: 'FUNDING', t: 'An unexplained office', d: 'W90WYC, a PM PEO Equipment office in Chambersburg, PA, funded $1.83B of FY22–26 obligations.', c: '#64748B' }
+    ];
+    return { nav, cm, leave, insights };
+  }
+}
+
+
+const instances = {};
+let current = null;
+let handlers = [];
+const view = document.getElementById('view');
+const get = (ctx, p) => p.split('.').reduce((o, k) => (o == null ? o : o[k]), ctx);
+function wireEvents(s, ctx) {
+  return s.replace(/on(Click|MouseEnter|MouseLeave|Focus|Blur)="\{\{([\w.]+)\}\}"/g, (_, ev, p) => {
+    const f = get(ctx, p);
+    if (typeof f !== 'function') return '';
+    handlers.push(f);
+    return `data-on-${ev.toLowerCase()}="${handlers.length - 1}"`;
+  });
+}
+function holes(s, ctx) {
+  return wireEvents(s, ctx).replace(/\{\{([\w.]+)\}\}/g, (_, p) => {
+    const v = get(ctx, p);
+    return typeof v === 'function' || v == null ? '' : String(v);
+  });
+}
+function expand(s, ctx) {
+  let out = '';
+  let i = 0;
+  const open = /<(sc-for|sc-if)\b([^>]*)>/g;
+  for (;;) {
+    open.lastIndex = i;
+    const m = open.exec(s);
+    if (!m) { out += holes(s.slice(i), ctx); break; }
+    out += holes(s.slice(i, m.index), ctx);
+    const tag = m[1];
+    const any = new RegExp(`<${tag}\\b[^>]*>|</${tag}>`, 'g');
+    any.lastIndex = open.lastIndex;
+    let depth = 1;
+    let mm;
+    while ((mm = any.exec(s))) { depth += mm[0][1] === '/' ? -1 : 1; if (!depth) break; }
+    const inner = s.slice(open.lastIndex, mm.index);
+    i = any.lastIndex;
+    if (tag === 'sc-for') {
+      const list = get(ctx, m[2].match(/list="\{\{([\w.]+)\}\}"/)[1]) || [];
+      const as = m[2].match(/as="(\w+)"/)[1];
+      list.forEach((it) => { out += expand(inner, Object.assign({}, ctx, { [as]: it })); });
+    } else if (get(ctx, m[2].match(/value="\{\{([\w.]+)\}\}"/)[1])) {
+      out += expand(inner, ctx);
+    }
+  }
+  return out;
+}
+function renderView() {
+  const inst = instances[current];
+  handlers = [];
+  view.innerHTML = expand(document.getElementById('tpl-' + current).textContent, inst.renderVals());
+}
+function fire(el, ev, e) {
+  const id = el && el.getAttribute('data-on-' + ev);
+  if (id != null && handlers[id]) handlers[id](e);
+}
+view.addEventListener('click', (e) => fire(e.target.closest('[data-on-click]'), 'click', e));
+view.addEventListener('mouseover', (e) => {
+  const el = e.target.closest('[data-on-mouseenter]');
+  if (el && !el.contains(e.relatedTarget)) fire(el, 'mouseenter', e);
+});
+view.addEventListener('mouseout', (e) => {
+  const el = e.target.closest('[data-on-mouseleave]');
+  if (el && !el.contains(e.relatedTarget)) fire(el, 'mouseleave', e);
+});
+view.addEventListener('focusin', (e) => fire(e.target.closest('[data-on-focus]'), 'focus', e));
+view.addEventListener('focusout', (e) => fire(e.target.closest('[data-on-blur]'), 'blur', e));
+const TAB_IDS = TABS.map((t) => t[0]);
+function show() {
+  const id = TAB_IDS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'overview';
+  if (id !== current) {
+    current = id;
+    if (!instances[id]) instances[id] = new TAB_CLASSES[id]({});
+    document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === id)));
+    renderView();
+    document.querySelector('.main').scrollTop = 0;
+  }
+}
+window.addEventListener('hashchange', show);
+show();
+if (window.lucide) window.lucide.createIcons();
+
+</script>
+</body>
+</html>
