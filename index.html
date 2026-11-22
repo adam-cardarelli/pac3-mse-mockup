@@ -370,7 +370,7 @@ h1 { margin: 0; font-size: 27px; line-height: 1.15; font-weight: 600; letter-spa
 <sc-for list="{{years}}" as="y" hint-placeholder-count="6">
 <span style="text-align: center; font-weight: 600; color: #0F172A">{{y.navy}}</span>
 </sc-for>
-<span style="color: #64748B">Cost per missile</span>
+<span style="color: #64748B">Hardware per missile</span>
 <sc-for list="{{years}}" as="y" hint-placeholder-count="6">
 <span style="text-align: center; color: #334155">{{y.unit}}</span>
 </sc-for>
@@ -683,108 +683,38 @@ h1 { margin: 0; font-size: 27px; line-height: 1.15; font-weight: 600; letter-spa
 </div>
 </section>
 
-<section aria-label="Missiles and cost per missile" style="flex: 2 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
-<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Missiles per year</h2>
-<sc-for list="{{qty}}" as="q" hint-placeholder-count="6">
-<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 84px; gap: 10px; align-items: center; font-size: 13px">
-<span style="display: flex; flex-direction: column"><strong>{{q.fy}}</strong><span style="font-size: 11px; color: #64748B">{{q.stage}}</span></span>
-<span style="display: flex; flex-direction: column; gap: 3px">
-<span style="display: block; height: 12px; border-radius: 3px; background: #3B4F72; width: {{q.wa}}%"></span>
-<sc-if value="{{q.hasNavy}}" hint-placeholder-val="{{false}}"><span style="display: block; height: 12px; border-radius: 3px; background: #6C8EBF; width: {{q.wn}}%"></span></sc-if>
-</span>
-<span style="text-align: right; display: flex; flex-direction: column"><strong>{{q.n}}</strong><span style="font-size: 11px; color: #64748B">{{q.unit}}</span></span>
-</div>
-</sc-for>
-<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #475569">
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #3B4F72"></span>Army</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #6C8EBF"></span>Navy</span>
-<span>Cost per missile = line total ÷ quantity</span>
-</div>
-</section>
 </div>
 
-<section aria-label="Line items" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
-<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
-<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Line items</h2>
-<span style="font-size: 12px; color: #64748B">MSE Missile · 8260C53101 · P-40, PB2027 · 1 item</span>
-</div>
-<div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px">
-<table style="width: 100%; min-width: 720px; border-collapse: collapse; font-size: 13px">
-<thead>
-<tr style="background: #F8FAFC; color: #475569; text-align: right">
-<th scope="col" style="text-align: left; padding: 10px 12px; font-weight: 600">Item</th>
-<th scope="col" style="text-align: left; padding: 10px 12px; font-weight: 600">Exhibits</th>
-<th scope="col" style="padding: 10px 12px; font-weight: 600">Prior years</th>
-<th scope="col" style="padding: 10px 12px; font-weight: 600">FY25</th>
-<th scope="col" style="padding: 10px 12px; font-weight: 600">FY26</th>
-<th scope="col" style="padding: 10px 12px; font-weight: 600">FY27</th>
-</tr>
-</thead>
-<tbody>
-<sc-for list="{{items}}" as="r" hint-placeholder-count="1">
-<tr style="border-top: 1px solid #EEF2F7; text-align: right; background: {{r.bg}}">
-<th scope="row" style="text-align: left; padding: 10px 12px; font-weight: 600">{{r.n}}</th>
-<td style="text-align: left; padding: 10px 12px; color: #475569">{{r.ex}}</td>
-<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="4">
-<td style="padding: 10px 12px"><span style="display: flex; flex-direction: column; align-items: flex-end; gap: 1px"><strong>{{c.v}}</strong><span style="font-size: 11.5px; color: #64748B">{{c.q}}</span></span></td>
-</sc-for>
-</tr>
-</sc-for>
-</tbody>
-</table>
-</div>
-<div style="display: flex; flex-wrap: wrap; gap: 8px">
-<sc-for list="{{itemChips}}" as="c" hint-placeholder-count="4">
-<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}">{{c.text}}</span>
-</sc-for>
-</div>
-</section>
-
-<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
-<section aria-label="Cost elements" style="flex: 3 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+<section aria-label="Cost elements" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
 <div style="display: flex; flex-direction: column; gap: 4px">
 <h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Cost elements</h2>
-<span style="font-size: 12px; color: #64748B">C53101 MSE Missile · P-5 · {{ce.total}}</span>
+<span style="font-size: 12px; color: #64748B">P-5 · {{ce.total}} · {{ce.note}}</span>
 </div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+<select aria-label="Line item" style="font: inherit; font-size: 13px; font-weight: 550; color: #0F172A; padding: 6px 28px 6px 10px; border: 1px solid #E2E8F0; border-radius: 8px; background: #FFFFFF">
+<option>C53101 MSE Missile</option>
+</select>
 <div role="group" aria-label="Fiscal year" style="display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 9px; background: #F1F5F9">
 <sc-for list="{{ceTabs}}" as="t" hint-placeholder-count="3">
 <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="font: inherit; font-size: 12.5px; font-weight: 550; padding: 5px 13px; border: 0; border-radius: 7px; background: {{t.bg}}; color: {{t.fg}}; cursor: pointer">{{t.label}}</button>
 </sc-for>
 </div>
 </div>
+</div>
 <sc-for list="{{ce.rows}}" as="r" hint-placeholder-count="7">
-<div style="display: grid; grid-template-columns: minmax(0, 210px) minmax(0, 1fr) 132px; gap: 12px; align-items: center; font-size: 13px; padding-top: 8px; border-top: 1px solid #EEF2F7">
+<div style="display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) 132px; gap: 12px; align-items: center; font-size: 13px; padding-top: 8px; border-top: 1px solid #EEF2F7">
 <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0"><span style="font-weight: 600">{{r.n}}</span><sc-if value="{{r.hasSub}}" hint-placeholder-val="{{false}}"><span style="font-size: 11.5px; color: #64748B">{{r.sub}}</span></sc-if></span>
 <span style="display: block; height: 8px; border-radius: 999px; background: #EEF2F7"><span style="display: block; height: 8px; border-radius: 999px; background: {{r.c}}; width: {{r.pct}}%"></span></span>
 <span style="text-align: right"><strong>{{r.v}}</strong> <span style="color: #64748B">· {{r.sh}}</span></span>
 </div>
 </sc-for>
-</section>
-
-<section aria-label="Hardware cost per missile" style="flex: 2 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
-<div style="display: flex; flex-direction: column; gap: 4px">
-<h2 style="margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A">Hardware cost per missile</h2>
-<span style="font-size: 12px; color: #64748B">P-5a unit cost by lot</span>
-</div>
-<sc-for list="{{uc}}" as="u" hint-placeholder-count="5">
-<div style="display: grid; grid-template-columns: 44px minmax(0, 1fr) 64px; gap: 10px; align-items: center; font-size: 13px">
-<strong>{{u.fy}}</strong>
-<span style="display: block; height: 12px; border-radius: 3px; background: {{u.c}}; width: {{u.pct}}%"></span>
-<strong style="text-align: right">{{u.v}}</strong>
-</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{itemChips}}" as="c" hint-placeholder-count="2">
+<span style="font-size: 12px; font-weight: 550; padding: 3px 9px; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}">{{c.text}}</span>
 </sc-for>
-<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid #EEF2F7">
-<span style="font-size: 12px; font-weight: 600; color: #334155">FY27 $4.99M per missile</span>
-<span style="display: flex; height: 14px; border-radius: 3px; overflow: hidden">
-<sc-for list="{{ucParts}}" as="u" hint-placeholder-count="3"><span style="display: block; flex: {{u.f}} 1 0; background: {{u.c}}"></span></sc-for>
-</span>
-<div style="display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: #475569">
-<sc-for list="{{ucParts}}" as="u" hint-placeholder-count="3"><span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 2px; background: {{u.c}}"></span>{{u.n}} <strong style="color: #0F172A">{{u.v}}</strong></span></sc-for>
-</div>
 </div>
 </section>
-</div>
 
 <section aria-label="Production lots" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between">
@@ -1451,7 +1381,7 @@ TAB_CLASSES['overview'] = class extends DCLogic {
       { label: 'Request, MSE lines', value: '$13.96B', sub: 'Army $12.23B · Navy $1.73B', tag: 'FY2027', t: 'gray' },
       { label: 'Missiles requested', value: '3,203', sub: 'Army 2,798 · Navy 405', tag: '7.8× FY26 (Army)', t: 'blue' },
       { label: 'Mandatory share', value: '90%', sub: '$12.56B of $13.96B', tag: 'Reconciliation funds', t: 'warn' },
-      { label: 'Cost per missile', value: '$4.37M', sub: 'Army line ÷ quantity · FY26 $4.61M', tag: 'Derived', t: 'gray' },
+      { label: 'Cost per missile', value: '$4.99M', sub: 'Hardware, FY27 lot · FY26 $4.40M', tag: 'P-5a', t: 'gray' },
       { label: 'Obligated to contracts', value: '$2.58B', sub: 'FY2026 · FY2025 $2.43B', tag: 'Partial year', t: 'gray' },
       { label: 'Lockheed share', value: '99.9%', sub: 'Obligations FY22–26, $11.42B', tag: 'Single prime', t: 'warn' }
     ].map((k) => ({ ...k, tagBg: tone[k.t][0], tagFg: tone[k.t][1] }));
@@ -1514,8 +1444,6 @@ TAB_CLASSES['overview'] = class extends DCLogic {
         alt: 'PAC-3 MSE money, FY22 to FY26. $11.43B was obligated: $5.12B enacted on the Army line (request $4.94B, Congress +$185.0M net), $4.05B added during the year ($3.85B after enactment and $200.0M mandatory), and $2.26B from the Navy line ($47.0M) and FMS and other funds ($2.21B, derived). It went to the multiyear award ($5.86B), the FY21–23 and earlier lots ($3.97B), support ($1.10B), launchers ($300.0M) and recertification ($202.8M).' };
     })();
     const wfChips = [
-      { text: '42% of Army line money came after enactment', t: 'blue' },
-      { text: 'Congress net +$185.0M on the base line', t: 'good' },
       { text: 'FMS and other: 19% of obligations', t: 'warn' },
       { text: 'Two production awards: 86% of obligations', t: 'gray' }
     ].map((c) => ({ ...c, bg: tone[c.t][0], fg: tone[c.t][1] }));
@@ -1523,11 +1451,11 @@ TAB_CLASSES['overview'] = class extends DCLogic {
 
     const ys = [
       { fy: 'FY22', stage: 'Actual', disc: 1333.1, mand: 0, qty: '328', navy: '–', unit: '–', obl: '$1.68B' },
-      { fy: 'FY23', stage: 'Actual', disc: 2471.4, mand: 0, qty: '252', navy: '–', unit: '–', obl: '$2.58B' },
-      { fy: 'FY24', stage: 'Actual', disc: 2814.9, mand: 0, qty: '230', navy: '–', unit: '–', obl: '$2.17B' },
-      { fy: 'FY25', stage: 'Actual', disc: 905.1, mand: 0, qty: '194', navy: '–', unit: '$4.67M', obl: '$2.43B' },
-      { fy: 'FY26', stage: 'Enacted', disc: 1445.9, mand: 200.0, qty: '357', navy: '12', unit: '$4.61M', obl: '$2.58B*' },
-      { fy: 'FY27', stage: 'Request', disc: 1297.5, mand: 10931.9, qty: '2,798', navy: '405', unit: '$4.37M', obl: '–' }
+      { fy: 'FY23', stage: 'Actual', disc: 2471.4, mand: 0, qty: '252', navy: '–', unit: '$3.83M', obl: '$2.58B' },
+      { fy: 'FY24', stage: 'Actual', disc: 2814.9, mand: 0, qty: '230', navy: '–', unit: '$3.84M', obl: '$2.17B' },
+      { fy: 'FY25', stage: 'Actual', disc: 905.1, mand: 0, qty: '194', navy: '–', unit: '$4.27M', obl: '$2.43B' },
+      { fy: 'FY26', stage: 'Enacted', disc: 1445.9, mand: 200.0, qty: '357', navy: '12', unit: '$4.40M', obl: '$2.58B*' },
+      { fy: 'FY27', stage: 'Request', disc: 1297.5, mand: 10931.9, qty: '2,798', navy: '405', unit: '$4.99M', obl: '–' }
     ];
     const max = 12229.4;
     const fmt = (m) => m >= 1000 ? '$' + (m / 1000).toFixed(2) + 'B' : '$' + m.toFixed(1) + 'M';
@@ -1739,7 +1667,7 @@ TAB_CLASSES['budget'] = class extends DCLogic {
       { label: 'Mandatory funding', value: '$12.56B', sub: '84% of all lines, FY27' },
       { label: 'Enacted, FY2026', value: '$2.58B', sub: '3 Army lines' },
       { label: 'Missiles requested', value: '3,203', sub: 'FY27 · Army 2,798 · Navy 405' },
-      { label: 'Cost per missile', value: '$4.37M', sub: 'Army line, FY27 · derived' }
+      { label: 'Cost per missile', value: '$4.99M', sub: 'Hardware, FY27 lot · P-5a' }
     ];
 
     const L = [
@@ -1807,22 +1735,6 @@ TAB_CLASSES['budget'] = class extends DCLogic {
       };
     });
 
-    const Q = [
-      { fy: 'FY22', stage: 'Actual', a: 328, n: 0, unit: '–' },
-      { fy: 'FY23', stage: 'Actual', a: 252, n: 0, unit: '–' },
-      { fy: 'FY24', stage: 'Actual', a: 230, n: 0, unit: '–' },
-      { fy: 'FY25', stage: 'Actual', a: 194, n: 0, unit: '$4.67M' },
-      { fy: 'FY26', stage: 'Enacted', a: 357, n: 12, unit: '$4.61M' },
-      { fy: 'FY27', stage: 'Request', a: 2798, n: 405, unit: '$4.37M' }
-    ];
-    const qmax = 2798;
-    const qty = Q.map((q) => ({
-      fy: q.fy, stage: q.stage, unit: q.unit,
-      n: (q.a + q.n).toLocaleString('en-US'),
-      wa: Math.max(1, 100 * q.a / qmax),
-      wn: Math.max(1, 100 * q.n / qmax),
-      hasNavy: q.n > 0
-    }));
 
     const sources = ['Missile Procurement, Army J-Book FY2027', 'Weapons Procurement, Navy J-Book FY2027', 'RDT&E Army Vol 4, BA 7, FY2027', 'J-Books FY2024 to FY2026'];
 
@@ -1830,21 +1742,15 @@ TAB_CLASSES['budget'] = class extends DCLogic {
     // Exhibits P-40, P-5 and P-5a, PB2027 Army J-book (Apr 2026). Not yet in dmn_jbook.
     const toneB = { blue: ['#E8F0FC', '#017EFA'], warn: ['#FCF0D4', '#B07C06'], good: ['#E7F4EC', '#2E8B4A'], gray: ['#F1F5F9', '#334155'] };
     const pill = (c) => ({ ...c, bg: toneB[c.t][0], fg: toneB[c.t][1] });
-    const qn = (n) => n.toLocaleString('en-US') + ' missiles';
-    const items = [
-      { n: 'C53101 MSE Missile', ex: 'P-5 · P-5a · P-21', bg: '#FFFFFF', cells: [[12963.9, 3506], [1031.1, 194], [1571.9, 310], [1297.5, 244]] }
-    ].map((r) => ({ ...r, cells: r.cells.map(([v, q]) => ({ v: fmt(v), q: qn(q) })) }));
     const itemChips = [
-      { text: 'FY27 mandatory: $10.93B for 2,554 missiles', t: 'warn' },
-      { text: 'FY26 mandatory: $200.0M for 48 missiles', t: 'gray' },
       { text: 'Army objective 3,376 → 13,773, Apr 2025', t: 'blue' },
       { text: 'Unit price assumes yearly FMS buys', t: 'gray' }
     ].map(pill);
 
     const CE = {
-      FY25: { qty: 194, unit: 4266.464, rows: [['Missile hardware', 827.694], ['Advance procurement', 126.0, 'Long lead items'], ['Obsolescence', 22.659], ['Field surveillance', 18.870], ['SE/PM contractor', 14.316], ['P3MSC support center', 11.737], ['Gov and software engineering', 9.784]] },
-      FY26: { qty: 311, unit: 4395.473, rows: [['Missile hardware', 1366.992], ['Advance procurement', 126.0, 'Long lead items'], ['Obsolescence', 23.112], ['Field surveillance', 19.247], ['SE/PM contractor', 14.602], ['P3MSC support center', 11.972], ['Gov and software engineering', 9.980]] },
-      FY27: { qty: 244, unit: 4987.857, rows: [['Missile hardware', 1217.037], ['Obsolescence', 23.575], ['Field surveillance', 19.632], ['SE/PM contractor', 14.894], ['P3MSC support center', 12.211], ['Gov and software engineering', 10.179]] }
+      FY25: { note: 'no mandatory funds', qty: 194, unit: 4266.464, rows: [['Missile hardware', 827.694], ['Advance procurement', 126.0, 'Long lead items'], ['Obsolescence', 22.659], ['Field surveillance', 18.870], ['SE/PM contractor', 14.316], ['P3MSC support center', 11.737], ['Gov and software engineering', 9.784]] },
+      FY26: { note: 'excludes $200.0M mandatory, 48 missiles', qty: 311, unit: 4395.473, rows: [['Missile hardware', 1366.992], ['Advance procurement', 126.0, 'Long lead items'], ['Obsolescence', 23.112], ['Field surveillance', 19.247], ['SE/PM contractor', 14.602], ['P3MSC support center', 11.972], ['Gov and software engineering', 9.980]] },
+      FY27: { note: 'base request, excludes $10.93B mandatory, 2,554 missiles', split: 'Missile $4.18M · ancillary hardware $0.32M · producibility $0.49M', qty: 244, unit: 4987.857, rows: [['Missile hardware', 1217.037], ['Obsolescence', 23.575], ['Field surveillance', 19.632], ['SE/PM contractor', 14.894], ['P3MSC support center', 12.211], ['Gov and software engineering', 10.179]] }
     };
     const ceFy = this.state.ceFy;
     const ceDef = CE[ceFy];
@@ -1852,9 +1758,10 @@ TAB_CLASSES['budget'] = class extends DCLogic {
     const ceMax = ceDef.rows[0][1];
     const ce = {
       total: fmt(ceTot) + ' ' + ceFy,
+      note: ceDef.note,
       rows: ceDef.rows.map(([n, v, sub], i) => {
         const hw = i === 0;
-        const s2 = hw ? ceDef.qty + ' × $' + (ceDef.unit / 1000).toFixed(2) + 'M' : (sub || '');
+        const s2 = hw ? ceDef.qty + ' × $' + (ceDef.unit / 1000).toFixed(2) + 'M' + (ceDef.split ? ' = ' + ceDef.split : '') : (sub || '');
         return { n, v: fmt(v), sh: (100 * v / ceTot).toFixed(1) + '%', pct: Math.max(0.6, 100 * v / ceMax), c: hw ? '#3B4F72' : '#6C8EBF', hasSub: !!s2, sub: s2 };
       })
     };
@@ -1892,15 +1799,8 @@ TAB_CLASSES['budget'] = class extends DCLogic {
       { text: 'FY26 lot FPIF: multiyear start', t: 'gray' },
       { text: '26–29 months award to delivery', t: 'gray' }
     ].map(pill);
-    const ucMax = 4987.857;
-    const uc = LOTS.map((l) => ({ fy: l.fy, v: '$' + (l.unit / 1000).toFixed(2) + 'M', pct: 100 * l.unit / ucMax, c: l.plan ? '#E08A3C' : '#3B4F72' }));
-    const ucParts = [
-      { n: 'Missile', v: '$4.18M', f: 4.180, c: '#3B4F72' },
-      { n: 'Ancillary hardware', v: '$0.32M', f: 0.320, c: '#6C8EBF' },
-      { n: 'Producibility', v: '$0.49M', f: 0.488, c: '#9FD8DD' }
-    ];
 
-    return { nav, kpis, bars, scaleTabs, legend, rows, rea, qty, sources, items, itemChips, ce, ceTabs, lots, lotChips, uc, ucParts };
+    return { nav, kpis, bars, scaleTabs, legend, rows, rea, sources, itemChips, ce, ceTabs, lots, lotChips };
   }
 }
 
