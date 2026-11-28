@@ -105,6 +105,48 @@ h1 { margin: 0; font-size: 27px; line-height: 1.15; font-weight: 600; letter-spa
   .tb-right .btn-secondary { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Spec view: data sources per section. Hidden until the Spec switch is on. */
+.spec-toggle[aria-pressed="true"] { background: #4C1D95; border-color: #4C1D95; color: #FFFFFF; }
+.tab-spec { display: none; }
+body.spec-on .tab-spec { display: inline-flex; }
+.spec-note { display: none; }
+body.spec-on .spec-note { display: block; flex: 0 0 100%; order: -1; grid-column: 1 / -1; align-self: stretch; min-width: 0; width: 100%; padding: 10px 12px; border: 1px dashed #A78BFA; border-radius: 6px; background: #FAF7FF; color: #1E1B4B; font-size: 12px; line-height: 1.45; }
+.ph .spec-note { margin-top: 14px; }
+.spec-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-bottom: 6px; }
+.spec-kicker { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; color: #6D28D9; }
+.spec-count { font-size: 11.5px; color: #5B5675; }
+body.spec-on .spec-note { container-type: inline-size; }
+.spec-items { display: grid; grid-template-columns: minmax(0, 13em) minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; }
+.spec-items .si-ui { font-weight: 600; color: #312E81; }
+.spec-items .si-src { color: #1E1B4B; overflow-wrap: anywhere; }
+.spec-items .st { justify-self: end; }
+@container (max-width: 560px) {
+  .spec-items { grid-template-columns: minmax(0, 1fr) auto; }
+  .spec-items .si-ui { grid-column: 1 / -1; margin-top: 4px; }
+}
+.spec-foot { margin: 6px 0 0; color: #5B5675; }
+.spec-note code, .spec-doc code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; background: #EDE9FE; color: #3B0764; border-radius: 3px; padding: 0 3px; overflow-wrap: anywhere; }
+.st { display: inline-flex; border-radius: 999px; padding: 1px 8px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.st-e { background: #E7F4EC; color: #1F7A3D; }
+.st-p { background: #E8F0FC; color: #0B5CC7; }
+.st-x { background: #FBEAE5; color: #9A3412; }
+.spec-doc { display: flex; flex-direction: column; gap: 18px; }
+.spec-card { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 6px; box-shadow: var(--shadow-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.spec-card h2 { margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em; color: #0F172A; }
+.spec-card h3 { margin: 0; font-size: 14px; font-weight: 650; color: #0F172A; }
+.spec-card p { margin: 0; font-size: 13px; line-height: 1.5; color: #334155; }
+.spec-card ul, .spec-card ol { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; color: #334155; }
+.spec-tables { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 14px; }
+.spec-table { border: 1px solid #E2E8F0; border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.spec-meta { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 2px 10px; font-size: 12.5px; color: #334155; }
+.spec-meta dt { color: #64748B; }
+.spec-meta dd { margin: 0; overflow-wrap: anywhere; }
+.spec-scroll { overflow-x: auto; }
+.spec-grid { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.spec-grid th { text-align: left; font-size: 11.5px; font-weight: 600; color: #64748B; padding: 6px 8px; border-bottom: 1px solid #E2E8F0; }
+.spec-grid td { padding: 6px 8px; border-bottom: 1px solid #F1F5F9; vertical-align: top; color: #334155; overflow-wrap: anywhere; }
+.spec-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 12.5px; color: #475569; }
 </style>
 </head>
 <body>
@@ -243,6 +285,7 @@ h1 { margin: 0; font-size: 27px; line-height: 1.15; font-weight: 600; letter-spa
 </div>
 <div class="ph-actions">
 <label class="fy" for="fy">Fiscal year <select id="fy"><option>FY2027</option><option>FY2026</option><option>FY2025</option></select></label>
+<button type="button" class="btn btn-secondary spec-toggle" id="spec-toggle" aria-pressed="false" title="Show the data source for each section"><i data-lucide="file-code"></i>Spec</button>
 <button type="button" class="btn btn-secondary"><i data-lucide="star"></i>Add to favorites</button>
 <button type="button" class="btn btn-primary">Ask about this program</button>
 </div>
@@ -256,6 +299,7 @@ h1 { margin: 0; font-size: 27px; line-height: 1.15; font-weight: 600; letter-spa
 <a class="tab" role="tab" data-tab="supply-chain" href="#supply-chain" aria-selected="false">Supply chain</a>
 <a class="tab" role="tab" data-tab="offices" href="#offices" aria-selected="false">Offices and codes</a>
 <a class="tab" role="tab" data-tab="connections" href="#connections" aria-selected="false">Connections</a>
+<a class="tab tab-spec" role="tab" data-tab="spec" href="#spec" aria-selected="false">Spec</a>
 </nav></div>
 <div class="content"><div class="view" id="view" role="tabpanel"></div></div>
 </div>
@@ -1333,6 +1377,7 @@ h1 { margin: 0; font-size: 27px; line-height: 1.15; font-weight: 600; letter-spa
 </sc-for>
 </div>
 </script>
+<script type="text/x-template" id="tpl-spec">{{html}}</script>
 <script>
 
 const TAB_CLASSES = {};
@@ -1345,7 +1390,7 @@ class DCLogic {
   }
 }
 
-const TABS = [["overview", "Overview"], ["budget", "Budget"], ["congress", "Congress"], ["contracts", "Contracts"], ["supply-chain", "Supply chain"], ["offices", "Offices and codes"], ["connections", "Connections"]];
+const TABS = [["overview", "Overview"], ["budget", "Budget"], ["congress", "Congress"], ["contracts", "Contracts"], ["supply-chain", "Supply chain"], ["offices", "Offices and codes"], ["connections", "Connections"], ["spec", "Spec"]];
 
 TAB_CLASSES['overview'] = class extends DCLogic {
   constructor(props) {
@@ -2409,6 +2454,390 @@ TAB_CLASSES['connections'] = class extends DCLogic {
   }
 }
 
+/* ---------- Spec view ----------
+   Each page section names the table and fields it reads.
+   Status: e = exists today (serving or analytics table in Hasura), p = proposed, x = comes out (no source). */
+const SPEC_ST = { e: ['Exists', 'st-e'], p: ['Proposed', 'st-p'], x: ['Comes out', 'st-x'] };
+
+const SPEC = {
+  header: [
+    { items: [
+      ['Name and full name', 'srv_program_profile.program_name, program_full_name', 'p'],
+      ['Production · multiyear', 'Phase is not modelled in v1', 'x'],
+      ['DoD Program No.', 'srv_program_profile.primary_dod_program_number', 'p'],
+      ['Army · PAE › office', 'srv_program_profile.branch, pae, program_office_current', 'p'],
+      ['Prime', 'srv_program_profile.prime_name, prime_ticker', 'p'],
+      ['Fiscal year', 'srv_program_list.fiscal_year', 'e']],
+      note: 'Program: int_program__baseline PRG-0008. The page reads serving tables through Hasura. Table and field names come from the dse dbt models; values are not yet checked against BigQuery.' }],
+  overview: [
+    { sel: '[aria-label="Key figures"]', items: [
+      ['Request, MSE lines', 'SUM(srv_program_list.total_usd), funds lines, selected FY, split by service_branch', 'e'],
+      ['Missiles requested', 'SUM(srv_program_list.total_quantity); tag compares FY with FY-1', 'p'],
+      ['Mandatory share', 'srv_program_list.mandatory_usd ÷ total_usd', 'e'],
+      ['Cost per missile', 'srv_program_list.unit_cost_usd, Army MSE line. P-1 basis replaces the P-5a $4.99M', 'p'],
+      ['Obligated to contracts', 'SUM(srv_program_contract_breakdown.obligated_usd), dimension = award, by fiscal_year', 'p'],
+      ['Lockheed share', 'srv_program_contract_breakdown, dimension = awardee: SUM by value ÷ SUM, FY22–26', 'p'],
+      ['Tags', 'Rules over the fields above. "Reconciliation funds" reads "Mandatory"', 'p']],
+      note: 'Budget figures reach the program through int_program__budget_line (proposed).' },
+    { sel: '[aria-label="Signals"]', items: [
+      ['FY27 lot award planned Dec 2026', 'P-5a exhibit: not modelled', 'x'],
+      ['FY27 request 90% mandatory', 'srv_program_list.mandatory_usd ÷ total_usd', 'e'],
+      ['Army and Navy missile changes', 'srv_program_list.total_quantity, FY vs FY-1', 'p'],
+      ['Congressional marks', 'srv_marks_list: largest mark_amount_usd per fiscal_year, with mark_description', 'e'],
+      ['Multiyear award end', 'srv_program_contracts.period_of_performance_current_end_date where is_multiyear', 'p'],
+      ['FMS awards', 'srv_program_contract_breakdown.award_count, dimension = foreign_funding', 'p']],
+      note: 'Each signal is a rule over one field. Hand-picked wording goes.' },
+    { sel: '[aria-label="Flow of money"]', items: [
+      ['Request, enacted, actuals, mandatory', 'SUM(srv_program_list.request_usd, enacted_usd, actuals_usd, mandatory_usd), funds lines, FY22–26', 'e'],
+      ['Congress net', 'SUM(srv_program_list.marks_net_delta_usd)', 'e'],
+      ['Added in year; Navy and FMS', 'Derived across tiers. Replaced by the four tiers', 'x'],
+      ['Where it went', 'srv_program_contract_breakdown, dimension = award, FY22–26: top 5 + other', 'p'],
+      ['Award labels', 'srv_program_contracts.contract_description. Hand-sorted groups go', 'p'],
+      ['Chips', 'srv_program_contract_breakdown: foreign_funding share; top-2 award share', 'p']] },
+    { sel: '#budget', items: [
+      ['Discretionary and mandatory by year', 'srv_program_list.request_usd | enacted_usd | actuals_usd by stage; mandatory_usd', 'e'],
+      ['Stage', 'Latest tier present for the year: actuals, enacted or request', 'e'],
+      ['Quantity, Navy quantity', 'srv_program_list.total_quantity by line', 'p'],
+      ['Unit cost', 'srv_program_list.unit_cost_usd', 'p'],
+      ['Obligations', 'SUM(srv_program_contract_breakdown.obligated_usd), dimension = award, by fiscal_year', 'p'],
+      ['Related lines', 'int_program__budget_line.link_role = related, then srv_program_list', 'p']] },
+    { sel: '#identity', items: [
+      ['DoD program numbers', 'srv_program_identifiers, id_type = dod_program_number: id_value, label, acquisition_status', 'p'],
+      ['Contracting and funding offices', 'srv_program_offices, rank_in_program 1–3: office_code, office_name, share_of_program_usd', 'p'],
+      ['Codes', 'srv_program_identifiers, id_type = psc | naics, rank_in_program = 1', 'p']] },
+    { sel: '#congress', items: [
+      ['Committee positions', 'agg_congressional_mark_history.<committee>_delta_thousands, <committee>_matched, <committee>_attempted', 'e'],
+      ['Marks and citations', 'srv_marks_list.conference_display, mark_amount_usd, mark_description, source_document, source_page', 'e']] },
+    { sel: '#contracts', items: [
+      ['Awards', 'srv_program_contracts: piid, contract_description, pricing_type, obligated_to_date_usd, period_of_performance_current_end_date', 'p'],
+      ['Scope labels', 'srv_program_contracts.contract_description. Hand-written scope goes', 'p']] },
+    { sel: '#suppliers', items: [
+      ['Suppliers and shares', 'srv_program_suppliers.subaward_usd by subawardee_parent_name', 'p'],
+      ['Part labels', 'srv_program_suppliers.top_description', 'p'],
+      ['Listed companies', 'srv_program_suppliers.ticker', 'p'],
+      ['Foreign buyers named on awards', 'No buyer-country field. FMS share only', 'x']] }],
+  budget: [
+    { sel: '[aria-label="Key figures"]', items: [
+      ['Request, all program lines', 'SUM(srv_program_list.total_usd), all linked lines, selected FY', 'e'],
+      ['MSE lines', 'Same, int_program__budget_line.link_role = funds', 'e'],
+      ['Mandatory funding', 'SUM(srv_program_list.mandatory_usd)', 'e'],
+      ['Enacted, FY2026', 'SUM(srv_program_list.enacted_usd)', 'e'],
+      ['Missiles requested', 'SUM(srv_program_list.total_quantity) by service_branch', 'p'],
+      ['Cost per missile', 'srv_program_list.unit_cost_usd. P-1 basis replaces P-5a', 'p']] },
+    { sel: '[aria-label="Funding by line"]', items: [
+      ['Bars by year and line', 'srv_program_list.total_usd by program_key × fiscal_year; mandatory_usd stacked', 'e'],
+      ['Line names', 'srv_program_list.program_name, account_title', 'e'],
+      ['Which lines', 'int_program__budget_line.link_role', 'p'],
+      ['Chips', 'Rules over srv_program_list.total_usd and mandatory_usd', 'p']] },
+    { sel: '[aria-label="Request, enacted and actual"]', items: [
+      ['Request, enacted, actual', 'srv_program_list.request_usd, enacted_usd, actuals_usd', 'e'],
+      ['Change', 'srv_program_list.marks_net_delta_usd', 'e'],
+      ['(CR) label', 'No continuing-resolution flag', 'x'],
+      ['Missiles', 'srv_program_list.total_quantity', 'p'],
+      ['Chips', 'Rules over request_usd, enacted_usd and actuals_usd', 'p']] },
+    { sel: '[aria-label="Cost elements"]', items: [
+      ['Cost elements and unit cost', 'P-5 exhibit: not modelled', 'x'],
+      ['Army objective, FMS pricing chips', 'P-40 exhibit: not modelled', 'x']],
+      note: 'Needs J-Book exhibit parsing: dmn_jbook__p5_cost_elements, dmn_jbook__p40_items.' },
+    { sel: '[aria-label="Production lots"]', items: [
+      ['Lots, award and delivery dates, unit cost', 'P-5a exhibit: not modelled', 'x']],
+      note: 'Needs dmn_jbook__p5a_contracts. Awarded lots also appear in srv_program_contracts.' },
+    { sel: '[aria-label="Sources"]', items: [
+      ['Documents', 'srv_program_list.source_document_year, source_exhibit', 'p'],
+      ['As of', 'srv_program_list.data_as_of', 'e'],
+      ['Navy FY2027 J-Book', 'Not in hand', 'x']] }],
+  congress: [
+    { sel: '[aria-label="Key figures"]', items: [
+      ['SAC-D, FY2027', 'SUM(agg_congressional_mark_history.sacd_delta_thousands) × 1,000, funds lines', 'e'],
+      ['Final vs request, FY2026', 'final_delta_thousands ÷ requested_amount_thousands', 'e'],
+      ['Net final vs request, FY22–26', 'SUM(agg_congressional_mark_history.final_delta_thousands)', 'e'],
+      ['Largest cut', 'MIN(srv_marks_list.mark_amount_usd), with mark_description', 'e']] },
+    { sel: '[aria-label="Committee positions"]', items: [
+      ['Above, below, at request', 'agg_congressional_mark_history.<committee>_delta_thousands', 'e'],
+      ['Not traced', '<committee>_attempted and not <committee>_matched', 'e'],
+      ['Pending', 'srv_program_list.congressional_state = in_progress | awaiting', 'e'],
+      ['CR', 'No continuing-resolution flag. The cell shows the final delta', 'x']] },
+    { sel: '[aria-label="Committee walk"]', items: [
+      ['Walk by line', 'agg_congressional_mark_history.requested_amount_thousands, hasc_authorized_thousands, sasc_authorized_thousands, ndaa_conference_thousands, hacd_recommended_thousands, sacd_recommended_thousands, final_appropriation_thousands', 'e'],
+      ['Marks', 'srv_marks_list.conference_display, mark_amount_usd, mark_description', 'e'],
+      ['Citations', 'srv_marks_list.source_document, source_page', 'e'],
+      ['Chips', 'Rules over congressional_state and <committee>_matched. Written text goes', 'p']] }],
+  contracts: [
+    { sel: '[aria-label="Key figures"]', items: [
+      ['Obligated, FY22–26', 'SUM(srv_program_contract_breakdown.obligated_usd), dimension = award', 'p'],
+      ['Not competed', 'dimension = extent_competed: not-competed values ÷ SUM', 'p'],
+      ['Firm fixed price', 'dimension = pricing_type: SUM by value ÷ SUM', 'p'],
+      ['Option exercises', 'dimension = mod_reason, exercise an option: obligated_usd, action_count', 'p'],
+      ['Letter contracts definitized', 'dimension = mod_reason, definitize letter contract', 'p'],
+      ['Multiyear award ends', 'srv_program_contracts.period_of_performance_current_end_date where is_multiyear', 'p']] },
+    { sel: '[aria-label="Contract timeline"]', items: [
+      ['Bars', 'srv_program_contracts.period_of_performance_start_date to period_of_performance_current_end_date; obligated_to_date_usd', 'p'],
+      ['Scope', 'srv_program_contracts.contract_description', 'p'],
+      ['Pricing colour', 'srv_program_contracts.pricing_type', 'p']] },
+    { sel: '[aria-label="Obligations by pricing type"]', items: [
+      ['Stacks by year', 'srv_program_contract_breakdown, dimension = pricing_type: obligated_usd by fiscal_year', 'p'],
+      ['FFP share', 'srv_program_contract_breakdown.share_of_fy_usd', 'p']] },
+    { sel: '[aria-label="What drove obligations"]', items: [
+      ['Reasons', 'srv_program_contract_breakdown, dimension = mod_reason: value_label, obligated_usd, action_count', 'p']],
+      note: 'value_label: dmn_contract.mod_code joined to dim_mod_reason_code.action_type.' },
+    { sel: '[aria-label="Active awards"]', items: [
+      ['Columns', 'srv_program_contracts: piid, contract_description, pricing_type, obligated_to_date_usd, action_count, period_of_performance_current_end_date', 'p'],
+      ['Selected-year obligations', 'srv_program_contract_breakdown, dimension = award, fiscal_year', 'p'],
+      ['New and FMS tags', 'srv_program_contracts.first_action_date fiscal year; has_foreign_funding', 'p']] }],
+  'supply-chain': [
+    { sel: '[aria-label="Key figures"]', items: [
+      ['Subawards', 'SUM(srv_program_suppliers.subaward_usd)', 'p'],
+      ['Share of prime obligations', 'subaward_usd ÷ srv_program_contract_breakdown.obligated_usd, dimension = awardee, the prime', 'p'],
+      ['Suppliers reporting', 'COUNT(DISTINCT srv_program_suppliers.subawardee_uei)', 'p'],
+      ['Top 5 share, largest supplier', 'Rank by subaward_usd; label from top_description', 'p'],
+      ['Foreign suppliers', 'srv_program_suppliers.subawardee_country not United States', 'p'],
+      ['New suppliers', 'srv_program_suppliers.first_fiscal_year_on_program = fiscal_year', 'p']],
+      note: 'Subaward rows: dmn_subaward.is_latest_report and is_amount_plausible only. Reports restate earlier amounts.' },
+    { sel: '[aria-label="Supplier concentration"]', items: [
+      ['Bars', 'srv_program_suppliers.subaward_usd by subawardee_parent_name', 'p'],
+      ['Part labels', 'srv_program_suppliers.top_description. Hand-written labels go', 'p'],
+      ['Not matched to a company', 'srv_program_suppliers.is_resolved = false', 'p']] },
+    { sel: '[aria-label="Supplier geography"]', items: [
+      ['States and countries', 'srv_program_suppliers.subawardee_state, subawardee_country: subaward_usd, supplier count', 'p']] },
+    { sel: '[aria-label="Foreign suppliers"]', items: [
+      ['Countries and names', 'srv_program_suppliers.subawardee_country, subawardee_name', 'p']] },
+    { sel: '[aria-label="New suppliers by year"]', items: [
+      ['Counts', 'COUNT where srv_program_suppliers.first_fiscal_year_on_program = fiscal_year', 'p']] },
+    { sel: '[aria-label="Listed companies"]', items: [
+      ['Tickers', 'srv_program_suppliers.ticker, exchange; prime from srv_program_profile.prime_ticker', 'p'],
+      ['Roles', 'srv_program_suppliers.top_description', 'p']] },
+    { sel: '[aria-label="Suppliers"]', items: [
+      ['Table', 'srv_program_suppliers: subawardee_name, subawardee_country, subawardee_state, subaward_usd, subaward_count, first_fiscal_year_on_program', 'p']] }],
+  offices: [
+    { sel: '[aria-label="Program office"]', items: [
+      ['PAE and program office', 'srv_program_profile.pae, program_office_current, program_office_former', 'p'],
+      ['Portfolio treemap', 'srv_program_profile where pae matches: program_name, linked_obligated_usd', 'p']] },
+    { sel: '[aria-label="Funding offices"]', items: [
+      ['Offices', 'srv_program_offices, office_role = funding_office: office_code, office_name, obligation_usd, share_of_program_usd', 'p'],
+      ['Reports to', 'srv_program_offices.parent_chain, parent_confidence', 'p']] },
+    { sel: '[aria-label="Contracting offices"]', items: [
+      ['Offices', 'srv_program_offices, office_role = contracting_office: office_code, office_name, obligation_usd, share_of_program_usd', 'p'],
+      ['Reports to', 'srv_program_offices.parent_chain, parent_confidence', 'p']] },
+    { sel: '[aria-label="Product codes"]', items: [
+      ['PSC', 'srv_program_identifiers, id_type = psc: id_value, label, share_of_program_usd, specificity', 'p']] },
+    { sel: '[aria-label="Industry codes"]', items: [
+      ['NAICS', 'srv_program_identifiers, id_type = naics: id_value, label, share_of_program_usd, specificity', 'p']] },
+    { sel: '[aria-label="DoD program numbers"]', items: [
+      ['Numbers', 'srv_program_identifiers, id_type = dod_program_number: id_value, label, acquisition_status, match_type', 'p']] },
+    { sel: '[aria-label="Budget lines"]', items: [
+      ['Lines', 'int_program__budget_line, then srv_program_list: program_key, program_name, account_title, request_usd, enacted_usd', 'p']] }],
+  connections: [
+    { sel: '[aria-label="Connection map"]', items: [
+      ['Funding offices', 'srv_program_offices, office_role = funding_office', 'p'],
+      ['Management', 'srv_program_profile.pae, program_office_current', 'p'],
+      ['Congress', 'agg_congressional_mark_history.<committee>_delta_thousands', 'e'],
+      ['Budget lines', 'srv_program_list through int_program__budget_line', 'p'],
+      ['Contracts and prime', 'srv_program_contract_breakdown, dimension = award | awardee', 'p'],
+      ['Suppliers', 'srv_program_suppliers', 'p'],
+      ['Foreign demand', 'One node: srv_program_contract_breakdown, dimension = foreign_funding', 'p'],
+      ['FMS countries', 'No buyer-country field', 'x']] },
+    { sel: (v) => { const m = v.querySelector('[aria-label="Connection map"]'); return m && m.nextElementSibling; }, items: [
+      ['Insight cards', 'Written text, no field', 'x']] }]
+};
+
+const SPEC_TABLES = [
+  { name: 'srv_program_profile', layer: 'Serving', grain: 'One row per program', from: 'int_program__baseline (canonical rows), int_program__program_number, int_program__dod_program, primary links in rel_program_contract', feeds: 'Header; Overview offices and codes; Offices program office and portfolio; Connections management', fields: [
+    ['program_hg_id, program_key', 'int_program__baseline (PRG-0008)'],
+    ['program_name, program_description', 'int_program__baseline'],
+    ['program_full_name', 'int_program__dod_program.full_name of the primary program number'],
+    ['branch, pae, program_office_current, program_office_former', 'int_program__baseline'],
+    ['primary_dod_program_number', 'int_program__program_number.program_number, match_type = same_program'],
+    ['prime_company_hg_id, prime_name, prime_ticker', 'Top awardee by obligations on primary links; ticker from ref_company_listed_security'],
+    ['prime_share_of_obligations', 'Prime obligations ÷ all obligations on primary links'],
+    ['linked_obligated_usd, linked_award_count', 'Sums over primary links'],
+    ['sheet_as_of, data_as_of', 'int_program__baseline.as_of_date; build time']] },
+  { name: 'srv_program_identifiers', layer: 'Serving', grain: 'Program × id_type × id_value', from: 'int_program__program_number, int_program__dod_program, int_program__code_profile', feeds: 'Overview offices and codes; Offices program numbers, PSC and NAICS', fields: [
+    ['program_hg_id', ''],
+    ['id_type', 'dod_program_number | psc | naics'],
+    ['id_value', 'program_number or code'],
+    ['label', 'official_short_name or code_name'],
+    ['acquisition_status, match_type', 'Program numbers: int_program__dod_program, int_program__program_number'],
+    ['share_of_program_usd, specificity, rank_in_program', 'Codes: int_program__code_profile']] },
+  { name: 'srv_program_contracts', layer: 'Serving', grain: 'Program × award, primary links only', from: 'rel_program_contract, dmn_contract (latest action per award), agg_contract_obligation', feeds: 'Overview contracts; Contracts timeline and active awards; signals', fields: [
+    ['program_hg_id, award_hg_id, piid, vehicle_piid', 'rel_program_contract'],
+    ['awardee_company_hg_id, awardee_name, parent_name, ticker', 'dmn_contract; ref_company_listed_security'],
+    ['contract_description', 'dmn_contract.contract_description'],
+    ['pricing_type, extent_competed', 'dmn_contract'],
+    ['is_multiyear', 'dmn_contract.sam_multiyear_contract'],
+    ['period_of_performance_start_date, period_of_performance_current_end_date, period_of_performance_potential_end_date', 'dmn_contract'],
+    ['action_count, first_action_date, last_action_date', 'dmn_contract actions'],
+    ['obligated_to_date_usd, ceiling_usd', 'agg_contract_obligation. Stock: never sum across years'],
+    ['has_foreign_funding', 'dmn_contract.foreign_funding_code (new)'],
+    ['attribution_method, confidence', 'rel_program_contract']] },
+  { name: 'srv_program_contract_breakdown', layer: 'Serving', grain: 'Program × fiscal year × dimension × value', from: 'dmn_contract actions on primary links (contract_obligation_action, contract_action_fy), dim_mod_reason_code', feeds: 'Flow of money; Overview and Contracts key figures; pricing mix; what drove obligations; obligations by year', fields: [
+    ['program_hg_id, fiscal_year', ''],
+    ['dimension', 'award | awardee | pricing_type | extent_competed | mod_reason | foreign_funding'],
+    ['value, value_label', 'piid, company_hg_id or code; mod_reason label from dim_mod_reason_code.action_type'],
+    ['obligated_usd', 'SUM(contract_obligation_action). Flow: adds across years'],
+    ['action_count, award_count', ''],
+    ['share_of_fy_usd', 'obligated_usd ÷ program total for the year. Sums to 1 within a dimension']] },
+  { name: 'srv_program_suppliers', layer: 'Serving', grain: 'Program × fiscal year × subawardee', from: 'dmn_subaward (is_latest_report, is_amount_plausible) on primary-link awards via prime_award_unique_key; dmn_company; ref_company_listed_security', feeds: 'Overview and Supply chain; Connections suppliers', fields: [
+    ['program_hg_id, fiscal_year', 'dmn_subaward.fiscal_year'],
+    ['prime_company_hg_id, prime_name', ''],
+    ['subawardee_uei, subawardee_company_hg_id, subawardee_name, subawardee_parent_name', 'dmn_subaward; dmn_company'],
+    ['ticker, exchange', 'ref_company_listed_security'],
+    ['subawardee_country, subawardee_state', 'dmn_subaward'],
+    ['subaward_usd, subaward_count, prime_award_count', ''],
+    ['first_fiscal_year_on_program', 'First year the subawardee reports on this program'],
+    ['top_description', 'Largest-dollar subaward_description'],
+    ['is_resolved', 'Subawardee matched to a company']] },
+  { name: 'srv_program_offices', layer: 'Serving', grain: 'Program × office role × office', from: 'int_program__award_office, int_program__office_parent', feeds: 'Overview offices; Offices funding and contracting; Connections offices', fields: [
+    ['program_hg_id, office_role, office_hg_id', 'office_role: funding_office | contracting_office'],
+    ['office_code, office_name, office_series_service', 'int_program__award_office'],
+    ['parent_chain, parent_confidence', 'int_program__office_parent.parent_chain, confidence'],
+    ['awards, obligation_usd, share_of_program_usd, rank_in_program', 'int_program__award_office. All linked years; no fiscal year in v1']] },
+  { name: 'srv_program_list (new columns)', layer: 'Serving, existing', grain: 'Unchanged: program_key × fiscal_year', from: 'agg_budget_line_quantity, agg_budget_line_amount', feeds: 'Missiles, cost per missile, Sources', fields: [
+    ['request_quantity, enacted_quantity, actuals_quantity, mandatory_quantity, total_quantity', 'agg_budget_line_quantity, is_latest_document'],
+    ['unit_cost_usd', 'total_usd ÷ total_quantity. P-1 basis: includes support costs, so above the P-5a hardware unit cost'],
+    ['source_document_year, source_exhibit', 'agg_budget_line_amount, latest document']] },
+  { name: 'agg_budget_line_quantity', layer: 'Analytics', grain: 'As agg_budget_line_amount, by quantity_type', from: 'dmn_jbook__pe_numbers', feeds: 'srv_program_list quantity columns', fields: [
+    ['identifier_type, pe_or_bli, fiscal_year', 'As agg_budget_line_amount'],
+    ['quantity_type', 'actuals (py_quantity) | enacted (cy_quantity) | request (by_quantity_request) | mandatory (py_, cy_, by_quantity_mandatory) | total (by_quantity)'],
+    ['quantity', ''],
+    ['source_document_year, source_exhibit, is_latest_document', 'Same rules as agg_budget_line_amount']] },
+  { name: 'int_program__budget_line', layer: 'Intermediate, promoted with the program epic', grain: 'Program × budget line', from: 'New seed program_budget_line: PRG-0008 to Army P-1 line C53101 and Navy line 2247, plus related lines', feeds: 'Every budget figure on the page', fields: [
+    ['program_hg_id', 'int_program__baseline.program_hg_id'],
+    ['budget_program_key', 'srv_program_list.program_key'],
+    ['link_role', 'funds | related'],
+    ['link_method', 'seed; program_number once P-40 exhibits are parsed'],
+    ['first_fiscal_year, last_fiscal_year', 'Years the line appears in dmn_jbook__pe_numbers']] }
+];
+
+const SPEC_EXISTING = [
+  ['srv_program_list', 'Serving, in Hasura', 'program_key, fiscal_year, program_name, account_title, service_branch, request_usd, enacted_usd, actuals_usd, total_usd, mandatory_usd, marks_net_delta_usd, congressional_state, data_as_of', 'Budget figures on Overview and Budget'],
+  ['srv_marks_list', 'Serving, in Hasura', 'fiscal_year, conference_display, direction, mark_description, mark_amount_usd, line_number, display_code, source_document, source_page, data_as_of', 'Marks and citations'],
+  ['agg_congressional_mark_history', 'Analytics, in Hasura', 'fiscal_year, real_world_code, requested_amount_thousands, hasc_authorized_thousands, sasc_authorized_thousands, ndaa_conference_thousands, hacd_recommended_thousands, sacd_recommended_thousands, final_appropriation_thousands, <committee>_delta_thousands, <committee>_matched, <committee>_attempted', 'Committee positions and walk']
+];
+
+const SPEC_DOMAIN = [
+  ['dmn_contract', 'Add foreign_funding_code and foreign_funding_name from int_samgov__contract_awards_v2_clean (coreData_federalOrganization_fundingInformation_foreignFunding_code, _name).'],
+  ['rel_program_contract', 'Promote int_program__award_link (HSP-2556). Pages read primary links only (is_primary).']
+];
+
+const SPEC_OUT = [
+  ['P-5 cost elements', 'Budget: Cost elements', 'J-Book exhibit parsing into dmn_jbook__p5_cost_elements'],
+  ['P-5a production lots; FY27 lot signal', 'Budget: Production lots; Overview signals', 'dmn_jbook__p5a_contracts'],
+  ['P-40 details: Army objective, FMS pricing note', 'Budget: Cost elements chips', 'dmn_jbook__p40_items'],
+  ['Navy FY2027 Weapons Procurement J-Book', 'Budget: Sources', 'A download that gets past the Navy site'],
+  ['Hardware cost per missile, $4.99M', 'Overview and Budget key figures', 'Replaced by srv_program_list.unit_cost_usd'],
+  ['Added in year; Navy and FMS (derived)', 'Overview: Flow of money', 'Replaced by request, enacted, actuals and mandatory'],
+  ['Hand-sorted award groups', 'Overview: Flow of money; Connections', 'Replaced by each award and its contract_description'],
+  ['FMS buyer countries and award counts', 'Overview supply chain; Connections', 'No buyer-country field. FMS share only'],
+  ['Program phase pill', 'Header', 'Phases not modelled in v1'],
+  ['Continuing resolution cell label', 'Congress: Committee positions', 'No CR flag. The cell shows the final delta'],
+  ['Written insights, scopes and part labels', 'Connections; Contracts; Supply chain', 'Replaced by contract_description and top_description']
+];
+
+const SPEC_BUILD = [
+  'dse: seed program_budget_line and build int_program__budget_line; add agg_budget_line_quantity and the srv_program_list columns; add foreign funding to dmn_contract.',
+  'dse: promote int_program__award_link to rel_program_contract (HSP-2556).',
+  'dse: build srv_program_profile, srv_program_identifiers, srv_program_contracts, srv_program_contract_breakdown, srv_program_suppliers and srv_program_offices on staging; check PAC-3 MSE values against this page.',
+  'hasura-config: track the new tables and columns; hasura_contract_gate passes.',
+  'high-ground-mvp-fe: the program page reads the tables; spec statuses move to Exists.',
+  'Separate ticket: J-Book P-5, P-5a and P-40 parsing; Navy Weapons Procurement book download.'
+];
+
+const specEsc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const SPEC_TOKEN = /\b(?:srv|agg|dmn|int|rel|dim|ref)_[a-z0-9_]+(?:\.[a-z0-9_]+)?/g;
+const specCode = (s) => specEsc(s).replace(SPEC_TOKEN, (t) => `<code>${t}</code>`);
+const specPill = (st) => `<span class="st ${SPEC_ST[st][1]}">${SPEC_ST[st][0]}</span>`;
+
+function specNoteHtml(entry) {
+  const n = { e: 0, p: 0, x: 0 };
+  entry.items.forEach((it) => { n[it[2]] += 1; });
+  const counts = ['e', 'p', 'x'].filter((k) => n[k]).map((k) => `${n[k]} ${SPEC_ST[k][0].toLowerCase()}`).join(' · ');
+  const rows = entry.items.map(([ui, src, st]) => `<span class="si-ui">${specEsc(ui)}</span><span class="si-src">${specCode(src)}</span>${specPill(st)}`).join('');
+  const foot = entry.note ? `<p class="spec-foot">${specCode(entry.note)}</p>` : '';
+  return `<aside class="spec-note" aria-label="Data spec"><div class="spec-head"><span class="spec-kicker">SPEC</span><span class="spec-count">${counts}</span></div><div class="spec-items">${rows}</div>${foot}</aside>`;
+}
+
+function annotate() {
+  (SPEC[current] || []).forEach((entry) => {
+    const el = typeof entry.sel === 'function' ? entry.sel(view) : view.querySelector(entry.sel);
+    if (el) el.insertAdjacentHTML('afterbegin', specNoteHtml(entry));
+  });
+}
+
+function specDocHtml() {
+  const all = Object.values(SPEC).flat().flatMap((e) => e.items);
+  const n = { e: 0, p: 0, x: 0 };
+  all.forEach((it) => { n[it[2]] += 1; });
+  const tables = SPEC_TABLES.map((t) => `
+    <article class="spec-table">
+      <h3><code>${specEsc(t.name)}</code></h3>
+      <dl class="spec-meta"><dt>Layer</dt><dd>${specEsc(t.layer)}</dd><dt>Grain</dt><dd>${specCode(t.grain)}</dd><dt>Built from</dt><dd>${specCode(t.from)}</dd><dt>Feeds</dt><dd>${specCode(t.feeds)}</dd></dl>
+      <div class="spec-scroll"><table class="spec-grid"><thead><tr><th scope="col">Field</th><th scope="col">Source or rule</th></tr></thead><tbody>
+      ${t.fields.map(([f, s]) => `<tr><td><code>${specEsc(f)}</code></td><td>${specCode(s)}</td></tr>`).join('')}
+      </tbody></table></div>
+    </article>`).join('');
+  const existing = SPEC_EXISTING.map(([t, layer, f, feeds]) => `<tr><td><code>${t}</code></td><td>${layer}</td><td>${specCode(f)}</td><td>${specEsc(feeds)}</td></tr>`).join('');
+  const domain = SPEC_DOMAIN.map(([t, d]) => `<li><code>${t}</code>: ${specCode(d)}</li>`).join('');
+  const out = SPEC_OUT.map(([what, where, fix]) => `<tr><td>${specEsc(what)}</td><td>${specEsc(where)}</td><td>${specCode(fix)}</td></tr>`).join('');
+  const build = SPEC_BUILD.map((s) => `<li>${specCode(s)}</li>`).join('');
+  return `<div class="spec-doc">
+  <section class="spec-card" aria-label="Data spec">
+    <h2>Data spec</h2>
+    <p>Every figure on this page reads one field. The page reads serving tables through Hasura. The program is <code>int_program__baseline</code> PRG-0008, PAC-3 MSE. Table and field names come from the dse dbt models. Values are not yet checked against BigQuery.</p>
+    <div class="spec-legend">Page elements: ${specPill('e')} ${n.e} · ${specPill('p')} ${n.p} · ${specPill('x')} ${n.x}</div>
+    <ul>
+      <li>Program base: the program epic (<code>int_program__baseline</code>, HSP-2556). Budget lines join through <code>int_program__budget_line</code>.</li>
+      <li>Contract breakdowns: one table, <code>srv_program_contract_breakdown</code>.</li>
+      <li>FMS: share of obligations only. No buyer countries.</li>
+      <li>Not used here: the budget-line program stack (<code>dmn_program</code>, <code>rel_program_award</code>, <code>srv_program_index</code>).</li>
+    </ul>
+  </section>
+  <section class="spec-card" aria-label="Proposed tables">
+    <h2>Proposed tables and columns</h2>
+    <div class="spec-tables">${tables}</div>
+  </section>
+  <section class="spec-card" aria-label="Domain changes">
+    <h2>Domain changes</h2>
+    <ul>${domain}</ul>
+  </section>
+  <section class="spec-card" aria-label="Existing tables">
+    <h2>Existing tables used</h2>
+    <div class="spec-scroll"><table class="spec-grid"><thead><tr><th scope="col">Table</th><th scope="col">Layer</th><th scope="col">Fields read</th><th scope="col">Feeds</th></tr></thead><tbody>${existing}</tbody></table></div>
+  </section>
+  <section class="spec-card" aria-label="Comes out">
+    <h2>Comes out: no source</h2>
+    <div class="spec-scroll"><table class="spec-grid"><thead><tr><th scope="col">Content</th><th scope="col">Where</th><th scope="col">What would bring it back</th></tr></thead><tbody>${out}</tbody></table></div>
+  </section>
+  <section class="spec-card" aria-label="Build order">
+    <h2>Build order</h2>
+    <ol>${build}</ol>
+  </section>
+</div>`;
+}
+
+TAB_CLASSES['spec'] = class extends DCLogic {
+  renderVals() {
+    if (!this.html) this.html = specDocHtml();
+    return { html: this.html };
+  }
+};
+
+let specOn = false;
+function setSpec(on, save) {
+  specOn = on;
+  document.body.classList.toggle('spec-on', on);
+  document.getElementById('spec-toggle').setAttribute('aria-pressed', String(on));
+  if (save) { try { localStorage.setItem('hg-pac3-spec', on ? '1' : '0'); } catch (e) { /* storage unavailable */ } }
+  if (!on && current === 'spec') location.hash = '#overview';
+}
+function initSpec() {
+  let stored = null;
+  try { stored = localStorage.getItem('hg-pac3-spec'); } catch (e) { /* storage unavailable */ }
+  const ph = document.querySelector('.ph');
+  if (ph) ph.insertAdjacentHTML('beforeend', specNoteHtml(SPEC.header[0]));
+  setSpec(/(^|[?&])spec\b/.test(location.search.slice(1)) || location.hash === '#spec' || stored === '1', false);
+  document.getElementById('spec-toggle').addEventListener('click', () => setSpec(!specOn, true));
+}
+
 
 const instances = {};
 let current = null;
@@ -2460,6 +2889,7 @@ function renderView() {
   const inst = instances[current];
   handlers = [];
   view.innerHTML = expand(document.getElementById('tpl-' + current).textContent, inst.renderVals());
+  annotate();
 }
 function fire(el, ev, e) {
   const id = el && el.getAttribute('data-on-' + ev);
@@ -2479,6 +2909,7 @@ view.addEventListener('focusout', (e) => fire(e.target.closest('[data-on-blur]')
 const TAB_IDS = TABS.map((t) => t[0]);
 function show() {
   const id = TAB_IDS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'overview';
+  if (id === 'spec' && !specOn) setSpec(true, true);
   if (id !== current) {
     current = id;
     if (!instances[id]) instances[id] = new TAB_CLASSES[id]({});
@@ -2487,6 +2918,7 @@ function show() {
     document.querySelector('.main').scrollTop = 0;
   }
 }
+initSpec();
 window.addEventListener('hashchange', show);
 show();
 if (window.lucide) window.lucide.createIcons();
